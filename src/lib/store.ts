@@ -2,16 +2,20 @@
 import { useSyncExternalStore } from "react";
 import { createDefaultDoc, parseResumeDoc, type ResumeDoc } from "./schema";
 import { createSampleDoc } from "./sample";
+import { bootActiveId, docKey, LEGACY_DOC_KEY } from "./versions";
 
-export const STORAGE_KEY = "resume-builder:doc:v1";
+/** The key used before versions existed. The active version now lives under `docKey(id)`. */
+export const STORAGE_KEY = LEGACY_DOC_KEY;
 
 export interface KeyValueStorage {
   getItem(k: string): string | null;
   setItem(k: string, v: string): void;
+  removeItem?(k: string): void;
 }
 
 export interface StoreOptions {
   storage?: KeyValueStorage | null;
+  key?: string;
   debounceMs?: number;
   initial?: () => ResumeDoc;
 }
@@ -23,6 +27,7 @@ export function createResumeStore(opts: StoreOptions = {}) {
   const debounceMs = opts.debounceMs ?? 300;
   const makeInitial = opts.initial ?? createSampleDoc;
   let storage: KeyValueStorage | null = opts.storage ?? null;
+  let key = opts.key ?? STORAGE_KEY;
   let state: ResumeDoc = makeInitial();
   let status: StoreStatus = "idle";
   let loaded = false;
@@ -35,7 +40,7 @@ export function createResumeStore(opts: StoreOptions = {}) {
     timer = null;
     if (!storage) { status = "unavailable"; emit(); return; }
     try {
-      storage.setItem(STORAGE_KEY, JSON.stringify(state));
+      storage.setItem(key, JSON.stringify(state));
       status = "saved";
       savedAt = Date.now();
     } catch {
@@ -54,7 +59,7 @@ export function createResumeStore(opts: StoreOptions = {}) {
     loaded = true;
     if (!storage) { status = "unavailable"; return; }
     try {
-      const raw = storage.getItem(STORAGE_KEY);
+      const raw = storage.getItem(key);
       if (raw == null) return;
       const res = parseResumeDoc(JSON.parse(raw));
       if (res.ok) { state = res.doc; status = "restored"; } else status = "corrupt";
@@ -72,6 +77,32 @@ export function createResumeStore(opts: StoreOptions = {}) {
     subscribe(l: () => void) { listeners.add(l); return () => { listeners.delete(l); }; },
     load,
     setStorage(s: KeyValueStorage | null) { storage = s; },
+    /** Choose the key before the first load (the active version's). */
+    setKey(k: string) { key = k; },
+    /**
+     * Move to another version's document. Pending edits are written to the old key first.
+     * With a `seed` (a new or copied version) that doc is used and saved at once; without one
+     * the doc is read from storage.
+     */
+    switchKey(next: string, seed?: ResumeDoc) {
+      this.flush();
+      if (timer) { clearTimeout(timer); timer = null; }
+      key = next;
+      savedAt = null;
+      if (seed) {
+        state = seed;
+        loaded = true;
+        status = storage ? "idle" : "unavailable";
+        schedule();
+        this.flush();
+        return;
+      }
+      state = makeInitial();
+      loaded = false;
+      status = "idle";
+      load();
+      emit();
+    },
     /** Replace the doc (already validated). */
     setDoc(doc: ResumeDoc) { loaded = true; state = doc; schedule(); emit(); },
     update(fn: (d: ResumeDoc) => ResumeDoc) { loaded = true; state = fn(state); schedule(); emit(); },
@@ -82,7 +113,7 @@ export function createResumeStore(opts: StoreOptions = {}) {
   };
 }
 
-function browserStorage(): KeyValueStorage | null {
+export function browserStorage(): KeyValueStorage | null {
   try {
     if (typeof window === "undefined") return null;
     const s = window.localStorage;
@@ -97,13 +128,17 @@ function browserStorage(): KeyValueStorage | null {
 
 export const resumeStore = createResumeStore();
 let started = false;
-function start() {
+/** Point the store at the active version's document and read it. Runs once, in the browser. */
+export function startResumeStore() {
   if (started || typeof window === "undefined") return;
   started = true;
-  resumeStore.setStorage(browserStorage());
+  const storage = browserStorage();
+  resumeStore.setStorage(storage);
+  resumeStore.setKey(docKey(bootActiveId(storage)));
   resumeStore.load();
   window.addEventListener("pagehide", () => resumeStore.flush());
 }
+const start = startResumeStore;
 
 const SERVER_DOC = createSampleDoc();
 
