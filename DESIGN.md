@@ -183,6 +183,7 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 - **Title** (400, 1.5rem rising to 2rem at 640px, 1.1): app screen titles, wordmark (1.25–1.375rem), start-card title.
 - **Body** (400, clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem), 1.6): landing reading text. App UI body is 1rem; hints are 0.875rem at 1.45.
 - **Label** (500, 0.9375rem, 1.2): buttons, navigation, segmented options. Field labels are 0.875rem at 600. Two small steps sit below Label: **Hint** (0.875rem, 1.45) for field hints and secondary lines, and **Caption** (0.8125rem, 500) for badges, bottom-bar and rail-tab labels.
+- **Plain-text preview** (system monospace, 0.875rem): the ATS text view only. It is the one place a mono face is used, because it shows the raw text a parser reads. Nothing else is set in mono.
 
 ### Named Rules
 **The Five Steps Rule.** The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section.

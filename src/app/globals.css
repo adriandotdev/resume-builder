@@ -354,10 +354,11 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 @media (max-width: 767.98px) { .tools-body { padding: 1rem 1rem 6rem; } }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+  /* Motion goes; feedback stays. Transforms and slides are removed, while colour and opacity changes keep a short fade so state changes still read. */
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-property: color, background-color, border-color, outline-color, opacity !important; transition-duration: 0.15s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: none; }
-  /* Keep the arrival of toasts and dialogs as a short fade instead of removing it. */
-  .toast, .dlg[open] { animation: fade-in 0.15s linear !important; }
+  /* Keep the arrival of toasts, dialogs and tab panels as a short fade instead of removing it. */
+  .toast, .dlg[open], .sec-body, .panel-in { animation: fade-in 0.15s linear !important; }
   /* A colour-only wash confirms a moved section, so it stays. */
   .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }
 }
