@@ -207,6 +207,15 @@ describe("versions", () => {
     expect(bundle.versions.map((v) => v.name)).toEqual(["My resume", "QA"]);
     expect(JSON.stringify(bundle)).not.toContain("secret posting text");
   });
+  it("exports version ids and applications, and plain bundles omit them", () => {
+    const { versions } = boot(mem());
+    const [only] = versions.getIndex().versions;
+    expect(versions.exportAll().applications).toBeUndefined();
+    const bundle = versions.exportAll([{ id: "app_1", company: "Acme" }]);
+    expect(isBundle(bundle)).toBe(true);
+    expect(bundle.versions[0].id).toBe(only.id);
+    expect(bundle.applications).toHaveLength(1);
+  });
   it("adds an imported doc as a new version without touching the others", () => {
     const { resume, versions } = boot(mem());
     const first = versions.getIndex().activeId;

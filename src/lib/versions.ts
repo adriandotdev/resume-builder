@@ -99,12 +99,14 @@ export function bootActiveId(storage: KeyValueStorage | null): string {
   return id;
 }
 
-export interface ResumeBundle { kind: typeof BUNDLE_KIND; versions: { name: string; doc: unknown }[] }
+/** `id` and `applications` are optional so bundles written before the tracker still import. */
+export interface BundleVersion { name: string; doc: unknown; id?: string }
+export interface ResumeBundle { kind: typeof BUNDLE_KIND; versions: BundleVersion[]; applications?: unknown }
 
 export function isBundle(raw: unknown): raw is ResumeBundle {
   return typeof raw === "object" && raw !== null && (raw as { kind?: unknown }).kind === BUNDLE_KIND && Array.isArray((raw as { versions?: unknown }).versions);
 }
 
-export function makeBundle(versions: { name: string; doc: unknown }[]): ResumeBundle {
-  return { kind: BUNDLE_KIND, versions };
+export function makeBundle(versions: BundleVersion[], applications?: unknown[]): ResumeBundle {
+  return applications?.length ? { kind: BUNDLE_KIND, versions, applications } : { kind: BUNDLE_KIND, versions };
 }

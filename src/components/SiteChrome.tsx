@@ -7,6 +7,7 @@ import { IconMoon, IconSun, Logo } from "./icons";
 const LINKS = [
   { href: "/templates", label: "Templates" },
   { href: "/editor", label: "Editor" },
+  { href: "/applications", label: "Applications" },
 ] as const;
 
 const subscribe = (cb: () => void) => {
@@ -58,6 +59,7 @@ export function SiteFooter() {
         <nav aria-label="Footer" className="flex gap-6">
           <Link href="/templates" className="text-[var(--text)] underline-offset-4 hover:underline">Templates</Link>
           <Link href="/editor" className="text-[var(--text)] underline-offset-4 hover:underline">Editor</Link>
+          <Link href="/applications" className="text-[var(--text)] underline-offset-4 hover:underline">Applications</Link>
           <Link href="/#questions" className="text-[var(--text)] underline-offset-4 hover:underline">Questions</Link>
         </nav>
         <p className="sm:text-right">No tracking, no uploads</p>

@@ -35,11 +35,12 @@ Set `CHROME=/path/to/chrome` if Chrome is not at the macOS default path.
 - `/print`: clean view of the saved resume (same renderer). The editor's "Print / Save as PDF" calls `window.print()`; `print.css` hides all chrome and an injected `@page` rule sets paper size and margins. Choose "Save as PDF" and turn off headers and footers. Text stays selectable.
 - Job match: in the ATS tab, paste a job posting to see which of its key terms already appear in your resume, which are missing, and which sections hold them. It uses plain rules, not AI, and shows counts and term lists, not a score. Each missing term has an "Add to Skills" button that puts it in an "Additional skills" group (with Undo). "Write in Summary" and "Write in Experience" take you to that text box so you can work the term into a sentence. Add only terms that truly describe your experience.
 - Versions: keep one resume per role (Frontend, Backend, QA, ...). Use the Version picker in the editor bar and "Manage" to add, duplicate, rename or delete (with Undo). Each version has its own content, design and job posting. Your resume from before versions existed appears as "My resume".
-- Export/import JSON in "Your data" to back up or move a resume. Export saves the open version, or all versions as one file. Imports are validated and migrated, and always add a new version; a bad file changes nothing.
+- Applications: the Applications page tracks where each version went (company, role, status, dates, link, notes). Each application links a resume version and keeps its own copy of the job posting, so later edits to a version's posting do not change it. Deleting a version keeps the application and shows the version name as deleted.
+- Export/import JSON in "Your data" to back up or move a resume. Export saves the open version, or all versions as one file that also includes your applications (and their posting copies). Importing that file re-links applications to the new versions. Imports are validated and migrated, and always add a new version; a bad file changes nothing.
 
 ## Privacy
 
-Resumes live in `localStorage` in your browser only: a version list under `resume-builder:versions:v1` and each version's resume under `resume-builder:doc:v1:<id>`. A pasted job posting is kept per version under `resume-builder:jd:v1:<id>`, is never part of the JSON export, and is removed only by its Clear button or by deleting its version. Nothing is uploaded. Clearing site data removes it, so export JSON for a backup. If storage is blocked the app still works and warns that changes will not persist.
+Resumes live in `localStorage` in your browser only: a version list under `resume-builder:versions:v1` and each version's resume under `resume-builder:doc:v1:<id>`. Applications are kept under `resume-builder:applications:v1`. A pasted job posting is kept per version under `resume-builder:jd:v1:<id>`, is never part of the version export (the copy saved on an application is), and is removed only by its Clear button or by deleting its version. Nothing is uploaded. Clearing site data removes it, so export JSON for a backup. If storage is blocked the app still works and warns that changes will not persist.
 
 ## Layout
 
@@ -52,6 +53,8 @@ src/lib/ops.ts         pure reorder/add/remove/patch helpers
 src/lib/ats.ts         ATS checklist rules + page-length estimate
 src/lib/plaintext.ts   plain-text (ATS) rendering, per section and whole resume
 src/lib/jobmatch.ts    job-posting key-term extraction and matching against the resume
+src/lib/applications.ts  application records, validation and id remapping for imports
+src/lib/applicationsStore.ts  store and hook for the application list
 src/lib/jobPostingStore.ts  store for the open version's pasted posting (own localStorage key)
 src/lib/sample.ts      fictional sample document
 src/templates/         ResumeBody (shared semantic DOM), 12 template components, registry

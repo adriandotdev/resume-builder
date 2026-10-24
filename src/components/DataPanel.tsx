@@ -1,8 +1,10 @@
 "use client";
 import { useRef, useState } from "react";
-import { parseResumeDoc, type ResumeDoc } from "@/lib/schema";
+import { newId, parseResumeDoc, type ResumeDoc } from "@/lib/schema";
 import { resumeStore, useStoreStatus } from "@/lib/store";
 import { fileSlug, isBundle } from "@/lib/versions";
+import { parseApplications, remapVersions } from "@/lib/applications";
+import { applicationsStore, useApplications } from "@/lib/applicationsStore";
 import { useVersionIndex, versionsStore } from "@/lib/versionsStore";
 import { IconDownload, IconDoc, IconUndo } from "./icons";
 import { useToast } from "./Toast";
@@ -30,7 +32,8 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
     setNote(`Exported ${fileName}`);
   };
   const exportJson = () => download(doc, `${fileSlug(versionName)}.json`);
-  const exportAll = () => download(versionsStore.exportAll(), "resume-versions.json");
+  const applications = useApplications();
+  const exportAll = () => download(versionsStore.exportAll(applications), "resume-versions.json");
 
   /** Replace the resume, with an Undo toast instead of a blocking confirm. */
   const replaceWith = (message: string, apply: () => void) => {
@@ -47,16 +50,21 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
     let raw: unknown;
     try { raw = JSON.parse(await file.text()); } catch { setErrors(["File is not valid JSON"]); return; }
 
-    const incoming: { name: string; doc: ResumeDoc }[] = [];
+    const incoming: { name: string; doc: ResumeDoc; oldId?: string }[] = [];
+    let incomingApps: ReturnType<typeof parseApplications> = [];
     let migratedFrom: number | undefined;
     if (isBundle(raw)) {
       const problems: string[] = [];
       raw.versions.forEach((v, i) => {
         const res = parseResumeDoc(typeof v === "object" && v !== null ? (v as { doc?: unknown }).doc : undefined);
-        if (res.ok) incoming.push({ name: String((v as { name?: unknown }).name ?? ""), doc: res.doc });
+        if (res.ok) {
+          const { name, id } = v as { name?: unknown; id?: unknown };
+          incoming.push({ name: String(name ?? ""), doc: res.doc, oldId: typeof id === "string" ? id : undefined });
+        }
         else problems.push(...res.errors.map((e) => `Version ${i + 1}: ${e}`));
       });
       if (problems.length || !incoming.length) { setErrors(problems.length ? problems.slice(0, 8) : ["The file has no versions"]); return; }
+      incomingApps = parseApplications(raw.applications);
     } else {
       const res = parseResumeDoc(raw);
       if (!res.ok) { setErrors(res.errors.slice(0, 8)); return; }
@@ -66,11 +74,22 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
 
     const previousId = index.activeId;
     const addedIds = incoming.map((v) => versionsStore.create(v.name || "Imported resume", v.doc));
-    const label = incoming.length === 1 ? "Imported as a new version." : `Imported ${incoming.length} versions.`;
+    // Imported versions get new ids, so applications are re-pointed at them. Application ids are
+    // regenerated too, so importing the same file twice never collides with what is already here.
+    const idMap = new Map(incoming.flatMap((v, i) => (v.oldId ? [[v.oldId, addedIds[i]] as const] : [])));
+    const addedApps = remapVersions(incomingApps, idMap).map((a) => ({ ...a, id: newId("app") }));
+    applicationsStore.addMany(addedApps);
+    const label = (incoming.length === 1 ? "Imported as a new version" : `Imported ${incoming.length} versions`)
+      + (addedApps.length ? ` and ${addedApps.length} ${addedApps.length === 1 ? "application" : "applications"}.` : ".");
     toast.show({
       message: label,
       actionLabel: "Undo",
-      onAction: () => { versionsStore.switchTo(previousId); addedIds.forEach((id) => versionsStore.remove(id)); setNote("Removed the imported versions"); },
+      onAction: () => {
+        versionsStore.switchTo(previousId);
+        addedIds.forEach((id) => versionsStore.remove(id));
+        addedApps.forEach((a) => applicationsStore.remove(a.id));
+        setNote("Removed the imported data");
+      },
     });
     setNote(migratedFrom !== undefined ? `${label} (upgraded from version ${migratedFrom})` : label);
     if (fileRef.current) fileRef.current.value = "";
@@ -92,7 +111,7 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
         <p className="field-hint">Export saves the version you are editing (“{versionName}”). Import adds the file as a new version and never overwrites one. A file that does not validate changes nothing.</p>
         <div className="flex flex-wrap gap-2">
           <button type="button" className="btn" onClick={exportJson}><IconDownload size={18} />Export JSON</button>
-          {index.versions.length > 1 && <button type="button" className="btn" onClick={exportAll} data-testid="export-all"><IconDownload size={18} />Export all versions</button>}
+          {(index.versions.length > 1 || applications.length > 0) && <button type="button" className="btn" onClick={exportAll} data-testid="export-all"><IconDownload size={18} />Export all versions{applications.length > 0 && " and applications"}</button>}
           <label className="btn cursor-pointer has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2">
             <IconDoc size={18} />Import JSON
             <input ref={fileRef} type="file" accept="application/json,.json" className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} data-testid="import-input" />
