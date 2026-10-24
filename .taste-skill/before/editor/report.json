@@ -1,0 +1,1457 @@
+{
+ "url": "http://localhost:3000/editor",
+ "at": "2026-10-24T02:06:47.528Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.88,
+    0.88
+   ],
+   "motion": {
+    "elements": 28,
+    "css": 0,
+    "transitions": 27,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 901,
+     "screens": 1,
+     "words": 346,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 46,
+     "sections": 9,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 1.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Resume editor",
+     "words": 2,
+     "lines": 1,
+     "size": 16,
+     "font": "Instrument Sans"
+    },
+    "headings": [
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 2,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.46,
+      "top": 320,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Arial",
+       "share": 0.7,
+       "mono": false
+      },
+      {
+       "family": "Instrument Sans",
+       "share": 0.29,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      22,
+      24,
+      29
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Arial",
+      "size": 14,
+      "leading": 1.25,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 18.9
+     },
+     "measureChars": 94,
+     "max": {
+      "size": 29.4,
+      "vw": 2,
+      "font": "Arial",
+      "text": "Elena Marchetti"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.06,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#18212a",
+       "top": 117,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 252,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#111111",
+       "share": 0.6
+      },
+      {
+       "color": "#e6eae6",
+       "share": 0.16
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.12
+      },
+      {
+       "color": "#333333",
+       "share": 0.06
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.04
+      }
+     ],
+     "button": {
+      "bg": "#e6eae6",
+      "hsl": {
+       "h": 120,
+       "s": 0.09,
+       "l": 0.91
+      },
+      "fg": "#10161c"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 4,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 3,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Download PDF",
+      "Content",
+      "Replace sample with a blank resume",
+      "Design preview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 4,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn.mt-3 → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "div.preview-sheet.bg-white → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 13,
+     "hairlineSamples": [
+      "header.site-header.no-print 1440px",
+      "div.no-print.sticky 1440px",
+      "aside.tools.no-print 547px",
+      "div.tools-tabs 108px",
+      "div#panel-s-contact.space-y-4.border-t 404px"
+     ],
+     "outlinedBoxes": 3,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 4,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 901,
+    "margins": {
+     "left": 8,
+     "right": 37
+    },
+    "sections": [
+     {
+      "sel": "div.no-print.flex",
+      "tag": "div",
+      "top": 117,
+      "height": 121,
+      "words": 12,
+      "media": 0,
+      "middle": 24,
+      "heading": null,
+      "left": 567,
+      "right": 16,
+      "textLeft": 582,
+      "textRight": 148,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.pv-scroll",
+      "tag": "div",
+      "top": 238,
+      "height": 663,
+      "words": 169,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Elena Marchetti",
+       "size": 29,
+       "tag": "h1"
+      },
+      "left": 665,
+      "right": 118,
+      "textLeft": 665,
+      "textRight": 118,
+      "fullBleed": false,
+      "footer": true,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 320,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 665,
+      "n": 13
+     },
+     {
+      "x": 124,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 14,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.07,
+    "voidBox": {
+     "x": 540,
+     "y": 180,
+     "w": 120,
+     "h": 720
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#10161c",
+    "sidebar": null,
+    "topbar": {
+     "h": 61
+    },
+    "canvas": {
+     "left": 8,
+     "right": 38
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 1.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 188,
+       "at": 1118,
+       "panel": "Elena Marchetti"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       14,
+       3
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#71818e on #202c37 (3.54:1)"
+     ],
+     "heavyShadows": 2,
+     "softShadows": 0,
+     "shadowSamples": [
+      "rgba(0, 0, 0, 0.5) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0.7) 0px 14px 36px -8px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 15
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [
+     "example.com"
+    ],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      20,
+      22,
+      24,
+      29
+     ]
+    },
+    "title": {
+     "text": "Resume editor",
+     "size": 16,
+     "top": 60
+    },
+    "colourShare": 0.006
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.87,
+    0.96
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 2,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1311,
+     "screens": 1.3,
+     "words": 241,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 46,
+     "sections": 9,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 2.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Resume editor",
+     "words": 2,
+     "lines": 1,
+     "size": 16,
+     "font": "Instrument Sans"
+    },
+    "headings": [
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 3.8,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 317,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Arial",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "Instrument Sans",
+       "share": 0.09,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      14,
+      15,
+      22,
+      29
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": {
+      "font": "Arial",
+      "size": 14,
+      "leading": 1.25,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 18.9
+     },
+     "measureChars": 87,
+     "max": {
+      "size": 29.4,
+      "vw": 3.8,
+      "font": "Arial",
+      "text": "Elena Marchetti"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.04,
+     "centerShare": 0.04,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 254,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#111111",
+       "share": 0.78
+      },
+      {
+       "color": "#333333",
+       "share": 0.08
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.05
+      },
+      {
+       "color": "#e6eae6",
+       "share": 0.05
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#18212a",
+      "hsl": {
+       "h": 210,
+       "s": 0.27,
+       "l": 0.13
+      },
+      "fg": "#e6eae6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 6,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 4,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Edit resume",
+      "Download PDF",
+      "Design preview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 2,
+     "shadowOverlay": 2,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "div.preview-sheet.bg-white → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 10,
+     "hairlineSamples": [
+      "header.site-header.no-print 768px",
+      "div.no-print.sticky 768px",
+      "div.no-print.flex 768px",
+      "h2#pv-s-summary 610px",
+      "h2#pv-s-exp 610px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1311,
+    "margins": {
+     "left": 20,
+     "right": 37
+    },
+    "sections": [
+     {
+      "sel": "div.no-print.flex",
+      "tag": "div",
+      "top": 117,
+      "height": 121,
+      "words": 12,
+      "media": 0,
+      "middle": 20,
+      "heading": null,
+      "left": 16,
+      "right": 222,
+      "textLeft": 16,
+      "textRight": 222,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.pv-scroll",
+      "tag": "div",
+      "top": 238,
+      "height": 1073,
+      "words": 208,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Elena Marchetti",
+       "size": 29,
+       "tag": "h1"
+      },
+      "left": 79,
+      "right": 79,
+      "textLeft": 79,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": true,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 317,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 79,
+      "n": 13
+     }
+    ],
+    "leftBlocks": 13,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#10161c",
+    "sidebar": null,
+    "topbar": {
+     "h": 61
+    },
+    "canvas": {
+     "left": 16,
+     "right": 37
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 2.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 1,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 169,
+       "at": 1057,
+       "panel": "Elena Marchetti"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 1,
+     "radii": [
+      [
+       3,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 2,
+     "softShadows": 0,
+     "shadowSamples": [
+      "rgba(0, 0, 0, 0.5) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0.7) 0px 14px 36px -8px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 15
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [
+     "example.com"
+    ],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      22,
+      29
+     ]
+    },
+    "title": {
+     "text": "Resume editor",
+     "size": 16,
+     "top": 60
+    },
+    "colourShare": 0.009
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.75,
+    0.87,
+    0.87
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 1755,
+     "screens": 2.1,
+     "words": 125,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 46,
+     "sections": 9,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 4.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Resume editor",
+     "words": 2,
+     "lines": 1,
+     "size": 16,
+     "font": "Instrument Sans"
+    },
+    "headings": [
+     {
+      "text": "Sections",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 379,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Instrument Sans",
+       "share": 0.96,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.04,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      22,
+      24
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Instrument Sans",
+      "size": 13,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 6.7
+     },
+     "measureChars": 56,
+     "max": {
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "text": "Sections"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.18,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#18212a",
+       "top": 490,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#e6eae6",
+       "share": 0.56
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.42
+      },
+      {
+       "color": "#10161c",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#e6eae6",
+      "hsl": {
+       "h": 120,
+       "s": 0.09,
+       "l": 0.91
+      },
+      "fg": "#10161c"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 3,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 2,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Content",
+      "Replace sample with a blank resume",
+      "Content"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 3,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn.mt-3 → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 5,
+     "hairlineSamples": [
+      "header.site-header.no-print 390px",
+      "div.no-print.sticky 390px",
+      "div.tools-tabs 390px",
+      "div#panel-s-contact.space-y-4.border-t 359px",
+      "nav.bottom-bar.no-print 390px"
+     ],
+     "outlinedBoxes": 3,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 4,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 1755,
+    "margins": {
+     "left": 12,
+     "right": 21
+    },
+    "sections": [
+     {
+      "sel": "div.rounded-[var(--r-panel)].border",
+      "tag": "div",
+      "top": 202,
+      "height": 157,
+      "words": 26,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 46,
+      "textLeft": 31,
+      "textRight": 46,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.space-y-4",
+      "tag": "section",
+      "top": 379,
+      "height": 1280,
+      "words": 49,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Sections",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 14,
+      "right": 21,
+      "textLeft": 14,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": true,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [],
+    "edgeText": [
+     {
+      "text": "Changes save in this browser",
+      "side": "left",
+      "px": 12
+     },
+     {
+      "text": "Sections",
+      "side": "left",
+      "px": 14
+     },
+     {
+      "text": "Drag the handle to reorder, or use the … menu to m",
+      "side": "left",
+      "px": 14
+     }
+    ],
+    "edges": [
+     {
+      "x": 14,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#10161c",
+    "sidebar": null,
+    "topbar": {
+     "h": 61
+    },
+    "canvas": {
+     "left": 6,
+     "right": 6
+    },
+    "hero": {
+     "text": "Resume editor",
+     "words": 2,
+     "chars": 13,
+     "lines": 1,
+     "size": 16,
+     "vw": 4.1,
+     "font": "Instrument Sans",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.5,
+     "top": 60,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 4,
+     "radii": [
+      [
+       14,
+       3
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#71818e on #202c37 (3.54:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      20,
+      22,
+      24,
+      29
+     ]
+    },
+    "title": {
+     "text": "Resume editor",
+     "size": 16,
+     "top": 60
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "button-fx",
+   "width": 1440,
+   "message": "Buttons with shadow/glow.",
+   "fix": "Flat fill, one colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "heavy-shadow",
+   "width": 1440,
+   "message": "2 panel shadow(s) heavy enough to read as floating: rgba(0, 0, 0, 0.5) 0px 1px 2px 0px | rgba(0, 0, 0, 0.7) 0px 14px 36px -8px",
+   "fix": "Panels sit on the ground: separate them with a fill one step from the ground or a quiet 1px border. A shadow, if any, is under 8% black with a small blur. Real overlays (menus, dialogs, popovers) may float.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "placeholder-data",
+   "width": 1440,
+   "message": "Placeholder data on screen: example.com.",
+   "fix": "Use believable data for this product: real-looking names, amounts that add up, dates in order, units on every figure.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "panel-void",
+   "width": 1440,
+   "message": "1 card(s) hold a blank band inside: 188px in \"Elena Marchetti\".",
+   "fix": "A card stretches to its neighbour only when it has content to fill. Keep a legend or a note directly under its chart (only an action or a total may sit at a stretched card's foot), let a short card keep its own height (align-items: start), and let a filtered block shrink to its rows."
+  },
+  {
+   "level": "WARN",
+   "id": "edge-text",
+   "width": 390,
+   "message": "3 text block(s) sit 12–15px from the phone's edge: \"Changes save in this browser\" (12px); \"Sections\" (14px); \"Drag the handle to reorder, or\" (14px)",
+   "fix": "The page margin is 16–20px on a phone; the header and the corner labels sit on it too."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/desktop-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/tablet-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/mobile-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/editor/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

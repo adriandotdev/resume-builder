@@ -1,0 +1,1608 @@
+{
+ "url": "http://localhost:3000/",
+ "at": "2026-10-24T02:06:07.411Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.56,
+    0.49,
+    0.41
+   ],
+   "motion": {
+    "elements": 3,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 3,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1885,
+     "screens": 2.1,
+     "words": 397,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 7,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "chars": 53,
+     "lines": 4,
+     "size": 76,
+     "vw": 5.3,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.39,
+     "top": 327,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "lines": 4,
+     "size": 76,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 2,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.3,
+      "top": 255,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "words": 10,
+      "chars": 53,
+      "lines": 4,
+      "size": 76,
+      "vw": 5.3,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.39,
+      "top": 327,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions people ask first",
+      "words": 4,
+      "chars": 26,
+      "lines": 2,
+      "size": 46.4,
+      "vw": 3.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 1508,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 4,
+     "over2Lines": 1,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Instrument Sans",
+       "share": 0.51,
+       "mono": false
+      },
+      {
+       "family": "Arial",
+       "share": 0.44,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.05,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      29,
+      46,
+      76
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Instrument Sans",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.7
+     },
+     "measureChars": 83,
+     "max": {
+      "size": 76,
+      "vw": 5.3,
+      "font": "Newsreader",
+      "text": "A resume that software can parse and peo"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0b1014",
+       "top": 193,
+       "hsl": {
+        "h": 207,
+        "s": 0.29,
+        "l": 0.06
+       }
+      },
+      {
+       "color": "#18212a",
+       "top": 1136,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a9b4be",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.38
+      },
+      {
+       "color": "#e6eae6",
+       "share": 0.1
+      },
+      {
+       "color": "#333333",
+       "share": 0.04
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#0e7a68",
+      "hsl": {
+       "h": 170,
+       "s": 0.79,
+       "l": 0.27
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 10,
+     "height": 52,
+     "withShadow": 2,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start your resume",
+      "Browse templates",
+      "How it looks"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 4,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-primary → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-lg → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "div.relative.w-full → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 16,
+     "hairlineSamples": [
+      "header.site-header.no-print 1440px",
+      "h2#hero-s-summary 436px",
+      "h2#hero-s-exp 436px",
+      "h2#hero-s-edu 436px",
+      "h2#hero-s-skills 436px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 1,
+     "boxRadius": 22,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1885,
+    "margins": {
+     "left": 62,
+     "right": 38
+    },
+    "sections": [
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 61,
+      "height": 1075,
+      "words": 277,
+      "media": 0,
+      "middle": 83,
+      "heading": {
+       "text": "A resume that software can parse and people can sk",
+       "size": 76,
+       "tag": "h1"
+      },
+      "left": 124,
+      "right": 131,
+      "textLeft": 124,
+      "textRight": 131,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.border-y.border-[var(--line)]",
+      "tag": "section",
+      "top": 1136,
+      "height": 276,
+      "words": 65,
+      "media": 0,
+      "middle": 90,
+      "heading": {
+       "text": "Free, with no account",
+       "size": 24,
+       "tag": "h3"
+      },
+      "left": 124,
+      "right": 135,
+      "textLeft": 124,
+      "textRight": 135,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 1412,
+      "height": 364,
+      "words": 141,
+      "media": 0,
+      "middle": 90,
+      "heading": {
+       "text": "Questions people ask first",
+       "size": 46,
+       "tag": "h2"
+      },
+      "left": 124,
+      "right": 149,
+      "textLeft": 124,
+      "textRight": 149,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "size": 76,
+      "top": 327,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 255,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 818,
+      "n": 13
+     },
+     {
+      "x": 124,
+      "n": 4
+     },
+     {
+      "x": 639,
+      "n": 3
+     },
+     {
+      "x": 756,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.11,
+    "voidBox": {
+     "x": 1260,
+     "y": 120,
+     "w": 180,
+     "h": 780
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.68,
+    0.69,
+    0.73
+   ],
+   "motion": {
+    "elements": 3,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 3,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 2223,
+     "screens": 2.2,
+     "words": 397,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 7,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "chars": 53,
+     "lines": 2,
+     "size": 46.1,
+     "vw": 6,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.94,
+     "top": 93,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "lines": 2,
+     "size": 46.1,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "words": 10,
+      "chars": 53,
+      "lines": 2,
+      "size": 46.1,
+      "vw": 6,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 93,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 3.8,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.57,
+      "top": 525,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions people ask first",
+      "words": 4,
+      "chars": 26,
+      "lines": 1,
+      "size": 30.4,
+      "vw": 4,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 1783,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Instrument Sans",
+       "share": 0.51,
+       "mono": false
+      },
+      {
+       "family": "Arial",
+       "share": 0.44,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.05,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      29,
+      30,
+      46
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Instrument Sans",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.7
+     },
+     "measureChars": 83,
+     "max": {
+      "size": 46.1,
+      "vw": 6,
+      "font": "Newsreader",
+      "text": "A resume that software can parse and peo"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0b1014",
+       "top": 463,
+       "hsl": {
+        "h": 207,
+        "s": 0.29,
+        "l": 0.06
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 483,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#18212a",
+       "top": 1367,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a9b4be",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.38
+      },
+      {
+       "color": "#e6eae6",
+       "share": 0.1
+      },
+      {
+       "color": "#333333",
+       "share": 0.04
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#0e7a68",
+      "hsl": {
+       "h": 170,
+       "s": 0.79,
+       "l": 0.27
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 10,
+     "height": 52,
+     "withShadow": 2,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start your resume",
+      "Browse templates",
+      "How it looks"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 4,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-primary → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-lg → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "div.relative.w-full → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 16,
+     "hairlineSamples": [
+      "header.site-header.no-print 768px",
+      "h2#hero-s-summary 436px",
+      "h2#hero-s-exp 436px",
+      "h2#hero-s-edu 436px",
+      "h2#hero-s-skills 436px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 1,
+     "boxRadius": 22,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 2223,
+    "margins": {
+     "left": 24,
+     "right": 29
+    },
+    "sections": [
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 61,
+      "height": 1306,
+      "words": 277,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "A resume that software can parse and people can sk",
+       "size": 46,
+       "tag": "h1"
+      },
+      "left": 24,
+      "right": 27,
+      "textLeft": 24,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.border-y.border-[var(--line)]",
+      "tag": "section",
+      "top": 1367,
+      "height": 360,
+      "words": 65,
+      "media": 0,
+      "middle": 73,
+      "heading": {
+       "text": "Free, with no account",
+       "size": 24,
+       "tag": "h3"
+      },
+      "left": 24,
+      "right": 29,
+      "textLeft": 24,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 1727,
+      "height": 388,
+      "words": 107,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Questions people ask first",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 92,
+      "textLeft": 24,
+      "textRight": 92,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "size": 46,
+      "top": 93,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 525,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 166,
+      "n": 13
+     },
+     {
+      "x": 24,
+      "n": 7
+     },
+     {
+      "x": 104,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.65,
+    0.9,
+    0.68,
+    0.64
+   ],
+   "motion": {
+    "elements": 3,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 3,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2577,
+     "screens": 3.1,
+     "words": 397,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 7,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "chars": 53,
+     "lines": 3,
+     "size": 40,
+     "vw": 10.3,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 93,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "A resume that software can parse and people can skim.",
+     "words": 10,
+     "lines": 3,
+     "size": 40,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "words": 10,
+      "chars": 53,
+      "lines": 3,
+      "size": 40,
+      "vw": 10.3,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 93,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 7.5,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.72,
+      "top": 654,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Free, with no account",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1349,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Stays in your browser",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1566,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "One column, real text",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1809,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions people ask first",
+      "words": 4,
+      "chars": 26,
+      "lines": 1,
+      "size": 30.4,
+      "vw": 7.8,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 2016,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 3,
+     "over2Lines": 1,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Instrument Sans",
+       "share": 0.51,
+       "mono": false
+      },
+      {
+       "family": "Arial",
+       "share": 0.44,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.05,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      29,
+      30,
+      40
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Instrument Sans",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.7
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 40,
+      "vw": 10.3,
+      "font": "Newsreader",
+      "text": "A resume that software can parse and peo"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0b1014",
+       "top": 615,
+       "hsl": {
+        "h": 207,
+        "s": 0.29,
+        "l": 0.06
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 627,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#18212a",
+       "top": 1256,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a9b4be",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.38
+      },
+      {
+       "color": "#e6eae6",
+       "share": 0.1
+      },
+      {
+       "color": "#333333",
+       "share": 0.04
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#0e7a68",
+      "hsl": {
+       "h": 170,
+       "s": 0.79,
+       "l": 0.27
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 10,
+     "height": 52,
+     "withShadow": 2,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start your resume",
+      "Browse templates",
+      "How it looks"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 4,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-primary → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "a.btn.btn-lg → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "div.relative.w-full → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 16,
+     "hairlineSamples": [
+      "header.site-header.no-print 390px",
+      "h2#hero-s-summary 280px",
+      "h2#hero-s-exp 280px",
+      "h2#hero-s-edu 280px",
+      "h2#hero-s-skills 280px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 1,
+     "boxRadius": 22,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2577,
+    "margins": {
+     "left": 16,
+     "right": 17
+    },
+    "sections": [
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 61,
+      "height": 1195,
+      "words": 277,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "A resume that software can parse and people can sk",
+       "size": 40,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 17,
+      "textLeft": 16,
+      "textRight": 17,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.border-y.border-[var(--line)]",
+      "tag": "section",
+      "top": 1256,
+      "height": 704,
+      "words": 65,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Free, with no account",
+       "size": 24,
+       "tag": "h3"
+      },
+      "left": 16,
+      "right": 18,
+      "textLeft": 16,
+      "textRight": 18,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.mx-auto.grid",
+      "tag": "section",
+      "top": 1960,
+      "height": 436,
+      "words": 64,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Questions people ask first",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 44,
+      "textLeft": 16,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.no-print.border-t",
+      "tag": "footer",
+      "top": 2396,
+      "height": 181,
+      "words": 28,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 29,
+      "textLeft": 16,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "A resume that software can parse and people can skim.",
+      "size": 40,
+      "top": 93,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 654,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 55,
+      "n": 13
+     },
+     {
+      "x": 16,
+      "n": 8
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 1440,
+   "message": "1 headline(s) wrap past two lines at 1440px: \"A resume that software can parse and people can \" → 4 lines (10 words, 76px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 36px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "width": 1440,
+   "message": "4 box-shadow(s) on elements at rest: a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px | a.btn.btn-primary → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px | a.btn.btn-lg → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "button-fx",
+   "width": 1440,
+   "message": "Buttons with shadow/glow.",
+   "fix": "Flat fill, one colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "width": 1440,
+   "message": "16 thin rule(s)/divider line(s): header.site-header.no-print 1440px | h2#hero-s-summary 436px | h2#hero-s-exp 436px | h2#hero-s-edu 436px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "font-count",
+   "width": 1440,
+   "message": "3 typefaces in use (Instrument Sans, Arial, Newsreader).",
+   "fix": "Two at most.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "10 different font sizes (14, 15, 16, 17, 18, 22, 24, 29, 46, 76).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "few-pictures",
+   "width": 1440,
+   "message": "Only 0 picture(s) on the page (0 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+   "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 62px on the left, 38px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "WARN",
+   "id": "many-h1",
+   "width": 1440,
+   "message": "2 h1 elements.",
+   "fix": "One h1 per page; section titles are h2.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Only 3 element(s) moved while the page loaded and scrolled.",
+   "fix": "Build the motion layer (SKILL.md step 9, references/motion.md): the signature move, an entrance for the parts of every section, feedback on every control, and one moving picture. Transform and opacity only, with a reduced-motion fallback."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 390,
+   "message": "1 headline(s) wrap past two lines at 390px: \"A resume that software can parse and people can \" → 3 lines (10 words, 40px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 24px or less."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/desktop-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/tablet-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/mobile-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/home/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

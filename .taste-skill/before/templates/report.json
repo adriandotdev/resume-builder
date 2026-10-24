@@ -1,0 +1,2264 @@
+{
+ "url": "http://localhost:3000/templates",
+ "at": "2026-10-24T02:06:23.661Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.55,
+    0.72,
+    0.77,
+    0.62
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 13,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 3348,
+     "screens": 3.7,
+     "words": 2591,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 2,
+     "sections": 84,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Templates",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 60,
+     "vw": 4.2,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.83,
+     "top": 117,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Templates",
+     "words": 1,
+     "lines": 1,
+     "size": 60,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "Templates",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 60,
+      "vw": 4.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.83,
+      "top": 117,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 2,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 429,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 2,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": -0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.21,
+      "top": 429,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.21,
+      "top": 1132,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 30.8,
+      "vw": 2.1,
+      "font": "Arial",
+      "weight": 400,
+      "tracking": 0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 1814,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 37.8,
+      "vw": 2.6,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 2517,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.21,
+      "top": 2517,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.21,
+      "top": 2522,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 8,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 7,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Arial",
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "Instrument Sans",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      25,
+      27,
+      28,
+      29,
+      31,
+      34,
+      38,
+      60
+     ],
+     "sizeCount": 16,
+     "notLoaded": [],
+     "body": {
+      "font": "Arial",
+      "size": 14,
+      "leading": 1.25,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 18.9
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 60,
+      "vw": 4.2,
+      "font": "Newsreader",
+      "text": "Templates"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.94,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#111111",
+       "share": 0.8
+      },
+      {
+       "color": "#333333",
+       "share": 0.07
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.05
+      },
+      {
+       "color": "#163755",
+       "share": 0.02
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#18212a",
+      "hsl": {
+       "h": 210,
+       "s": 0.27,
+       "l": 0.13
+      },
+      "fg": "#e6eae6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 31,
+     "inHero": 7,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 24,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "All 12",
+      "Simple 5",
+      "Modern 6",
+      "Compact 3",
+      "Bold 1"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 38,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "li.tpl-card.min-w-0 → rgb(14, 122, 104) 0px 0px 0px 1px",
+      "button.paper-thumb → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 30,
+     "hairlineSamples": [
+      "header.site-header.no-print 1440px",
+      "h2#th-classic-s-summary 307px",
+      "h2#th-classic-s-exp 307px",
+      "h2#th-classic-s-edu 307px",
+      "h2#th-classic-s-skills 307px"
+     ],
+     "outlinedBoxes": 24,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 12,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 12,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 391
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 3348,
+    "margins": {
+     "left": 139,
+     "right": 161
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Templates",
+      "size": 60,
+      "top": 117,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 429,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 429,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 429,
+      "firstScreen": true
+     },
+     {
+      "text": "ELENA MARCHETTI",
+      "size": 27,
+      "top": 1132,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 34,
+      "top": 1132,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 27,
+      "top": 1132,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 31,
+      "top": 1814,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 1814,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 25,
+      "top": 1814,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 38,
+      "top": 2517,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 2517,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 2522,
+      "firstScreen": false
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 124,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.1,
+    "voidBox": {
+     "x": 900,
+     "y": 120,
+     "w": 540,
+     "h": 240
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    0.74,
+    0.92,
+    0.92,
+    0.86,
+    0.77
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 13,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 4476,
+     "screens": 4.4,
+     "words": 2591,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 2,
+     "sections": 84,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Templates",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 38.4,
+     "vw": 5,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.94,
+     "top": 93,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Templates",
+     "words": 1,
+     "lines": 1,
+     "size": 38.4,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "Templates",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 38.4,
+      "vw": 5,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 93,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 3.8,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.36,
+      "top": 432,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 3.8,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": -0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.36,
+      "top": 432,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "ELENA MARCHETTI",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26.6,
+      "vw": 3.5,
+      "font": "Arial",
+      "weight": 400,
+      "tracking": 0.03,
+      "leading": 1.1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.36,
+      "top": 1088,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.36,
+      "top": 1744,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26.6,
+      "vw": 3.5,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.36,
+      "top": 1744,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 30.8,
+      "vw": 4,
+      "font": "Arial",
+      "weight": 400,
+      "tracking": 0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.36,
+      "top": 2379,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 37.8,
+      "vw": 4.9,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.36,
+      "top": 3035,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.36,
+      "top": 3691,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.36,
+      "top": 3696,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 10,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 9,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Arial",
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "Instrument Sans",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      25,
+      27,
+      28,
+      29,
+      31,
+      34,
+      38
+     ],
+     "sizeCount": 15,
+     "notLoaded": [],
+     "body": {
+      "font": "Arial",
+      "size": 14,
+      "leading": 1.25,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 18.9
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 38.4,
+      "vw": 5,
+      "font": "Newsreader",
+      "text": "Templates"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.94,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#111111",
+       "share": 0.8
+      },
+      {
+       "color": "#333333",
+       "share": 0.07
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.05
+      },
+      {
+       "color": "#163755",
+       "share": 0.02
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#18212a",
+      "hsl": {
+       "h": 210,
+       "s": 0.27,
+       "l": 0.13
+      },
+      "fg": "#e6eae6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 31,
+     "inHero": 11,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 24,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "All 12",
+      "Simple 5",
+      "Modern 6",
+      "Compact 3",
+      "Bold 1"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 38,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "li.tpl-card.min-w-0 → rgb(14, 122, 104) 0px 0px 0px 1px",
+      "button.paper-thumb → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 30,
+     "hairlineSamples": [
+      "header.site-header.no-print 768px",
+      "h2#th-classic-s-summary 277px",
+      "h2#th-classic-s-exp 277px",
+      "h2#th-classic-s-edu 277px",
+      "h2#th-classic-s-skills 277px"
+     ],
+     "outlinedBoxes": 24,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 12,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 12,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 397
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 4476,
+    "margins": {
+     "left": 39,
+     "right": 60
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Templates",
+      "size": 38,
+      "top": 93,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 432,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 432,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 1088,
+      "firstScreen": false
+     },
+     {
+      "text": "ELENA MARCHETTI",
+      "size": 27,
+      "top": 1088,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 34,
+      "top": 1744,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 27,
+      "top": 1744,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 31,
+      "top": 2379,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 2379,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 25,
+      "top": 3035,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 38,
+      "top": 3035,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 3691,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 3696,
+      "firstScreen": false
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 24,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 11,
+   "filled": [
+    0.61,
+    0.86,
+    0.86,
+    0.92,
+    0.86,
+    0.92,
+    0.92,
+    0.92,
+    0.86,
+    0.86,
+    0.67
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 13,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 8719,
+     "screens": 10.3,
+     "words": 2591,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 2,
+     "sections": 84,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Templates",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 35.2,
+     "vw": 9,
+     "font": "Newsreader",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.04,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 93,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Templates",
+     "words": 1,
+     "lines": 1,
+     "size": 35.2,
+     "font": "Newsreader"
+    },
+    "headings": [
+     {
+      "text": "Templates",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 93,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 7.5,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 540,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Classic",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.18,
+      "top": 993,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 29.4,
+      "vw": 7.5,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": -0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1210,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Modern",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 1663,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 23.8,
+      "vw": 6.1,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1880,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Compact",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 2333,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "ELENA MARCHETTI",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26.6,
+      "vw": 6.8,
+      "font": "Arial",
+      "weight": 400,
+      "tracking": 0.03,
+      "leading": 1.1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 2529,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Elegant",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.2,
+      "top": 2983,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 3199,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Bold",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.12,
+      "top": 3653,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26.6,
+      "vw": 6.8,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 3849,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Minimal",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.23,
+      "top": 4302,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 30.8,
+      "vw": 7.9,
+      "font": "Arial",
+      "weight": 400,
+      "tracking": 0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 4498,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Executive",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 4951,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 23.8,
+      "vw": 6.1,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 5168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Academic",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 5621,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 25.2,
+      "vw": 6.5,
+      "font": "Arial",
+      "weight": 700,
+      "tracking": -0.01,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 5838,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Technical",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.25,
+      "top": 6291,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 37.8,
+      "vw": 9.7,
+      "font": "Arial",
+      "weight": 800,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 6508,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Graduate",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 6961,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 7178,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Softline",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 7631,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Elena Marchetti",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Arial",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 7853,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Ledger",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Newsreader",
+      "weight": 500,
+      "tracking": -0.01,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.18,
+      "top": 8301,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 25,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 12,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Arial",
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "Instrument Sans",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "Newsreader",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      25,
+      27,
+      28,
+      29,
+      31,
+      34,
+      35,
+      38
+     ],
+     "sizeCount": 16,
+     "notLoaded": [],
+     "body": {
+      "font": "Arial",
+      "size": 14,
+      "leading": 1.25,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 18.9
+     },
+     "measureChars": 41,
+     "max": {
+      "size": 37.8,
+      "vw": 9.7,
+      "font": "Arial",
+      "text": "Elena Marchetti"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.94,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#10161c",
+     "bodyBgHsl": {
+      "h": 210,
+      "s": 0.27,
+      "l": 0.09
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#18212a",
+       "top": 504,
+       "hsl": {
+        "h": 210,
+        "s": 0.27,
+        "l": 0.13
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 519,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#111111",
+       "share": 0.8
+      },
+      {
+       "color": "#333333",
+       "share": 0.07
+      },
+      {
+       "color": "#a9b4be",
+       "share": 0.05
+      },
+      {
+       "color": "#163755",
+       "share": 0.02
+      },
+      {
+       "color": "#1f4e79",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#18212a",
+      "hsl": {
+       "h": 210,
+       "s": 0.27,
+       "l": 0.13
+      },
+      "fg": "#e6eae6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 31,
+     "inHero": 7,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 24,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "All 12",
+      "Simple 5",
+      "Modern 6",
+      "Compact 3",
+      "Bold 1"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 38,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "li.tpl-card.min-w-0 → rgb(14, 122, 104) 0px 0px 0px 1px",
+      "button.paper-thumb → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+      "button.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 30,
+     "hairlineSamples": [
+      "header.site-header.no-print 390px",
+      "h2#th-classic-s-summary 286px",
+      "h2#th-classic-s-exp 286px",
+      "h2#th-classic-s-edu 286px",
+      "h2#th-classic-s-skills 286px"
+     ],
+     "outlinedBoxes": 24,
+     "dashed": 0,
+     "blurred": 1,
+     "roundedBoxes": 12,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 61,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "newsreader",
+     "instrument sans"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 8719,
+    "margins": {
+     "left": 31,
+     "right": 31
+    },
+    "sections": [
+     {
+      "sel": "main#main.flex-1",
+      "tag": "main",
+      "top": 61,
+      "height": 8477,
+      "words": 2709,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Templates",
+       "size": 35,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 27,
+      "textLeft": 16,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.no-print.border-t",
+      "tag": "footer",
+      "top": 8538,
+      "height": 181,
+      "words": 28,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 29,
+      "textLeft": 16,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Templates",
+      "size": 35,
+      "top": 93,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 540,
+      "firstScreen": true
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 29,
+      "top": 1210,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 1880,
+      "firstScreen": false
+     },
+     {
+      "text": "ELENA MARCHETTI",
+      "size": 27,
+      "top": 2529,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 34,
+      "top": 3199,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 27,
+      "top": 3849,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 31,
+      "top": 4498,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 24,
+      "top": 5168,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 25,
+      "top": 5838,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 38,
+      "top": 6508,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 7178,
+      "firstScreen": false
+     },
+     {
+      "text": "Elena Marchetti",
+      "size": 28,
+      "top": 7853,
+      "firstScreen": false
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "width": 1440,
+   "message": "38 box-shadow(s) on elements at rest: a.no-print.btn → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px | li.tpl-card.min-w-0 → rgb(14, 122, 104) 0px 0px 0px 1px | button.paper-thumb → rgba(0, 0, 0, 0.4) 0px 1px 0px 0px",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "button-fx",
+   "width": 1440,
+   "message": "Buttons with shadow/glow.",
+   "fix": "Flat fill, one colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "width": 1440,
+   "message": "30 thin rule(s)/divider line(s): header.site-header.no-print 1440px | h2#th-classic-s-summary 307px | h2#th-classic-s-exp 307px | h2#th-classic-s-edu 307px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "24 boxes drawn with a 1px outline.",
+   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "16 different font sizes (13, 14, 15, 16, 17, 18, 22, 24, 25, 27, 28, 29, 31, 34, 38, 60).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "few-pictures",
+   "width": 1440,
+   "message": "Only 0 picture(s) on the page (0 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+   "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "all-centred",
+   "width": 1440,
+   "message": "94% of the text is centre-aligned.",
+   "fix": "Centre one moment at most; anchor the rest to a shared left edge.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "focal-point",
+   "width": 1440,
+   "message": "The first screen has no dominant element: the largest type is 60px (4.2vw) and no single picture holds a third of the viewport.",
+   "fix": "Make one thing lead: the headline at display size, or one large picture. A grid of many small pictures is not one thing; in blind tests jurors marked a first screen without a headline down every time. On the strongest studied sites the largest type has a median of 8.4vw."
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 139px on the left, 161px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "many-h1",
+   "width": 1440,
+   "message": "13 h1 elements.",
+   "fix": "One h1 per page; section titles are h2.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "long-pin",
+   "width": 1440,
+   "message": "The same large text stays on screen for 3 screens in a row: \"Elena Marchetti\"",
+   "fix": "A pinned element earns two screens, and something must change at each. Shorten the run or give every screen its own content."
+  },
+  {
+   "level": "WARN",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Little motion: 13 element(s) moved while the page loaded and scrolled.",
+   "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/desktop-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/tablet-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/mobile-fold.jpg",
+   "pages": [
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/mobile-page-01.jpg",
+    "/Users/nads/Desktop/rea-folder/resume-builder/.taste-skill/before/templates/mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

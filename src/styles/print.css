@@ -1,0 +1,13 @@
+/* Print rules: hide all app chrome, print only the resume at its natural size.
+   The @page size/margin is injected per document by <PageStyle/>. */
+@media print {
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  .no-print, header[data-chrome], nav[data-chrome], footer[data-chrome] { display: none !important; }
+  .print-only { display: block !important; }
+  .preview-stage, .preview-scale, .preview-frame { all: unset !important; display: block !important; }
+  .preview-sheet { width: auto !important; min-height: 0 !important; padding: 0 !important; box-shadow: none !important; border: 0 !important; margin: 0 !important; transform: none !important; }
+  .resume { box-shadow: none !important; }
+  .resume-section h2, .resume .entry h3 { break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+.print-only { display: none; }
