@@ -11,9 +11,9 @@ export function VersionSwitcher() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="field !flex-row shrink-0 items-center !gap-2">
+      <div className="field !flex-row items-center !gap-2 max-sm:w-full sm:shrink-0">
         <label htmlFor="version-select" className="whitespace-nowrap max-sm:sr-only">Version</label>
-        <select id="version-select" className="input !w-auto max-w-[9rem] sm:max-w-[14rem]" value={index.activeId} onChange={(e) => versionsStore.switchTo(e.target.value)} data-testid="version-select">
+        <select id="version-select" className="input max-sm:min-w-0 max-sm:!flex-1 sm:!w-auto sm:max-w-[14rem]" value={index.activeId} onChange={(e) => versionsStore.switchTo(e.target.value)} data-testid="version-select">
           {index.versions.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
         </select>
         <button type="button" className="btn" onClick={() => setOpen(true)} aria-haspopup="dialog" data-testid="manage-versions">Manage</button>

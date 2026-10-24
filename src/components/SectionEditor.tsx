@@ -11,10 +11,10 @@ export function SectionEditor({ section, onChange }: { section: Section; onChang
       const set = (p: Partial<typeof c>) => onChange({ ...section, content: { ...c, ...p } });
       return (
         <div className="grid gap-3 @md:grid-cols-2">
-          <TextField label="Full name" value={c.fullName} onChange={(v) => set({ fullName: v })} />
-          <TextField label="Headline (job title)" value={c.headline} onChange={(v) => set({ headline: v })} />
-          <TextField label="Email" type="email" value={c.email} onChange={(v) => set({ email: v })} />
-          <TextField label="Phone" type="tel" value={c.phone} onChange={(v) => set({ phone: v })} />
+          <TextField label="Full name" autoComplete="name" value={c.fullName} onChange={(v) => set({ fullName: v })} />
+          <TextField label="Headline (job title)" autoComplete="organization-title" value={c.headline} onChange={(v) => set({ headline: v })} />
+          <TextField label="Email" type="email" autoComplete="email" value={c.email} onChange={(v) => set({ email: v })} />
+          <TextField label="Phone" type="tel" autoComplete="tel" value={c.phone} onChange={(v) => set({ phone: v })} />
           <TextField label="Location" value={c.location} onChange={(v) => set({ location: v })} />
           <TextArea label="Links (one per line)" rows={2} value={c.links.join("\n")} onChange={(v) => set({ links: v.split("\n") })} />
         </div>

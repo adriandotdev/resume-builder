@@ -85,14 +85,14 @@ export default function EditorPage() {
 
   return (
     <div className="editor-root">
-      <div className="editor-bar no-print sticky z-30" style={{ top: "var(--header-h)", minHeight: "var(--bar-h)" }} inert={drawerActive || sheetActive}>
-        <div className="flex min-h-[var(--bar-h)] items-center gap-3 px-4 py-1 sm:px-6">
+      <div className="editor-bar no-print z-30 md:sticky" style={{ top: "var(--header-h)", minHeight: "var(--bar-h)" }} inert={drawerActive || sheetActive}>
+        <div className="flex min-h-[var(--bar-h)] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-1 sm:px-6 md:flex-nowrap">
           <button type="button" className="btn hidden md:inline-flex lg:hidden" onClick={() => setToolsOpen(true)} aria-haspopup="dialog" data-testid="open-tools"><IconEdit size={18} />Edit resume</button>
-          <div className="flex min-w-0 items-baseline gap-x-3 max-sm:flex-col max-sm:gap-0">
+          <div className="flex min-w-0 items-baseline gap-x-3 max-sm:basis-full max-sm:flex-col max-sm:gap-0">
             <h1 className="truncate text-base font-semibold" data-testid="doc-name">{docName || "Untitled resume"}<span className="sr-only">, resume editor</span></h1>
             <div className="min-w-0"><SaveStatus /></div>
           </div>
-          <div className="ml-auto flex shrink-0 items-center md:ml-0"><VersionSwitcher /></div>
+          <div className="flex items-center max-sm:basis-full md:ml-0 sm:ml-auto sm:shrink-0"><VersionSwitcher /></div>
           <button type="button" className="btn btn-primary hidden md:ml-auto md:inline-flex" onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function EditorPage() {
               </div>
             </div>
           </div>
-          <div className="pv-scroll">
+          <div className="pv-scroll" tabIndex={0} role="region" aria-label="Resume preview, scrollable">
             {view === "design" ? (
               <ResumePreview doc={doc} onPages={setPages} zoom={zoom} />
             ) : (
@@ -177,8 +177,8 @@ export default function EditorPage() {
       </div>
 
       <nav className="bottom-bar no-print md:hidden" aria-label="Editor actions" inert={sheetActive}>
-        <button type="button" className="bar-btn" aria-pressed={tab === "content" && !sheetActive} onClick={() => goTab("content")}><IconEdit size={20} />Content</button>
-        <button type="button" className="bar-btn" aria-pressed={tab === "design" && !sheetActive} onClick={() => goTab("design")}><IconPalette size={20} />Design</button>
+        <button type="button" className="bar-btn" aria-current={tab === "content" && !sheetActive ? "true" : undefined} onClick={() => goTab("content")}><IconEdit size={20} />Content</button>
+        <button type="button" className="bar-btn" aria-current={tab === "design" && !sheetActive ? "true" : undefined} onClick={() => goTab("design")}><IconPalette size={20} />Design</button>
         <button type="button" className="bar-btn" onClick={() => setPvOpen(true)} aria-haspopup="dialog"><IconEye size={20} />Preview</button>
         <button type="button" className="bar-btn" onClick={() => setExportOpen(true)} aria-haspopup="dialog"><IconDownload size={20} />Export</button>
       </nav>
