@@ -64,3 +64,13 @@ describe("plain text", () => {
     expect(t).toContain("Mar 2022 – Present");
   });
 });
+
+describe("toPlainText output", () => {
+  it("is stable for the sample doc, with a hidden section, and for a blank doc", () => {
+    const d = createSampleDoc();
+    expect(toPlainText(d)).toMatchSnapshot("sample");
+    d.sections[3].visible = false;
+    expect(toPlainText(d)).toMatchSnapshot("sample with a hidden section");
+    expect(toPlainText(createDefaultDoc())).toMatchSnapshot("blank");
+  });
+});

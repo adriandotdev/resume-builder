@@ -13,6 +13,7 @@ import { AtsPanel } from "@/components/AtsPanel";
 import { DataPanel } from "@/components/DataPanel";
 import { ExportDialog } from "@/components/ExportDialog";
 import { SaveStatus } from "@/components/SaveStatus";
+import { VersionSwitcher } from "@/components/VersionSwitcher";
 import { IconClose, IconData, IconDownload, IconEdit, IconEye, IconPalette, IconShield } from "@/components/icons";
 import { useMediaQuery } from "@/components/useMediaQuery";
 import { useDialogFocus } from "@/components/useDialogFocus";
@@ -91,7 +92,8 @@ export default function EditorPage() {
             <h1 className="truncate text-base font-semibold" data-testid="doc-name">{docName || "Untitled resume"}<span className="sr-only">, resume editor</span></h1>
             <div className="min-w-0"><SaveStatus /></div>
           </div>
-          <button type="button" className="btn btn-primary ml-auto hidden md:inline-flex" onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
+          <div className="ml-auto flex shrink-0 items-center md:ml-0"><VersionSwitcher /></div>
+          <button type="button" className="btn btn-primary hidden md:ml-auto md:inline-flex" onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
         </div>
       </div>
 

@@ -26,8 +26,9 @@ Three promises, all binding (confirmed with the user):
 
 - Routes: `/` (landing), `/templates` (gallery of 12 templates with live thumbnails rendered from sample data), `/editor` (content, style, sections, ATS panel, data panel, live preview), `/print` (clean render of the saved resume).
 - PDF export is `window.print()`: users pick "Save as PDF" and turn off headers and footers. `print.css` hides chrome; an injected `@page` rule sets paper size (A4 or US Letter) and margins.
-- Backup and moving devices happen through JSON export/import in the editor's Data tab. Imports are validated and migrated; a bad file never changes the current resume.
-- Storage key `resume-builder:doc:v1`. If storage is blocked, the app still works and warns that changes will not persist. Clearing site data removes the resume.
+- Backup and moving devices happen through JSON export/import in the editor's Data tab. Export saves the open version (or all versions as one bundle). Imports are validated and migrated, and always add a new version; a bad file changes nothing.
+- Resume versions: a person keeps several named resumes (for example Frontend, Backend, QA), each with its own content, style, template and job posting, switched from the editor bar. The index is `resume-builder:versions:v1`; each version's doc is `resume-builder:doc:v1:<id>`. A resume saved before versions existed becomes "My resume" on first load (the old key is left in place, unused). The last version cannot be deleted; deleting offers Undo. If storage is blocked, the app still works (versions live in memory for the session) and warns that changes will not persist. Clearing site data removes every version.
+- A job posting pasted into the ATS tab's "Match a job posting" section stays in localStorage under `resume-builder:jd:v1:<id>`, one per version, separate from the resume. It is never exported or uploaded, and only its Clear button (or deleting its version) removes it.
 - Works on phone widths as well as desktop (the e2e run covers a mobile pass).
 
 ## Capabilities and Constraints

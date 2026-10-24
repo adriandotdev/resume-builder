@@ -11,6 +11,12 @@ fs.mkdirSync(OUT, { recursive: true });
 const results = [];
 const check = (name, ok, detail = "") => { results.push({ name, ok }); console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? "  -> " + detail : ""}`); };
 
+// Each version stores its doc and job posting under its own keys; the index names the active one.
+const storedFor = (pg, kind) => pg.evaluate((k) => {
+  const idx = JSON.parse(localStorage.getItem("resume-builder:versions:v1") || "null");
+  return idx ? localStorage.getItem(`resume-builder:${k}:v1:${idx.activeId}`) : null;
+}, kind);
+
 const browser = await chromium.launch({ executablePath: CHROME, headless: true });
 const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 }, acceptDownloads: true });
 const page = await ctx.newPage();
@@ -122,6 +128,21 @@ await page.getByRole("tab", { name: /ATS check/ }).click();
 const atsBefore = await page.getByTestId("ats-summary").innerText();
 check("ATS panel warns about empty custom section", (await page.getByTestId("ats-list").innerText()).includes("Empty visible section"), atsBefore);
 check("ATS panel groups items into To review and Passed", (await page.getByTestId("ats-list").innerText()).includes("To review") && (await page.getByTestId("ats-list").innerText()).includes("Passed"));
+
+// job match: paste a posting, add a missing term to Skills, watch it move to Found
+const POSTING = "Requirements:\n- Proficient in Kubernetes\n- Experience with Kubernetes and Docker\n- Looker";
+await page.getByLabel("Paste the job posting").fill(POSTING);
+await page.getByTestId("jd-missing").getByText("kubernetes", { exact: true }).waitFor();
+check("job match summary counts key terms", /^\d+ of \d+ key terms from this posting appear in your resume\.$/.test(await page.getByTestId("jd-summary").innerText()), await page.getByTestId("jd-summary").innerText());
+check("job match lists a missing term", await page.getByTestId("jd-missing").getByText("kubernetes", { exact: true }).isVisible() && (await page.getByTestId("jd-found").innerText()).includes("looker"));
+await page.getByRole("tab", { name: "Content" }).click();
+await page.locator('[data-section-type="skills"]').getByRole("button", { expanded: false }).first().click();
+const skillsField = page.locator('[data-section-type="skills"]').getByLabel("Skills (comma separated)").first();
+await skillsField.fill((await skillsField.inputValue()) + ", Kubernetes");
+await page.getByRole("tab", { name: /ATS check/ }).click();
+await page.getByTestId("jd-found").getByText("kubernetes", { exact: true }).waitFor();
+check("a term added to Skills moves to Found, with its section", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes("kubernetes"));
+check("job posting survives switching tabs", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING);
 await page.getByRole("button", { name: "Design preview" }).click();
 
 // 5 persistence
@@ -130,8 +151,16 @@ await page.reload();
 await page.waitForSelector("[data-resume]");
 const after2 = await order();
 check("reload persists order/visibility/style", after2.join() === (await (async () => afterDrag.concat(["custom"]))()).join() && (await page.locator("[data-resume] h1").innerText()) === "Elena Marchetti-Rossi" && (await page.locator("[data-resume]").evaluate((e) => e.style.getPropertyValue("--r-accent"))) === "#b91c1c" && !(await page.locator("[data-resume]").innerText()).includes("Languages"));
-const stored = await page.evaluate(() => localStorage.getItem("resume-builder:doc:v1"));
+const stored = await storedFor(page, "doc");
 check("localStorage holds versioned JSON", JSON.parse(stored).version === 1);
+await page.getByRole("tab", { name: /ATS check/ }).click();
+check("pasted posting persisted across reload", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING && (await storedFor(page, "jd")) === POSTING);
+await page.setViewportSize({ width: 375, height: 800 });
+await page.getByTestId("jd-found").waitFor();
+const jdOver = await page.evaluate(() => { const box = document.querySelector('[data-testid="jd-match"]'); return Math.max(...[box, ...box.querySelectorAll("*")].map((e) => e.getBoundingClientRect().right)) - window.innerWidth; });
+check("job match stays inside a 375px viewport", jdOver <= 1, `overflow=${Math.round(jdOver)}`);
+await page.setViewportSize({ width: 1400, height: 900 });
+await page.getByRole("tab", { name: "Content" }).click();
 
 // 6 JSON round trip (Data tab)
 await page.getByRole("tab", { name: "Data" }).click();
@@ -140,6 +169,7 @@ const jpath = `${OUT}/export.json`;
 await dl.saveAs(jpath);
 const exported = JSON.parse(fs.readFileSync(jpath, "utf8"));
 check("JSON export downloads valid doc", exported.version === 1 && exported.sections.length > 5 && exported.style.pageSize === "letter", dl.suggestedFilename());
+check("JSON export leaves the pasted posting out", !fs.readFileSync(jpath, "utf8").includes("Proficient in"));
 await page.getByRole("button", { name: "Start blank" }).click();
 check("Start blank offers Undo instead of confirm", await page.getByTestId("toast").getByRole("button", { name: "Undo" }).isVisible() && !dialogSeen);
 await page.waitForTimeout(200);
@@ -147,9 +177,8 @@ check("start blank clears name", (await page.locator("[data-resume] h1").count()
 await page.getByTestId("import-input").setInputFiles(jpath);
 await page.waitForTimeout(300);
 check("JSON import restores doc", (await page.locator("[data-resume] h1").innerText()) === "Elena Marchetti-Rossi");
-const rt = await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("resume-builder:doc:v1") || "{}"); return s; });
 await page.waitForTimeout(600);
-const rt2 = JSON.parse(await page.evaluate(() => localStorage.getItem("resume-builder:doc:v1")));
+const rt2 = JSON.parse(await storedFor(page, "doc"));
 check("round trip equal to export", JSON.stringify(rt2) === JSON.stringify(exported));
 // invalid import
 fs.writeFileSync(`${OUT}/bad.json`, JSON.stringify({ version: 1, style: { accent: "red" }, sections: [{ type: "nope" }] }));
@@ -160,6 +189,60 @@ fs.writeFileSync(`${OUT}/bad2.json`, "{nope");
 await page.getByTestId("import-input").setInputFiles(`${OUT}/bad2.json`);
 await page.waitForFunction(() => document.body.innerText.includes("not valid JSON"));
 check("non-JSON import rejected", true);
+
+// The posting belongs to the version it was pasted for; Clear empties it and returns focus to the box
+const versionOptions = () => page.getByTestId("version-select").locator("option").allInnerTexts();
+check("import added a new version instead of overwriting", (await versionOptions()).length === 2, (await versionOptions()).join("|"));
+await page.getByRole("tab", { name: /ATS check/ }).click();
+check("an imported version starts with its own empty posting", (await page.getByLabel("Paste the job posting").inputValue()) === "");
+await page.getByTestId("version-select").selectOption({ index: 0 });
+check("job posting stays with its version through Start blank and an import", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING);
+await page.getByRole("button", { name: "Clear" }).click();
+check("Clear empties the posting, storage and returns focus", (await page.getByLabel("Paste the job posting").inputValue()) === "" && (await storedFor(page, "jd")) === "" && await page.evaluate(() => document.activeElement?.tagName === "TEXTAREA"));
+await page.getByTestId("version-select").selectOption({ index: 1 });
+await page.getByRole("tab", { name: "Content" }).click();
+
+// 6b resume versions
+const names = async () => (await versionOptions());
+await page.getByTestId("manage-versions").click();
+check("Manage opens the versions dialog with a row per version", await page.getByTestId("versions-dialog").isVisible() && (await page.getByTestId("version-row").count()) === 2);
+await page.getByTestId("version-new").click();
+check("New blank version adds a row and opens it", (await page.getByTestId("version-row").count()) === 3 && await page.getByTestId("version-row").nth(2).getByText("Editing").isVisible());
+await page.getByRole("button", { name: "Done" }).click();
+check("the new version is blank and selected", (await page.locator("[data-resume] h1").count()) === 0 && (await page.getByTestId("version-select").inputValue()) !== "");
+await page.getByLabel("Full name").fill("Quinn QA");
+await page.waitForTimeout(500);
+await page.getByTestId("version-select").selectOption({ index: 1 });
+check("switching back shows the other version's own content", (await page.locator("[data-resume] h1").innerText()) === "Elena Marchetti-Rossi");
+await page.getByTestId("version-select").selectOption({ index: 2 });
+check("each version keeps its own edits", (await page.locator("[data-resume] h1").innerText()) === "Quinn QA");
+await page.reload();
+await page.waitForSelector("[data-resume]");
+check("the active version survives a reload", (await page.locator("[data-resume] h1").innerText()) === "Quinn QA" && (await names()).length === 3);
+
+await page.getByTestId("manage-versions").click();
+await page.getByRole("button", { name: /^Duplicate New resume$/ }).click();
+check("Duplicate copies the version and opens it", (await names()).includes("Copy of New resume") && (await page.locator("[data-resume] h1").innerText()) === "Quinn QA");
+await page.getByRole("button", { name: /^Delete Copy of New resume$/ }).click();
+check("Delete removes the version and offers Undo in the dialog", (await page.getByTestId("version-row").count()) === 3 && await page.getByTestId("version-undo").isVisible() && !dialogSeen);
+await page.getByTestId("version-undo").click();
+check("Undo puts the version back with its content", (await names()).includes("Copy of New resume") && (await page.locator("[data-resume] h1").innerText()) === "Quinn QA");
+await page.getByRole("button", { name: "Done" }).click();
+
+await page.getByRole("tab", { name: "Data" }).click();
+const [dlAll] = await Promise.all([page.waitForEvent("download"), page.getByTestId("export-all").click()]);
+const allPath = `${OUT}/export-all.json`;
+await dlAll.saveAs(allPath);
+const bundle = JSON.parse(fs.readFileSync(allPath, "utf8"));
+check("Export all versions downloads every doc and no posting", bundle.kind === "resume-builder-bundle" && bundle.versions.length === 4 && !fs.readFileSync(allPath, "utf8").includes("Proficient in"), `${bundle.versions.length} versions`);
+await page.getByTestId("import-input").setInputFiles(allPath);
+await page.waitForTimeout(400);
+check("Importing the bundle adds its versions without overwriting", (await names()).length === 8, String((await names()).length));
+const [dlOne] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Export JSON" }).click()]);
+check("single export is named after the version", /\.json$/.test(dlOne.suggestedFilename()) && dlOne.suggestedFilename() !== "resume.json", dlOne.suggestedFilename());
+await page.getByTestId("version-select").selectOption({ label: "export" });
+await page.getByRole("tab", { name: "Content" }).click();
+check("back on the imported resume for the checks below", (await page.locator("[data-resume] h1").innerText()) === "Elena Marchetti-Rossi");
 
 // accessibility smoke
 const unlabeled = await page.evaluate(() => [...document.querySelectorAll("input,select,textarea")].filter((el) => el.type !== "file" && !el.labels?.length && !el.getAttribute("aria-label")).length);
@@ -214,6 +297,22 @@ check("FAQ covers storage, JSON backup and PDF export", ["Where is my resume sto
 check("landing never claims ATS-verified", !/ATS-verified/i.test(await lp.locator("body").innerText()));
 await lp.close();
 
+// a resume saved before versions existed becomes "My resume", posting included, and the old keys stay
+const legacyCtx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+const oldPage = await legacyCtx.newPage();
+// seeded before any page script runs, as for a real user who saved a resume with the old build
+await legacyCtx.addInitScript((doc) => {
+  if (localStorage.getItem("resume-builder:versions:v1") === null) { localStorage.setItem("resume-builder:doc:v1", doc); localStorage.setItem("resume-builder:jd:v1", "Legacy posting text"); }
+}, JSON.stringify(exported));
+await oldPage.goto(BASE + "/editor");
+await oldPage.waitForSelector("[data-resume]");
+check("migration: the old single resume opens unchanged", (await oldPage.locator("[data-resume] h1").innerText()) === "Elena Marchetti-Rossi");
+check("migration: it becomes the only version, 'My resume'", (await oldPage.getByTestId("version-select").locator("option").allInnerTexts()).join("|") === "My resume");
+await oldPage.getByRole("tab", { name: /ATS check/ }).click();
+check("migration: its job posting moved with it", (await oldPage.getByLabel("Paste the job posting").inputValue()) === "Legacy posting text");
+check("migration: the old keys are left in place", await oldPage.evaluate(() => localStorage.getItem("resume-builder:doc:v1") !== null && localStorage.getItem("resume-builder:jd:v1") === "Legacy posting text"));
+await legacyCtx.close();
+
 // mobile
 const m = await browser.newContext({ viewport: { width: 375, height: 800 } });
 const mp = await m.newPage();
@@ -225,6 +324,13 @@ for (const url of ["/", "/templates", "/editor"]) {
   check(`mobile 375px no horizontal scroll ${url}`, over <= 1, `overflow=${over}`);
 }
 check("phone: sticky bottom bar has Content, Design, Preview, Export", (await mp.locator(".bottom-bar button").allInnerTexts()).map((t) => t.trim()).join("|") === "Content|Design|Preview|Export");
+const swBox = await mp.getByTestId("version-select").boundingBox();
+const mgBox = await mp.getByTestId("manage-versions").boundingBox();
+check("phone: version switcher is on screen", !!swBox && !!mgBox && swBox.x >= 0 && mgBox.x + mgBox.width <= 376, JSON.stringify({ swBox, mgBox }));
+await mp.getByTestId("manage-versions").click();
+const vdBox = await mp.getByTestId("versions-dialog").boundingBox();
+check("phone: versions dialog fits the screen", vdBox.x >= 0 && vdBox.x + vdBox.width <= 376, JSON.stringify(vdBox));
+await mp.keyboard.press("Escape");
 await mp.getByRole("button", { name: "Preview", exact: true }).click();
 await mp.waitForTimeout(400);
 const over2 = await mp.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
