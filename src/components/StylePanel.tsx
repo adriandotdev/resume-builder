@@ -6,7 +6,7 @@ import { resumeStore } from "@/lib/store";
 import { TEMPLATES } from "@/templates/registry";
 import { ACCENT_SWATCHES } from "@/lib/ui";
 import { SelectField } from "./fields";
-import { Segmented } from "./controls";
+import { Segmented, onRadioGroupKey } from "./controls";
 
 /** Schematic sketch of each template (not a real resume render, so the page keeps exactly one [data-resume]). */
 const Sketch = memo(function Sketch({ id, accent }: { id: TemplateId; accent: string }) {
@@ -103,11 +103,11 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
     <section aria-labelledby="style-h" className="space-y-7">
       <h2 id="style-h" className="serif text-2xl">Design</h2>
 
-      <div role="radiogroup" aria-labelledby="layout-h" className="space-y-2">
+      <div role="radiogroup" aria-labelledby="layout-h" className="space-y-2" onKeyDown={onRadioGroupKey}>
         <h3 id="layout-h" className="text-sm font-medium">Template</h3>
         <div className="grid grid-cols-3 gap-2">
           {TEMPLATES.map((t) => (
-            <button key={t.id} type="button" role="radio" aria-checked={s.template === t.id} aria-label={t.name} className="tpl-pick" onClick={() => set({ template: t.id })} data-testid={`pick-${t.id}`}>
+            <button key={t.id} type="button" role="radio" aria-checked={s.template === t.id} tabIndex={s.template === t.id ? 0 : -1} aria-label={t.name} className="tpl-pick" onClick={() => set({ template: t.id })} data-testid={`pick-${t.id}`}>
               <Sketch id={t.id} accent={s.accent} />
               <span>{t.name}</span>
             </button>
@@ -117,15 +117,15 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
 
       <div className="space-y-2">
         <h3 id="accent-h" className="text-sm font-medium">Accent color</h3>
-        <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-labelledby="accent-h">
-          {ACCENT_SWATCHES.map((w) => (
-            <button key={w.value} type="button" role="radio" aria-checked={s.accent.toLowerCase() === w.value} aria-label={w.name} title={w.name} className="swatch" style={{ background: w.value }} onClick={() => set({ accent: w.value })} />
+        <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-labelledby="accent-h" onKeyDown={onRadioGroupKey}>
+          {ACCENT_SWATCHES.map((w, wi) => (
+            <button key={w.value} type="button" role="radio" aria-checked={s.accent.toLowerCase() === w.value} tabIndex={isSwatch ? (s.accent.toLowerCase() === w.value ? 0 : -1) : wi === 0 ? 0 : -1} aria-label={w.name} title={w.name} className="swatch" style={{ background: w.value }} onClick={() => set({ accent: w.value })} />
           ))}
         </div>
         <div className="field mt-1 max-w-[16rem]">
           <label htmlFor="accent">Custom color</label>
           <div className="flex items-center gap-3">
-            <input id="accent" type="color" value={s.accent} onChange={(e) => set({ accent: e.target.value })} className="h-11 w-16 cursor-pointer rounded-[10px] border border-[var(--line-strong)] bg-[var(--surface)] p-1" />
+            <input id="accent" type="color" value={s.accent} onChange={(e) => set({ accent: e.target.value })} className="h-11 w-16 cursor-pointer rounded-[var(--r-control)] border border-[var(--line-strong)] bg-[var(--surface)] p-1" />
             <code className="text-sm font-normal" data-testid="accent-value">{isSwatch ? ACCENT_SWATCHES.find((w) => w.value === s.accent.toLowerCase())?.name : s.accent}</code>
           </div>
         </div>

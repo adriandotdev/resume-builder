@@ -136,7 +136,7 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
       </div>
       <p role="status" aria-live="polite" className="sr-only">{msg}</p>
       {n === 0 && (
-        <p className="rounded-[12px] border border-dashed border-[var(--line-strong)] p-5 text-[var(--text-muted)]" data-testid="sections-empty">
+        <p className="rounded-[var(--r-inset)] border border-dashed border-[var(--line-strong)] p-5 text-[var(--text-muted)]" data-testid="sections-empty">
           Your resume has no sections yet. Start with Contact so recruiters can reach you, then add Experience.
         </p>
       )}

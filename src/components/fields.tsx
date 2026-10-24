@@ -7,12 +7,12 @@ import { ActionMenu } from "./controls";
 import { IconDown, IconPlus, IconTrash, IconUp } from "./icons";
 import { useToast } from "./Toast";
 
-export function TextField({ label, value, onChange, placeholder, type = "text", hint }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; hint?: string }) {
+export function TextField({ label, value, onChange, placeholder, type = "text", hint, autoComplete = "off" }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; hint?: string; autoComplete?: string }) {
   const id = useId();
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
-      <input id={id} type={type} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} aria-describedby={hint ? `${id}-h` : undefined} autoComplete="off" />
+      <input id={id} type={type} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} aria-describedby={hint ? `${id}-h` : undefined} autoComplete={autoComplete} />
       {hint && <span id={`${id}-h`} className="field-hint">{hint}</span>}
     </div>
   );
