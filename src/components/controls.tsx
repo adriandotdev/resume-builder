@@ -12,7 +12,7 @@ export function Segmented<T extends string>({ legend, value, options, onChange, 
         {options.map((o) => (
           <label key={o.value} className="seg-opt">
             <input type="radio" name={name} value={o.value} checked={value === o.value} onChange={() => onChange(o.value)} />
-            <span>{o.label}{o.sub && <span className="ml-1.5 text-xs opacity-75">{o.sub}</span>}</span>
+            <span>{o.label}{o.sub && <span className="ml-1.5 text-sm font-normal">{o.sub}</span>}</span>
           </label>
         ))}
       </div>

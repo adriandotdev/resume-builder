@@ -197,8 +197,8 @@
   .hero-promises { animation-delay: 0.3s; }
   .stage-caption { animation: caption-in 0.6s var(--ease-out) both; }
 }
-@keyframes settle-in { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } }
-@keyframes caption-in { from { opacity: 0; filter: blur(3px); } }
+@keyframes settle-in { from { opacity: 0; transform: translateY(14px); } }
+@keyframes caption-in { from { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
   .stage-layer, .stage-page { transform: none !important; filter: none !important; }

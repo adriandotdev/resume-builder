@@ -163,6 +163,8 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 - **Title** (400, 1.5rem rising to 2rem at 640px, 1.1): app screen titles, wordmark (1.25–1.375rem), start-card title.
 - **Body** (400, clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem), 1.6): landing reading text. App UI body is 1rem; hints are 0.875rem at 1.45.
 - **Label** (500, 0.9375rem, 1.2): buttons, navigation, segmented options. Field labels are 0.875rem at 600.
+- **UI small** (0.8125rem and 0.875rem): captions, badges, tab and bottom-bar labels, hints, segmented sub-labels. App UI steps are 0.8125, 0.875, 0.9375 and 1rem; larger app sizes come from Title.
+- **Plain-text preview** (system monospace, 0.875rem): the ATS text view only. It is the one place a mono face is used, because it shows the raw text a parser reads. Nothing else is set in mono.
 
 ### Named Rules
 **The Five Steps Rule.** The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section.
@@ -193,7 +195,7 @@ Flat and tonal. Depth is a step in tone (desk → sheet → well) or a 1px edge,
 
 Soft sheets, round controls, almost-square paper.
 - **Pill** (999px): every button, segmented control, switch, badge, toast and nav link. 
-- **Control** (10px): text fields, selects, textareas, template pickers.
+- **Control** (10px): text fields, selects, textareas, template pickers, menu items, tabs.
 - **Sheet / Panel** (16px): the app frame, panels, dialogs, the landing stage, and showcase and call-to-action blocks. The landing page uses this one radius for every sheet on the desk.
 - **Inset** (12px): wells, section cards, menus, the template well.
 - **Paper** (2px): resume pages and thumbnails, so they read as paper rather than as UI cards.
