@@ -39,9 +39,13 @@ const OTHER_HEADING = /^(benefits|perks|about|what we offer|why join|compensatio
 
 /** NFKC, lowercase, curly quotes and every dash unified, apostrophes inside words dropped. */
 export function normalize(text: string): string {
+  return fold(text).toLowerCase();
+}
+
+/** Like normalize, but keeps the case, so a term can be shown the way the posting wrote it. */
+function fold(text: string): string {
   return text
     .normalize("NFKC")
-    .toLowerCase()
     .replace(/[‘’‛′`´]/g, "'")
     .replace(/[“”„″]/g, '"')
     .replace(/[‐-―−]/g, "-")
@@ -49,7 +53,7 @@ export function normalize(text: string): string {
 }
 
 // Keeps c++, c#, .net, node.js, ci/cd, a/b and hyphenated words whole.
-const TOKEN = /\.net\b|[\p{L}\p{N}]+(?:[./-][\p{L}\p{N}]+)*(?:\+\+|#|\+)?/gu;
+const TOKEN = /\.net\b|[\p{L}\p{N}]+(?:[./-][\p{L}\p{N}]+)*(?:\+\+|#|\+)?/giu;
 // Places a phrase must not span: punctuation, bullets and a dash standing alone.
 const BREAK = /[\n\r\t,;:()[\]{}!?|•·▪◦"*]+|\.(?=\s|$)|(?:^|\s)-+(?=\s|$)/g;
 
@@ -90,16 +94,26 @@ function contains(hay: string[], needle: string[]): boolean {
   return false;
 }
 
-interface Candidate { term: string; stems: string[]; n: number; count: number; weight: number; first: number }
+interface Candidate { forms: Map<string, number>; stems: string[]; n: number; count: number; weight: number; first: number }
+
+/** The spelling used most often in the posting; the first one seen wins a tie. */
+function displayForm(forms: Map<string, number>): string {
+  let best = "";
+  let max = 0;
+  for (const [form, n] of forms) if (n > max) { best = form; max = n; }
+  return best;
+}
 
 /** Key terms of a job posting, most important first. */
 export function extractTerms(jd: string): JobTerm[] {
-  const lines = normalize(jd.slice(0, MAX_JD_CHARS)).split("\n");
+  const raw = fold(jd.slice(0, MAX_JD_CHARS));
+  const rawLines = raw.split("\n");
+  const lines = raw.toLowerCase().split("\n");
   const cands = new Map<string, Candidate>();
   let pos = 0;
   let inRequirements = false;
   let sawContent = false; // since the last heading, so a blank line right after one does not end its block
-  for (const line of lines) {
+  for (const [li, line] of lines.entries()) {
     const trimmed = line.trim();
     if (!trimmed) { if (sawContent) inRequirements = false; continue; }
     if (LOGISTICS_LINE.test(trimmed)) continue;
@@ -109,7 +123,8 @@ export function extractTerms(jd: string): JobTerm[] {
       sawContent = false;
     } else sawContent = true;
     const w = 1 + (inRequirements || REQUIREMENT_LINE.test(line) ? 1 : 0) + (BULLET_LINE.test(line) ? 0.5 : 0);
-    for (const seg of line.split(BREAK).map(tokenize)) {
+    for (const rawSeg of rawLines[li].split(BREAK).map(tokenize)) {
+      const seg = rawSeg.map((x) => x.toLowerCase());
       const stop = seg.map(isStop);
       for (let n = 1; n <= MAX_PHRASE_WORDS; n++) {
         for (let i = 0; i + n <= seg.length; i++) {
@@ -120,9 +135,10 @@ export function extractTerms(jd: string): JobTerm[] {
           const words = seg.slice(i, i + n);
           const stems = words.map(stem);
           const key = stems.join(" ");
+          const form = rawSeg.slice(i, i + n).join(" ");
           const c = cands.get(key);
-          if (c) { c.count++; c.weight += w; }
-          else cands.set(key, { term: words.join(" "), stems, n, count: 1, weight: w, first: pos + i });
+          if (c) { c.count++; c.weight += w; c.forms.set(form, (c.forms.get(form) ?? 0) + 1); }
+          else cands.set(key, { forms: new Map([[form, 1]]), stems, n, count: 1, weight: w, first: pos + i });
         }
       }
       pos += seg.length;
@@ -147,7 +163,7 @@ export function extractTerms(jd: string): JobTerm[] {
   return kept
     .sort((a, b) => b.weight - a.weight || b.n - a.n || a.first - b.first)
     .slice(0, MAX_TERMS)
-    .map((c) => ({ term: c.term, key: c.stems.join(" "), weight: c.weight }));
+    .map((c) => ({ term: displayForm(c.forms), key: c.stems.join(" "), weight: c.weight }));
 }
 
 /** Which key terms of the posting appear in the resume, and in which sections. */

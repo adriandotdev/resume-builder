@@ -10,6 +10,7 @@ import { ResumePreview } from "@/components/ResumePreview";
 import { SectionList } from "@/components/SectionList";
 import { StylePanel } from "@/components/StylePanel";
 import { AtsPanel } from "@/components/AtsPanel";
+import type { WriteInTarget } from "@/lib/ops";
 import { DataPanel } from "@/components/DataPanel";
 import { ExportDialog } from "@/components/ExportDialog";
 import { SaveStatus } from "@/components/SaveStatus";
@@ -41,6 +42,7 @@ export default function EditorPage() {
   const [view, setView] = useState<View>("design");
   const [zoom, setZoom] = useState<Zoom>("fit");
   const [pages, setPages] = useState(1);
+  const [writeIn, setWriteIn] = useState<WriteInTarget | null>(null); // asks Content to open and focus a field
 
   const isPhone = useMediaQuery("(max-width: 767.98px)");
   const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023.98px)");
@@ -76,6 +78,12 @@ export default function EditorPage() {
     requestAnimationFrame(() => document.getElementById(`tab-${TABS[n].id}`)?.focus());
   };
   const goTab = (t: Tab) => { setTab(t); setPvOpen(false); window.scrollTo({ top: 0 }); };
+
+  const onWriteIn = (target: WriteInTarget, term: string) => {
+    setWriteIn(target);
+    setTab("content");
+    toast.show({ message: `Write "${term}" into a sentence about work you have done.` });
+  };
 
   const startBlank = () => {
     const previous = resumeStore.getState();
@@ -123,11 +131,11 @@ export default function EditorPage() {
                       <button type="button" className="btn mt-3" onClick={startBlank}>Replace sample with a blank resume</button>
                     </div>
                   )}
-                  <SectionList doc={doc} />
+                  <SectionList doc={doc} writeIn={writeIn} onWriteInDone={() => setWriteIn(null)} />
                 </div>
               )}
               {tab === "design" && <StylePanel doc={doc} />}
-              {tab === "ats" && <AtsPanel doc={doc} />}
+              {tab === "ats" && <AtsPanel doc={doc} onWriteIn={onWriteIn} />}
               {tab === "data" && <DataPanel doc={doc} />}
             </div>
           </div>

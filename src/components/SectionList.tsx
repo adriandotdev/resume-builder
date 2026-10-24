@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { SECTION_TYPES, STANDARD_TITLES, type ResumeDoc, type SectionType } from "@/lib/schema";
-import { addSection, insertSection, moveSection, patchSection, removeSection } from "@/lib/ops";
+import { addSection, insertSection, moveSection, patchSection, removeSection, type WriteInTarget } from "@/lib/ops";
 import { resumeStore } from "@/lib/store";
 import { dragTargetIndex } from "@/lib/ui";
 import { SectionEditor } from "./SectionEditor";
@@ -29,12 +29,28 @@ function scrollParent(el: HTMLElement | null): HTMLElement | null {
   return null;
 }
 
-export function SectionList({ doc }: { doc: ResumeDoc }) {
+/** The textarea that holds sentences for a write-in target: the summary, or the first job's achievements. */
+function writeInField(panel: HTMLElement, target: WriteInTarget): HTMLTextAreaElement | null {
+  const label = target === "summary" ? "Summary" : "Achievements";
+  return [...panel.querySelectorAll("textarea")].find((t) => t.labels?.[0]?.textContent === label) ?? null;
+}
+
+export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: ResumeDoc; writeIn?: WriteInTarget | null; onWriteInDone?: () => void }) {
   const toast = useToast();
   // undefined = "first section open" (the default); null = user closed everything.
   const [open, setOpen] = useState<string | null | undefined>(undefined);
   const openId = open === undefined ? doc.sections[0]?.id ?? null : open;
   const [drag, setDrag] = useState<DragState | null>(null);
+  const writeInId = writeIn ? doc.sections.find((x) => x.type === writeIn)?.id ?? null : null;
+  if (writeIn && writeInId && open !== writeInId) setOpen(writeInId); // open the target before the focus effect runs
+  const done = useRef(onWriteInDone);
+  useEffect(() => { done.current = onWriteInDone; });
+  useEffect(() => {
+    if (!writeIn) return;
+    const field = writeInId ? writeInField(document.getElementById(`panel-${writeInId}`) ?? document.body, writeIn) : null;
+    if (field) { field.focus(); field.setSelectionRange(field.value.length, field.value.length); }
+    done.current?.();
+  }, [writeIn, writeInId]);
   const [msg, setMsg] = useState("");
   const [settled, setSettled] = useState<string | null>(null); // row that just moved or came back, for the wash
   const [addType, setAddType] = useState<SectionType>("custom");

@@ -4,12 +4,13 @@ import { createSampleDoc } from "@/lib/sample";
 import type { ResumeDoc, SkillsSection } from "@/lib/schema";
 import { APP_DEVELOPER, DATA_ENGINEER, FRONTEND, NURSE, OPS_ANALYST } from "./fixtures/postings";
 
-const terms = (jd: string) => extractTerms(jd).map((t) => t.term);
+// Selection tests compare lowercase; the casing of terms has its own tests.
+const terms = (jd: string) => extractTerms(jd).map((t) => t.term.toLowerCase());
 const skills = (d: ResumeDoc) => d.sections.find((s) => s.type === "skills") as SkillsSection;
 const sorted = (xs: string[]) => [...xs].sort();
 const split = (doc: ResumeDoc, jd: string) => {
   const m = matchJobDescription(doc, jd).terms;
-  return { found: sorted(m.filter((t) => t.found).map((t) => t.term)), missing: sorted(m.filter((t) => !t.found).map((t) => t.term)) };
+  return { found: sorted(m.filter((t) => t.found).map((t) => t.term.toLowerCase())), missing: sorted(m.filter((t) => !t.found).map((t) => t.term.toLowerCase())) };
 };
 
 describe("normalize, tokenize, stem", () => {
@@ -51,11 +52,18 @@ describe("extractTerms", () => {
     for (const term of terms(OPS_ANALYST + DATA_ENGINEER)) expect(term).not.toMatch(/^(and|or|of|the|to|with|in|for) |( and| or| of| the| to| with| in| for)$/);
     expect(terms("Excel, SQL. Excel, SQL.")).toEqual(expect.not.arrayContaining(["excel sql", "sql excel"]));
   });
+  it("keeps the casing the posting used", () => {
+    const t = extractTerms("Requirements:\n- AWS and Node.js\n- iOS, CI/CD and JavaScript\n- .NET and C++").map((x) => x.term);
+    expect(t).toEqual(expect.arrayContaining(["AWS", "Node.js", "iOS", "CI/CD", "JavaScript", ".NET", "C++"]));
+  });
+  it("uses the most common spelling of a term", () => {
+    expect(extractTerms("python python Python")[0].term).toBe("python");
+  });
   it("ranks repeated and requirement terms first and keeps at most 25", () => {
     const t = extractTerms(OPS_ANALYST);
     expect(t.length).toBeLessThanOrEqual(25);
     expect(t.map((x) => x.weight)).toEqual([...t.map((x) => x.weight)].sort((a, b) => b - a));
-    expect(extractTerms("Zebra. Sql. Sql. Sql.")[0].term).toBe("sql");
+    expect(extractTerms("Zebra. Sql. Sql. Sql.")[0].term).toBe("Sql");
     const many = Array.from({ length: 80 }, (_, i) => `word${String.fromCharCode(97 + (i % 26))}${String.fromCharCode(97 + Math.floor(i / 26))}x`).join(" ");
     expect(extractTerms(many).length).toBe(25);
   });
@@ -77,31 +85,31 @@ describe("matchJobDescription", () => {
     const d = createSampleDoc();
     skills(d).content.items[0].skills = "vendor managed";
     const r = matchJobDescription(d, "Vendor management is key. Vendor management reporting.").terms;
-    const vm = r.find((t) => t.term === "vendor management");
+    const vm = r.find((t) => t.term.toLowerCase() === "vendor management");
     expect(vm).toMatchObject({ found: true, where: ["Skills"], hiddenOnly: false });
   });
   it("needs the words of a phrase next to each other, inside one line of the resume", () => {
     const d = createSampleDoc();
     skills(d).content.items = [{ id: "k1", label: "Tools", skills: "Looker, root, cause" }];
     const r = matchJobDescription(d, "Root cause analysis. Root cause analysis.").terms;
-    expect(r.find((t) => t.term === "root cause analysis")?.found).toBe(false);
+    expect(r.find((t) => t.term.toLowerCase() === "root cause analysis")?.found).toBe(false);
   });
   it("does not count a section heading as a match", () => {
     const d = createSampleDoc();
     const r = matchJobDescription(d, "Projects delivered. Projects delivered. Education tooling. Education tooling.").terms;
-    expect(r.find((t) => t.term === "projects")?.found).toBeFalsy();
+    expect(r.find((t) => t.term.toLowerCase() === "projects")?.found).toBeFalsy();
   });
   it("flags a term found only in a hidden section", () => {
     const d = createSampleDoc();
     skills(d).content.items = [{ id: "k1", label: "Tools", skills: "Kubernetes" }];
     const jd = "Kubernetes required. Kubernetes daily.";
-    expect(matchJobDescription(d, jd).terms.find((t) => t.term === "kubernetes")).toMatchObject({ found: true, hiddenOnly: false });
+    expect(matchJobDescription(d, jd).terms.find((t) => t.term.toLowerCase() === "kubernetes")).toMatchObject({ found: true, hiddenOnly: false });
     skills(d).visible = false;
-    expect(matchJobDescription(d, jd).terms.find((t) => t.term === "kubernetes")).toEqual({ term: "kubernetes", found: false, where: [], hiddenOnly: true });
+    expect(matchJobDescription(d, jd).terms.find((t) => t.term.toLowerCase() === "kubernetes")).toEqual({ term: "Kubernetes", found: false, where: [], hiddenOnly: true });
   });
   it("lists every visible section a term appears in, once each", () => {
     const d = createSampleDoc();
-    const r = matchJobDescription(d, "SQL analyst. SQL reports.").terms.find((t) => t.term === "sql");
+    const r = matchJobDescription(d, "SQL analyst. SQL reports.").terms.find((t) => t.term.toLowerCase() === "sql");
     expect(r?.where).toEqual(["Summary", "Skills"]);
   });
   it("returns no terms for an empty posting", () => {
