@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-24T03:34:43.658347+00:00",
+  "generatedAt": "2026-10-24T09:37:27.850438+00:00",
   "title": "Design System: Resume Builder",
   "extensions": {
     "colorMeta": {
@@ -183,6 +183,21 @@
           "#f7ccc4",
           "#fcebe8"
         ]
+      },
+      "ats-ink": {
+        "role": "neutral",
+        "displayName": "Plain-Text Ink",
+        "canonical": "#17212b",
+        "tonalRamp": [
+          "#0b0f12",
+          "#17212b",
+          "#2c3a47",
+          "#4a5b6a",
+          "#6f808e",
+          "#9aa8b3",
+          "#c6cfd6",
+          "#e8ecef"
+        ]
       }
     },
     "typographyMeta": {
@@ -205,6 +220,18 @@
       "label": {
         "displayName": "Label",
         "purpose": "Buttons, navigation, segmented options."
+      },
+      "hint": {
+        "displayName": "Hint",
+        "purpose": "Field hints and secondary lines (0.875rem)."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Badges, bottom-bar and rail-tab labels (0.8125rem)."
+      },
+      "base": {
+        "displayName": "Base",
+        "purpose": "App UI body and input text (1rem)."
       }
     },
     "shadows": [

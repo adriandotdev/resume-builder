@@ -76,7 +76,7 @@ export default function TemplatesPage() {
       <Modal open={!!preview} onClose={() => setPreview(null)} labelledBy="tpl-modal-h" wide testId="template-modal">
         {preview && (
           <div className="grid gap-6 p-4 sm:p-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-            <div className="rounded-[12px] bg-[var(--surface-2)] p-3 sm:p-6">
+            <div className="rounded-[var(--r-inset)] bg-[var(--surface-2)] p-3 sm:p-6">
               <div className="paper-edge mx-auto max-w-[520px]"><Thumbnail doc={docFor(preview)} uid={`m-${preview.id}`} /></div>
             </div>
             <div className="flex flex-col">

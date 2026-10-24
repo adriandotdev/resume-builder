@@ -18,6 +18,7 @@ colors:
   line: "#e4e0d9"
   line-strong: "#7d776d"
   paper-edge: "#c9c3b9"
+  ats-ink: "#17212b"
 typography:
   display:
     fontFamily: "Young Serif, Georgia, Times New Roman, serif"
@@ -47,9 +48,27 @@ typography:
     fontSize: "0.9375rem"
     fontWeight: 500
     lineHeight: 1.2
+  base:
+    fontFamily: "Source Serif 4, Georgia, Times New Roman, serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  hint:
+    fontFamily: "Source Serif 4, Georgia, Times New Roman, serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.45
+  caption:
+    fontFamily: "Source Serif 4, Georgia, Times New Roman, serif"
+    fontSize: "0.8125rem"
+    fontWeight: 500
+    lineHeight: 1.2
 rounded:
+  rule: "1px"
   paper: "2px"
+  item: "8px"
   control: "10px"
+  inset: "12px"
   panel: "16px"
   sheet: "16px"
   pill: "999px"
@@ -141,6 +160,7 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 - **Paper Fold** (`line`, #e4e0d9): card and sheet edges.
 - **Control Edge** (`line-strong`, #7d776d): borders on interactive controls, kept at 3:1 on paper.
 - **Paper Edge** (`paper-edge`, #c9c3b9): the 1px outline that makes a resume page read as paper on the desk.
+- **Plain-Text Ink** (`ats-ink`, #17212b): text in the editor's ATS text preview, which is a white paper surface in both themes, so it does not follow the app ink.
 
 ### Named Rules
 **The One Teal Rule.** Teal marks the single action or the single selected item in a region. It is never used for decoration, headings or large backgrounds, with one exception: the landing page's final call-to-action panel.
@@ -162,8 +182,7 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 - **Headline** (400, clamp(2rem, 1.4rem + 2vw, 3.25rem), 0.98): landing section headings ("how it works", questions).
 - **Title** (400, 1.5rem rising to 2rem at 640px, 1.1): app screen titles, wordmark (1.25–1.375rem), start-card title.
 - **Body** (400, clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem), 1.6): landing reading text. App UI body is 1rem; hints are 0.875rem at 1.45.
-- **Label** (500, 0.9375rem, 1.2): buttons, navigation, segmented options. Field labels are 0.875rem at 600.
-- **UI small** (0.8125rem and 0.875rem): captions, badges, tab and bottom-bar labels, hints, segmented sub-labels. App UI steps are 0.8125, 0.875, 0.9375 and 1rem; larger app sizes come from Title.
+- **Label** (500, 0.9375rem, 1.2): buttons, navigation, segmented options. Field labels are 0.875rem at 600. Two small steps sit below Label: **Hint** (0.875rem, 1.45) for field hints and secondary lines, and **Caption** (0.8125rem, 500) for badges, bottom-bar and rail-tab labels.
 - **Plain-text preview** (system monospace, 0.875rem): the ATS text view only. It is the one place a mono face is used, because it shows the raw text a parser reads. Nothing else is set in mono.
 
 ### Named Rules
@@ -195,9 +214,12 @@ Flat and tonal. Depth is a step in tone (desk → sheet → well) or a 1px edge,
 
 Soft sheets, round controls, almost-square paper.
 - **Pill** (999px): every button, segmented control, switch, badge, toast and nav link. 
-- **Control** (10px): text fields, selects, textareas, template pickers, menu items, tabs.
+- **Control** (10px): text fields, selects, textareas, template pickers.
 - **Sheet / Panel** (16px): the app frame, panels, dialogs, the landing stage, and showcase and call-to-action blocks. The landing page uses this one radius for every sheet on the desk.
-- **Inset** (12px): wells, section cards, menus, the template well.
+- **Inset** (12px): wells, section cards, the template well, bottom-bar buttons.
+- **Item** (8px): menu items inside a menu.
+- **Rule** (1px): the underline marks on tabs and chips.
+- Control (10px) also covers rail tiles and the color field.
 - **Paper** (2px): resume pages and thumbnails, so they read as paper rather than as UI cards.
 
 ## Components
@@ -211,6 +233,7 @@ Soft sheets, round controls, almost-square paper.
 - **Press:** scales to 0.97 on active. Disabled drops to 50% opacity.
 
 ### Segmented controls and switches
+- Radio-style groups (template picker, accent swatches) are one tab stop each: arrow keys, Home and End move focus and select, wrapping at the ends. The selected swatch adds a surface-colored center dot so the choice is not shown by the ring alone.
 - A tray of Inset Well holding pill options; the selected option fills Press Black with white text. Native radios are stretched over the label so the whole pill is the target.
 - Switches are a 34×20 track with a 13px thumb; on state fills Press Black. Both keep 44px hit areas.
 
@@ -218,6 +241,8 @@ Soft sheets, round controls, almost-square paper.
 - **Style:** 1px Control Edge border, white fill, 10px radius, 44px minimum height, 1rem text. Labels sit above at 0.875rem/600; hints below in Faded Graphite.
 - **Focus:** a 2px ink outline, flush to the border (offset 0). Selects use a custom chevron and 2.5rem right padding.
 - **Error:** Red Pen text and wash; always paired with words, never color alone.
+- **Autofill:** contact fields declare their purpose (name, job title, email, phone); free-text fields keep autofill off.
+- **Storage warning:** the blocked-storage notice is Red Pen text with an icon, announced as an alert.
 
 ### Panels and section cards
 - White fill, 1px Paper Fold edge, 16px radius (panel) or 12px (section card). Hover on a section card darkens the edge to Control Edge; dragging adds the Pop shadow and an ink edge.

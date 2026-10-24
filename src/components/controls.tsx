@@ -21,6 +21,19 @@ export function Segmented<T extends string>({ legend, value, options, onChange, 
   );
 }
 
+/** Arrow-key movement for a group of `role="radio"` buttons: focus and select the neighbour, wrapping at the ends. */
+export function onRadioGroupKey(e: KeyboardEvent<HTMLElement>) {
+  const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+  if (!keys.includes(e.key)) return;
+  const list = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]'));
+  const i = list.indexOf(document.activeElement as HTMLElement);
+  if (i < 0) return;
+  e.preventDefault();
+  const n = e.key === "Home" ? 0 : e.key === "End" ? list.length - 1 : e.key === "ArrowRight" || e.key === "ArrowDown" ? (i + 1) % list.length : (i - 1 + list.length) % list.length;
+  list[n].focus();
+  list[n].click();
+}
+
 export function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <label className="switch">

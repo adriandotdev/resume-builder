@@ -16,7 +16,7 @@ const WORD = { pass: "Passed", warn: "Review", fail: "Fix" } as const;
 function Row({ c }: { c: AtsCheck }) {
   const pass = c.level === "pass";
   return (
-    <li className={`flex gap-3 rounded-[10px] ${pass ? "px-1 py-2.5" : "p-3"}`} style={pass ? undefined : { background: "var(--pen-soft)" }} data-level={c.level}>
+    <li className={`flex gap-3 rounded-[var(--r-control)] ${pass ? "px-1 py-2.5" : "p-3"}`} style={pass ? undefined : { background: "var(--pen-soft)" }} data-level={c.level}>
       <span className={`mt-0.5 shrink-0 ${pass ? "text-[var(--tick-text)]" : "text-[var(--pen-text)]"}`}>
         {pass ? <IconTick size={20} /> : c.level === "fail" ? <IconAlert size={20} /> : <IconWarn size={20} />}
       </span>
@@ -115,7 +115,7 @@ function JobMatch({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (target: Wri
           <button type="button" className="btn" onClick={() => { clear(); wrap.current?.querySelector("textarea")?.focus(); }}>Clear</button>
         </div>
       ) : (
-        <p className="rounded-[10px] border border-dashed border-[var(--line-strong)] p-4 text-[0.9375rem] text-[var(--text-muted)]">Paste a job posting to see which of its key terms already appear in your resume and which are missing.</p>
+        <p className="rounded-[var(--r-control)] border border-dashed border-[var(--line-strong)] p-4 text-[0.9375rem] text-[var(--text-muted)]">Paste a job posting to see which of its key terms already appear in your resume and which are missing.</p>
       )}
     </div>
   );
@@ -139,7 +139,7 @@ export function AtsPanel({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (targ
             <ul className="space-y-2">{review.map((c) => <Row key={c.id} c={c} />)}</ul>
           </div>
         ) : (
-          <p className="rounded-[10px] border border-dashed border-[var(--line-strong)] p-4 text-[0.9375rem] text-[var(--text-muted)]">Nothing to fix right now. Keep this tab in mind as you edit, since the checks run on every change.</p>
+          <p className="rounded-[var(--r-control)] border border-dashed border-[var(--line-strong)] p-4 text-[0.9375rem] text-[var(--text-muted)]">Nothing to fix right now. Keep this tab in mind as you edit, since the checks run on every change.</p>
         )}
         <div className="space-y-2">
           <h3 className="text-sm font-semibold">Passed ({passed.length})</h3>
