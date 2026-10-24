@@ -4,3 +4,6 @@ out
 *.tsbuildinfo
 next-env.d.ts
 /scripts/out
+
+# Impeccable hook state (machine-specific)
+.impeccable/hook.cache.json
