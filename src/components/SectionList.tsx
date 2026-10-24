@@ -10,7 +10,16 @@ import { ActionMenu, Switch } from "./controls";
 import { IconChevron, IconDown, IconGrip, IconPlus, IconTrash, IconUp, SectionIcon } from "./icons";
 import { useToast } from "./Toast";
 
-interface DragState { from: number; dy: number; target: number }
+interface Geom { tops: number[]; heights: number[] }
+interface DragState { from: number; dy: number; target: number; geom: Geom; dropping?: boolean }
+
+const ROW_GAP = 8; // space-y-2
+const DROP_MS = 180;
+
+/** Where the dragged row will land, as an offsetTop inside the list. */
+function slotTop({ from, target, geom }: Pick<DragState, "from" | "target" | "geom">) {
+  return target > from ? geom.tops[target] + geom.heights[target] - geom.heights[from] : geom.tops[target];
+}
 
 function scrollParent(el: HTMLElement | null): HTMLElement | null {
   for (let n = el?.parentElement ?? null; n; n = n.parentElement) {
@@ -27,21 +36,26 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
   const openId = open === undefined ? doc.sections[0]?.id ?? null : open;
   const [drag, setDrag] = useState<DragState | null>(null);
   const [msg, setMsg] = useState("");
+  const [settled, setSettled] = useState<string | null>(null); // row that just moved or came back, for the wash
   const [addType, setAddType] = useState<SectionType>("custom");
   const n = doc.sections.length;
   const rows = useRef<(HTMLLIElement | null)[]>([]);
-  const pointer = useRef({ startY: 0, y: 0, startScroll: 0, from: -1, scroller: null as HTMLElement | null });
+  const pointer = useRef({ startY: 0, y: 0, startScroll: 0, from: -1, scroller: null as HTMLElement | null, mids: [] as number[], geom: { tops: [], heights: [] } as Geom });
+  const dropTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(dropTimer.current), []);
   const dragging = drag !== null;
 
   const move = (from: number, to: number) => {
     if (to < 0 || to >= n || from === to) return;
+    const id = doc.sections[from].id;
     resumeStore.update((d) => moveSection(d, from, to));
+    setSettled(id);
     setMsg(`${doc.sections[from].title} moved to position ${to + 1} of ${n}`);
   };
   const remove = (index: number) => {
     const s = doc.sections[index];
     resumeStore.update((d) => removeSection(d, s.id));
-    toast.show({ message: `Removed ${s.title}.`, actionLabel: "Undo", onAction: () => { resumeStore.update((d) => insertSection(d, s, index)); setMsg(`${s.title} restored`); } });
+    toast.show({ message: `Removed ${s.title}.`, actionLabel: "Undo", onAction: () => { resumeStore.update((d) => insertSection(d, s, index)); setSettled(s.id); setMsg(`${s.title} restored`); } });
   };
 
   // Pointer-event drag: works for mouse, pen and touch (the handle has touch-action: none).
@@ -49,26 +63,36 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
     const p = pointer.current;
     const scroll = p.scroller ? p.scroller.scrollTop : window.scrollY;
     const dy = p.y - p.startY + (scroll - p.startScroll);
-    const mids = rows.current.slice(0, n).map((el) => { const r = el?.getBoundingClientRect(); return r ? r.top + r.height / 2 : 0; });
-    // The dragged row is excluded from the comparison, others have not moved.
-    setDrag({ from: p.from, dy, target: dragTargetIndex(mids, p.from, p.y) });
+    // Rows slide out of the way while dragging, so compare against midpoints measured at pickup (in scroll space).
+    setDrag({ from: p.from, dy, target: dragTargetIndex(p.mids, p.from, p.y + scroll), geom: p.geom });
   };
   const onDown = (e: PointerEvent<HTMLButtonElement>, i: number) => {
     if (e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     const scroller = scrollParent(rows.current[i]);
-    pointer.current = { startY: e.clientY, y: e.clientY, startScroll: scroller ? scroller.scrollTop : window.scrollY, from: i, scroller };
-    setDrag({ from: i, dy: 0, target: i });
+    const startScroll = scroller ? scroller.scrollTop : window.scrollY;
+    const els = rows.current.slice(0, n);
+    const mids = els.map((el) => { const r = el?.getBoundingClientRect(); return r ? r.top + r.height / 2 + startScroll : 0; });
+    const geom = { tops: els.map((el) => el?.offsetTop ?? 0), heights: els.map((el) => el?.offsetHeight ?? 0) };
+    pointer.current = { startY: e.clientY, y: e.clientY, startScroll, from: i, scroller, mids, geom };
+    clearTimeout(dropTimer.current);
+    setDrag({ from: i, dy: 0, target: i, geom });
   };
   const onMove = (e: PointerEvent<HTMLButtonElement>) => {
-    if (!dragging) return;
+    if (!drag || drag.dropping) return;
     pointer.current.y = e.clientY;
     recompute();
   };
   const finish = (commit: boolean) => {
     const d = drag;
-    setDrag(null);
-    if (commit && d && d.target !== d.from) move(d.from, d.target);
+    if (!d || d.dropping) return;
+    if (!commit) { setDrag(null); return; }
+    // Glide the card into its slot, then commit the reorder once it has landed.
+    setDrag({ ...d, dy: slotTop(d) - d.geom.tops[d.from], dropping: true });
+    dropTimer.current = setTimeout(() => {
+      setDrag(null);
+      if (d.target !== d.from) move(d.from, d.target);
+    }, DROP_MS);
   };
 
   // Edge auto-scroll while dragging.
@@ -87,7 +111,7 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    const esc = (e: globalThis.KeyboardEvent) => { if (e.key === "Escape") setDrag(null); };
+    const esc = (e: globalThis.KeyboardEvent) => { if (e.key === "Escape") { clearTimeout(dropTimer.current); setDrag(null); } };
     window.addEventListener("keydown", esc);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("keydown", esc); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,23 +140,30 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
           Your resume has no sections yet. Start with Contact so recruiters can reach you, then add Experience.
         </p>
       )}
-      <ol className="space-y-2" data-testid="section-list">
+      <ol className="relative isolate space-y-2" data-testid="section-list" data-reordering={dragging || undefined}>
         {doc.sections.map((s, i) => {
           const isOpen = openId === s.id;
           const isDrag = drag?.from === i;
-          const showLine = drag && drag.target !== drag.from && drag.target === i;
-          const lineBelow = drag ? drag.target > drag.from : false;
+          // Rows between the pickup and the drop slot slide over by one row to open the gap.
+          let shift = 0;
+          if (drag && !isDrag) {
+            const h = drag.geom.heights[drag.from] + ROW_GAP;
+            if (drag.target > drag.from && i > drag.from && i <= drag.target) shift = -h;
+            else if (drag.target < drag.from && i >= drag.target && i < drag.from) shift = h;
+          }
           return (
             <li
               key={s.id}
               ref={(el) => { rows.current[i] = el; }}
               data-section-type={s.type}
               data-dragging={isDrag}
+              data-dropping={(isDrag && drag.dropping) || undefined}
               data-hidden={!s.visible}
+              data-settled={settled === s.id || undefined}
+              onAnimationEnd={(e) => { if (e.target === e.currentTarget) setSettled((c) => (c === s.id ? null : c)); }}
               className="sec-card relative"
-              style={isDrag ? { transform: `translateY(${drag.dy}px)` } : undefined}
+              style={isDrag ? { transform: `translateY(${drag.dy}px) scale(${drag.dropping ? 1 : 1.015})` } : shift ? { transform: `translateY(${shift}px)` } : undefined}
             >
-              {showLine && <div className="drop-line absolute left-0 right-0" style={lineBelow ? { bottom: -6 } : { top: -6 }} aria-hidden="true" />}
               <div className="flex items-center gap-0.5 p-1 pr-1.5">
                 <button
                   type="button" className="btn btn-quiet btn-icon drag-handle text-[var(--text-muted)]"
@@ -160,7 +191,7 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
                 ]} />
               </div>
               {isOpen && (
-                <div id={`panel-${s.id}`} className="space-y-4 border-t border-[var(--line)] p-3.5">
+                <div id={`panel-${s.id}`} className="sec-body space-y-4 border-t border-[var(--line)] p-3.5">
                   {s.type !== "contact" && <TextField label="Section heading" value={s.title} onChange={(v) => resumeStore.update((d) => patchSection(d, s.id, (x) => ({ ...x, title: v })))} hint="Standard names (Experience, Education, Skills) work best with ATS." />}
                   <SectionEditor section={s} onChange={(next) => resumeStore.update((d) => patchSection(d, s.id, () => next))} />
                 </div>
@@ -168,6 +199,7 @@ export function SectionList({ doc }: { doc: ResumeDoc }) {
             </li>
           );
         })}
+        {drag && <div className="drop-slot" style={{ height: drag.geom.heights[drag.from], transform: `translateY(${slotTop(drag)}px)` }} aria-hidden="true" />}
       </ol>
       <p id="drag-help" className="sr-only">Press the up or down arrow key to move this section, or drag with a pointer.</p>
       <div className="well flex flex-wrap items-end gap-3 p-3.5">

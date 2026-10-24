@@ -57,7 +57,7 @@ check("editor renders modern template class", await page.locator("[data-resume].
 await page.getByRole("tab", { name: "Design" }).click();
 await page.locator("#accent").evaluate((el) => { const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set; set.call(el, "#b91c1c"); el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); });
 await page.getByLabel("Font", { exact: true }).selectOption("serif");
-await page.getByLabel("Page size").selectOption("letter");
+await page.locator("#q-page").selectOption("letter");
 await page.getByLabel("Date format").selectOption("MM/YYYY");
 await page.getByRole("radio", { name: "Wide" }).check();
 await page.locator("#fs").evaluate((el) => { const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set; set.call(el, "11"); el.dispatchEvent(new Event("input", { bubbles: true })); });
@@ -89,8 +89,9 @@ await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
 await page.mouse.down();
 await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2 + 30, { steps: 5 });
 await page.mouse.move(hb.x + hb.width / 2, tb.y + tb.height - 4, { steps: 15 });
-check("drop indicator is shown while dragging", await page.locator(".drop-line").count() === 1);
+check("drop indicator is shown while dragging", await page.locator(".drop-slot").count() === 1);
 await page.mouse.up();
+await page.waitForTimeout(350); // card glides into its slot, then the order commits
 const afterDrag = await order();
 check("reorder via pointer drag", afterDrag.join() !== after.join(), afterDrag.join(","));
 // remove -> undo toast (no window.confirm)
@@ -173,7 +174,7 @@ const hidden = await page.evaluate(() => [...document.querySelectorAll(".no-prin
 check("print CSS hides editor chrome", hidden);
 await page.emulateMedia({ media: null });
 await page.pdf({ path: `${OUT}/editor-letter.pdf`, preferCSSPageSize: true, printBackground: true });
-await page.getByLabel("Page size").selectOption("a4");
+await page.locator("#q-page").selectOption("a4");
 await page.getByRole("tab", { name: "Design" }).click();
 await page.getByRole("radio", { name: "Normal" }).check();
 await page.getByLabel("Font", { exact: true }).selectOption("sans");
