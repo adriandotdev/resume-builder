@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { SplitStory } from "@/components/HeroSheet";
 import { Showcase } from "@/components/Showcase";
@@ -112,8 +113,8 @@ export default function Home() {
           <p className="faq-sub">Where your resume lives, and how you get it out.</p>
         </div>
         <div className="faq-cols" data-reveal>
-          {QUESTIONS.map((x) => (
-            <p key={x.q} id={x.id}><strong>{x.q}</strong> {x.a}</p>
+          {QUESTIONS.map((x, i) => (
+            <p key={x.q} id={x.id} style={{ "--i": i } as CSSProperties}><strong>{x.q}</strong> {x.a}</p>
           ))}
         </div>
       </section>

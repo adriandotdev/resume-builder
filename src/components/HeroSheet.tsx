@@ -46,16 +46,20 @@ export function SplitStory({ children }: { children: ReactNode }) {
   useEffect(() => {
     const marks = Array.from(colRef.current?.querySelectorAll<HTMLElement>("[data-scene]") ?? []);
     if (!marks.length) return;
+    let lens = 0;
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (!e.isIntersecting) continue;
         const n = Number((e.target as HTMLElement).dataset.scene);
         setScene(n);
-        setAts(SCENES[n]?.ats ?? false);
+        // Let an incoming page settle before the highlighter sweeps across it.
+        const next = SCENES[n]?.ats ?? false;
+        window.clearTimeout(lens);
+        lens = window.setTimeout(() => setAts(next), next ? 450 : 0);
       }
     }, { rootMargin: "-45% 0px -45% 0px" });
     marks.forEach((m) => io.observe(m));
-    return () => io.disconnect();
+    return () => { io.disconnect(); window.clearTimeout(lens); };
   }, []);
 
   return (
@@ -83,7 +87,7 @@ function Stage({ template, ats, onAts }: { template: TemplateId; ats: boolean; o
         </div>
       </div>
       <div ref={boxRef} className="stage-box">
-        <div className="stage-page" data-ui style={{ width: PAGE_W * scale, height: PAGE_H * scale, opacity: scale ? 1 : 0 }} aria-hidden="true">
+        <div className="stage-page" data-ui data-ready={scale > 0} style={{ width: PAGE_W * scale, height: PAGE_H * scale }} aria-hidden="true">
           {LAYERS.map((id) => {
             const { Component } = getTemplate(id);
             const lens = (
@@ -98,7 +102,8 @@ function Stage({ template, ats, onAts }: { template: TemplateId; ats: boolean; o
         </div>
       </div>
       <p className="sr-only" role="status" aria-live="polite">{announce}</p>
-      <p className="stage-caption" data-testid="hero-caption">
+      {/* Keyed so each new caption fades in with its page. */}
+      <p key={ats ? "ats" : name} className="stage-caption" data-testid="hero-caption">
         {ats
           ? "Plain text, in reading order. Every highlighted line is real text a parser can pull out: no columns, tables or images in the way."
           : `A sample resume for a fictional person, in the ${name} template. Switch the view to see what software extracts from it.`}
