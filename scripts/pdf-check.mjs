@@ -37,7 +37,7 @@ for (const id of IDS) {
     await page.waitForSelector("[data-resume]");
     await page.getByRole("tab", { name: "Design" }).click();
     await page.getByRole("radio", { name: TEMPLATE_NAMES[id] ?? id, exact: true }).click();
-    await page.getByLabel("Page size").selectOption(ps);
+    await page.locator("#q-page").selectOption(ps);
     await page.waitForTimeout(700);
     await page.goto(`${BASE}/print`);
     await page.waitForSelector("[data-resume]");

@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, type KeyboardEvent, type RefObject } from "react";
 
-const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE = ['a[href]', 'button:not([disabled])', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]']
+  .map((s) => `${s}:not([tabindex="-1"])`).join(", ");
 
 /**
  * Focus management for non-<dialog> overlays (tablet drawer, phone preview sheet):

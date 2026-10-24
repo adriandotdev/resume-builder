@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { MARGINS, PAGE_SIZES, type ResumeDoc } from "@/lib/schema";
 import { getTemplate } from "@/templates/registry";
 import { useElementWidth } from "./useElementWidth";
@@ -13,7 +13,7 @@ export function PageStyle({ doc }: { doc: ResumeDoc }) {
   return <style>{`@page { size: ${p.w}mm ${p.h}mm; margin: ${m}mm; }`}</style>;
 }
 
-export function ResumePreview({ doc, onPages, zoom = "fit" }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual" }) {
+export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = "fit" }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual" }) {
   const [stageRef, stageW] = useElementWidth<HTMLDivElement>();
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetH, setSheetH] = useState(0);
@@ -55,4 +55,4 @@ export function ResumePreview({ doc, onPages, zoom = "fit" }: { doc: ResumeDoc; 
       </div>
     </div>
   );
-}
+});

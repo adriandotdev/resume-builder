@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T03:34:43.658347+00:00",
+  "title": "Design System: Resume Builder",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Press Black",
+        "canonical": "#0a0a0a",
+        "tonalRamp": [
+          "#262626",
+          "#454545",
+          "#636363",
+          "#828282",
+          "#a1a1a1",
+          "#bfbfbf",
+          "#dedede",
+          "#f2f2f2"
+        ]
+      },
+      "desk": {
+        "role": "neutral",
+        "displayName": "Putty Desk",
+        "canonical": "#dedad3",
+        "tonalRamp": [
+          "#2c2821",
+          "#4f483b",
+          "#726755",
+          "#948770",
+          "#aea493",
+          "#c8c2b6",
+          "#e3dfd9",
+          "#f4f3f0"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Bleached Sheet",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#454545",
+          "#636363",
+          "#828282",
+          "#a1a1a1",
+          "#bfbfbf",
+          "#dedede",
+          "#f2f2f2"
+        ]
+      },
+      "tick": {
+        "role": "primary",
+        "displayName": "Proofing Teal",
+        "canonical": "#256f82",
+        "tonalRamp": [
+          "#11333c",
+          "#1f5c6b",
+          "#2c849b",
+          "#3cabc8",
+          "#6cc0d5",
+          "#9cd4e3",
+          "#cbe9f0",
+          "#ebf6f9"
+        ]
+      },
+      "highlighter": {
+        "role": "secondary",
+        "displayName": "Highlighter Yellow",
+        "canonical": "#f2d15c",
+        "tonalRamp": [
+          "#473906",
+          "#80660a",
+          "#b8930f",
+          "#edbe18",
+          "#f1ce50",
+          "#f6de89",
+          "#faeec2",
+          "#fdf8e7"
+        ]
+      },
+      "red-pen": {
+        "role": "tertiary",
+        "displayName": "Red Pen",
+        "canonical": "#a8291f",
+        "tonalRamp": [
+          "#41100c",
+          "#741c15",
+          "#a8291f",
+          "#d8392c",
+          "#e26960",
+          "#eb9a93",
+          "#f5cac7",
+          "#fbebe9"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Faded Graphite",
+        "canonical": "#56524c",
+        "tonalRamp": [
+          "#292724",
+          "#494641",
+          "#6a655d",
+          "#8a847a",
+          "#a6a29b",
+          "#c3c0bb",
+          "#e0dedc",
+          "#f3f2f1"
+        ]
+      },
+      "surface-well": {
+        "role": "neutral",
+        "displayName": "Inset Well",
+        "canonical": "#f4f2ee",
+        "tonalRamp": [
+          "#2e291e",
+          "#544a36",
+          "#796b4e",
+          "#9d8b67",
+          "#b5a78c",
+          "#cdc4b2",
+          "#e5e0d7",
+          "#f5f3f0"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Paper Fold",
+        "canonical": "#e4e0d9",
+        "tonalRamp": [
+          "#2d2820",
+          "#514839",
+          "#746853",
+          "#97886d",
+          "#b1a591",
+          "#cac2b4",
+          "#e3dfd8",
+          "#f4f3f0"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Control Edge",
+        "canonical": "#7d776d",
+        "tonalRamp": [
+          "#292724",
+          "#4a4640",
+          "#6a655d",
+          "#8b847a",
+          "#a7a29a",
+          "#c4c0bb",
+          "#e0dedc",
+          "#f3f2f1"
+        ]
+      },
+      "tick-soft": {
+        "role": "neutral",
+        "displayName": "Teal Wash",
+        "canonical": "#e3eef0",
+        "tonalRamp": [
+          "#1b2e32",
+          "#30535a",
+          "#457882",
+          "#5c9ca8",
+          "#84b4bd",
+          "#accdd3",
+          "#d4e5e8",
+          "#eef5f6"
+        ]
+      },
+      "red-pen-soft": {
+        "role": "neutral",
+        "displayName": "Pen Wash",
+        "canonical": "#fbe4e0",
+        "tonalRamp": [
+          "#441109",
+          "#7a1f10",
+          "#b02d17",
+          "#e23e22",
+          "#e96d58",
+          "#f09d8e",
+          "#f7ccc4",
+          "#fcebe8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero, showcase and call-to-action headings."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "App screen titles, wordmark, start card."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Landing reading text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, navigation, segmented options."
+      }
+    },
+    "shadows": [
+      {
+        "name": "pop",
+        "value": "0 4px 10px rgb(10 10 10 / 0.08), 0 18px 40px -12px rgb(10 10 10 / 0.3)",
+        "purpose": "Only for what floats: menus, dialogs, toasts, tablet tools drawer, dragged section card."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "UI feedback."
+      },
+      {
+        "name": "ease-settle",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Paper and content arriving."
+      },
+      {
+        "name": "ease-pen",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "The highlighter sweep."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "landing-split",
+        "value": "900px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "wide",
+        "value": "1600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "custom",
+      "refersTo": "button-primary",
+      "description": "Press Black pill for the main non-accent action.",
+      "html": "<button class=\"ds-btn-primary\">Download PDF</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:8px 18px;border-radius:999px;font:500 15px/1.2 'Source Serif 4',Georgia,serif;cursor:pointer;transition:background-color .15s,transform .12s;background:#0a0a0a;color:#fff;border:1px solid #0a0a0a}.ds-btn-primary:hover{opacity:.86}.ds-btn-primary:active{transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "custom",
+      "refersTo": "button-accent",
+      "description": "Proofing Teal pill for the one action in a region.",
+      "html": "<button class=\"ds-btn-accent\">Start my resume</button>",
+      "css": ".ds-btn-accent{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:8px 18px;border-radius:999px;font:500 15px/1.2 'Source Serif 4',Georgia,serif;cursor:pointer;transition:background-color .15s,transform .12s;background:#256f82;color:#fff;border:1px solid #256f82}.ds-btn-accent:hover{background:#1f5f70;border-color:#1f5f70}.ds-btn-accent:active{transform:scale(.97)}.ds-btn-accent:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "custom",
+      "refersTo": "button-secondary",
+      "description": "White pill with a control edge.",
+      "html": "<button class=\"ds-btn\">Import JSON</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:8px 18px;border-radius:999px;font:500 15px/1.2 'Source Serif 4',Georgia,serif;cursor:pointer;transition:background-color .15s,transform .12s;background:#fff;color:#0a0a0a;border:1px solid #7d776d}.ds-btn:hover{background:#f4f2ee}.ds-btn:active{transform:scale(.97)}.ds-btn:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "44px field with a 3:1 border and a flush ink focus ring.",
+      "html": "<label class=\"ds-field\">Full name<input class=\"ds-input\" value=\"Ada Lovelace\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;font:600 14px 'Source Serif 4',Georgia,serif;color:#0a0a0a}.ds-input{min-height:44px;padding:8px 13px;border:1px solid #7d776d;border-radius:10px;background:#fff;color:#0a0a0a;font:400 16px 'Source Serif 4',Georgia,serif}.ds-input:focus-visible{outline:2px solid #0a0a0a;outline-offset:0;border-color:#0a0a0a}"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "custom",
+      "refersTo": "button-primary",
+      "description": "Pill tray on an inset well; the selected option fills ink.",
+      "html": "<div class=\"ds-seg\"><button class=\"ds-seg-opt\" aria-pressed=\"true\">A4</button><button class=\"ds-seg-opt\" aria-pressed=\"false\">US Letter</button></div>",
+      "css": ".ds-seg{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:#f4f2ee}.ds-seg-opt{min-height:40px;min-width:44px;padding:0 16px;border:0;border-radius:999px;background:transparent;color:#0a0a0a;font:500 15px 'Source Serif 4',Georgia,serif;cursor:pointer}.ds-seg-opt:hover{background:#cfc9c0}.ds-seg-opt[aria-pressed=true]{background:#0a0a0a;color:#fff}.ds-seg-opt:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "refersTo": "button-secondary",
+      "description": "Header pill link; the current page gets a 2px ink underline.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">Editor</a><a class=\"ds-nav-link\" href=\"#\">Templates</a></nav>",
+      "css": ".ds-nav{display:flex;gap:4px;padding:6px;background:#dedad3;border-radius:12px}.ds-nav-link{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;color:#0a0a0a;font:500 15px 'Source Serif 4',Georgia,serif;text-decoration:none}.ds-nav-link:hover{background:#cfc9c0}.ds-nav-link[aria-current=page]::after{content:'';position:absolute;left:14px;right:14px;bottom:6px;height:2px;border-radius:1px;background:#0a0a0a}.ds-nav-link:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Teal Wash pill for status; the red-pen variant flags what needs fixing.",
+      "html": "<span class=\"ds-badge\">Parsed</span> <span class=\"ds-badge ds-badge-pen\">Missing email</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;min-height:24px;padding:0 10px;border-radius:999px;background:#e3eef0;color:#1f5f70;font:600 13px 'Source Serif 4',Georgia,serif;white-space:nowrap}.ds-badge-pen{background:#fbe4e0;color:#a8291f}"
+    },
+    {
+      "name": "Template Thumbnail",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Resume paper in an inset well; lifts 3px on hover, teal wash when selected.",
+      "html": "<div class=\"ds-tpl\"><div class=\"ds-tpl-well\"><div class=\"ds-paper\"></div></div><span class=\"ds-tpl-name\">Classic</span></div>",
+      "css": ".ds-tpl{display:flex;flex-direction:column;gap:12px;width:200px;font:500 15px 'Source Serif 4',Georgia,serif;color:#0a0a0a}.ds-tpl-well{background:#f4f2ee;border-radius:12px;padding:18px}.ds-paper{height:200px;background:#fff;border-radius:2px;outline:1px solid #c9c3b9;transition:transform .2s ease}.ds-tpl:hover .ds-paper{transform:translateY(-3px)}"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "White sheet with a paper-fold edge and 16px radius; flat at rest.",
+      "html": "<section class=\"ds-panel\"><h3 class=\"ds-panel-title\">Style</h3><p class=\"ds-panel-text\">Accent, font, spacing and margins.</p></section>",
+      "css": ".ds-panel{width:280px;padding:20px;background:#fff;border:1px solid #e4e0d9;border-radius:16px;color:#0a0a0a;font:400 16px/1.5 'Source Serif 4',Georgia,serif}.ds-panel-title{margin:0 0 6px;font:400 24px/1.1 'Young Serif',Georgia,serif;letter-spacing:-.01em}.ds-panel-text{margin:0;color:#56524c}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clean Desk",
+    "overview": "A putty-colored desk with white sheets of paper laid on it. The app is the desk: calm, neutral, and out of the way. The sheets carry the work, and the resume itself is the loudest thing on screen. Everything is set in serif type with black ink, and a single teal marks the one action or the one selected thing.",
+    "keyCharacteristics": [
+      "Putty ground, white sheets, black ink; one teal for the action.",
+      "Flat at rest; only floating things (menus, dialogs, drawers, toasts) cast a shadow.",
+      "Serif voice throughout: Young Serif for display, Source Serif 4 for text.",
+      "Pill controls, 44px minimum targets, 16px sheets.",
+      "The resume paper is untouched by app styling."
+    ],
+    "rules": [
+      {
+        "name": "The One Teal Rule",
+        "body": "Teal marks the single action or the single selected item in a region. It is never used for decoration, headings or large backgrounds, with one exception: the landing page's final call-to-action panel.",
+        "section": "colors"
+      },
+      {
+        "name": "The Marks Stay Meaningful Rule",
+        "body": "Highlighter means \"a parser reads this\"; red pen means \"fix this\". Neither is borrowed for emphasis.",
+        "section": "colors"
+      },
+      {
+        "name": "The Untouched Paper Rule",
+        "body": "App tokens never reach the resume. .resume owns its own colors and fonts, and the app's stylesheet declares no element selectors (h1, p, li, a) so the resume DOM and its PDF text layer stay unchanged.",
+        "section": "colors"
+      },
+      {
+        "name": "The Five Steps Rule",
+        "body": "The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "Reading text is held to about 62ch (.measure) and balanced or pretty-wrapped. Numbers in counters and tables use tabular lining figures.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Nothing casts a shadow until it floats. Template thumbnails lift 3px on hover with a transform, not a shadow. Resume pages sit on the desk with a 1px paper-edge outline.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the desk neutral and let the white sheet carry the content; put the work on a sheet, not on the desk.",
+      "Do use Proofing Teal for the single action or selected item in a region, and Press Black for the rest of the controls.",
+      "Do keep every interactive target at least 44px and every control border at 3:1 contrast (Control Edge #7d776d).",
+      "Do separate surfaces by tone or a 1px edge; reserve the Pop shadow for what floats.",
+      "Do use the shared easings: --ease-out for feedback, --ease-settle for paper arriving, --ease-pen for the highlighter sweep. Honor prefers-reduced-motion.",
+      "Do run scripts/contrast.mjs after any token change; light and dark must both pass WCAG 2.2 AA."
+    ],
+    "donts": [
+      "Don't theme the resume paper or add element selectors (h1, p, li, a) to the app stylesheet; the resume DOM and its PDF text layer must not change.",
+      "Don't use highlighter yellow or red pen as decoration or emphasis; they carry meaning.",
+      "Don't add shadows at rest, gradient fills, glass blur, or drop shadows on cards. The only gradient is the one-color image used to draw the highlighter sweep.",
+      "Don't add icons, tables, images, position: relative on text blocks, or wide letter-spacing inside the resume body; they scramble the PDF text layer.",
+      "Don't add a sans-serif UI face or a third typeface; the serif voice is the product's tone.",
+      "Don't introduce testimonials, logos, user counts or badges that imply guaranteed ATS results."
+    ]
+  }
+}

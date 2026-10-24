@@ -14,7 +14,7 @@
  * surfaces are told apart by a tone step or a 1px edge.
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   /* Palette */
   --desk: #dedad3;        /* putty: the page ground and the app frame */
@@ -58,14 +58,21 @@
   /* Only what floats casts a shadow */
   --sh-pop: 0 4px 10px rgb(10 10 10 / 0.08), 0 18px 40px -12px rgb(10 10 10 / 0.3);
 
+  /* Motion: one curve for UI feedback, one slow settle for paper arriving, one pen stroke */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pen: cubic-bezier(0.65, 0, 0.35, 1);
+
   --header-h: 56px;
+  --bar-h: 56px;
   --gutter: 12px;
   --font-display-stack: var(--font-display), Georgia, "Times New Roman", serif;
   --font-ui-stack: var(--font-text), Georgia, "Times New Roman", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Dark is opt-in via data-theme, set before paint by the script in layout.tsx (saved choice, else the system setting). */
+:root[data-theme="dark"] {
+    color-scheme: dark;
     --desk: #111111;
     --text: #efeeec;
     --text-muted: #b4b0a8;
@@ -90,7 +97,6 @@
     --focus: #efeeec;
     --scrim: rgb(0 0 0 / 0.65);
     --sh-pop: 0 4px 10px rgb(0 0 0 / 0.4), 0 18px 40px -12px rgb(0 0 0 / 0.8);
-  }
 }
 
 @theme inline {
@@ -106,7 +112,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 ::selection { background: var(--hl); color: #0a0a0a; }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+/* In the base layer so component rules (flush field offset) can override it. */
+@layer base {
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+}
 html { scroll-padding-top: calc(var(--header-h) + 12px); }
 
 @layer components {
@@ -126,7 +135,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
     border: 1px solid var(--line-strong); border-radius: var(--r-pill);
     background: var(--surface); color: var(--text);
     font-size: 0.9375rem; font-weight: 500; line-height: 1.2; cursor: pointer; text-decoration: none;
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.12s;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.12s var(--ease-out);
   }
   .btn:hover { background: var(--surface-2); }
   .btn:active { transform: scale(0.97); }
@@ -170,7 +179,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 
   /* segmented controls (native radios stretched over the label) */
   .seg { display: inline-flex; border-radius: var(--r-pill); background: var(--surface-2); padding: 3px; gap: 2px; max-width: 100%; }
-  .seg-opt { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 44px; padding: 0 1rem; border-radius: var(--r-pill); font-size: 0.9375rem; font-weight: 500; color: var(--text); cursor: pointer; text-align: center; transition: background-color 0.15s, color 0.15s; }
+  .seg-opt { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 1rem; border-radius: var(--r-pill); font-size: 0.9375rem; font-weight: 500; color: var(--text); cursor: pointer; text-align: center; transition: background-color 0.15s, color 0.15s; }
   .seg-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
   .seg-opt:hover { background: var(--active); }
   .seg-opt:has(input:checked), .seg-opt[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
@@ -207,7 +216,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 
   /* toasts */
   .toast-region { position: fixed; z-index: 80; left: 1rem; right: 1rem; bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; pointer-events: none; }
-  .toast { pointer-events: auto; display: flex; align-items: center; gap: 0.75rem; max-width: min(100%, 460px); padding: 0.4rem 0.4rem 0.4rem 1.1rem; background: var(--primary); color: var(--on-primary); border-radius: var(--r-pill); box-shadow: var(--sh-pop); font-size: 0.9375rem; animation: toast-in 0.2s ease-out; }
+  .toast { pointer-events: auto; display: flex; align-items: center; gap: 0.75rem; max-width: min(100%, 460px); padding: 0.4rem 0.4rem 0.4rem 1.1rem; background: var(--primary); color: var(--on-primary); border-radius: var(--r-pill); box-shadow: var(--sh-pop); font-size: 0.9375rem; animation: toast-in 0.2s var(--ease-out); }
   .toast .btn { background: transparent; border-color: currentColor; color: inherit; min-height: 36px; }
   .toast .btn:hover { background: rgb(128 128 128 / 0.25); }
   @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -216,7 +225,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .dlg { margin: auto; padding: 0; width: min(94vw, 560px); max-height: 92dvh; border: 1px solid var(--line); border-radius: var(--r-sheet); background: var(--surface); color: var(--text); box-shadow: var(--sh-pop); overflow: auto; }
   .dlg::backdrop { background: var(--scrim); }
   .dlg-wide { width: min(96vw, 1000px); }
-  .dlg[open] { animation: dlg-in 0.18s ease-out; }
+  .dlg[open] { animation: dlg-in 0.18s var(--ease-settle); }
   @keyframes dlg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
   /* ---------- app shell: the header sits on the desk, no rule, no blur ---------- */
@@ -242,7 +251,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 
   /* templates gallery */
   .tpl-card { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
-  .tpl-card .paper-thumb { transition: transform 0.2s ease, box-shadow 0.2s; }
+  .tpl-card .paper-thumb { transition: transform 0.2s var(--ease-out); }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: translateY(-3px); }
   .tpl-well { background: var(--surface-2); border-radius: 12px; padding: 18px; transition: background-color 0.2s; }
   .tpl-card[data-selected="true"] .tpl-well { background: var(--tick-soft); }
@@ -252,12 +261,12 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .ats-lens .resume :is(h1, h2, h3, p, li, .dates) {
     /* taste-skill-ignore: one flat highlighter colour, drawn as an image only so background-size can sweep it across the line */
     background-image: linear-gradient(var(--hl), var(--hl)); background-repeat: no-repeat; background-size: 0% 100%;
-    transition: background-size 0.3s ease-out, color 0.3s;
+    transition: background-size 0.3s var(--ease-out), color 0.3s;
   }
   .ats-lens[data-on="true"] .resume :is(h1, h2, h3, p, li, .dates) {
     width: fit-content; max-width: 100%; background-size: 100% 100%;
     color: #17212b !important; border-color: transparent !important;
-    transition: background-size 0.55s ease-out, color 0.3s;
+    transition: background-size 0.6s var(--ease-pen), color 0.3s;
   }
   .ats-lens[data-on="true"] .resume h2 { transition-delay: 0.1s; }
   .ats-lens[data-on="true"] .resume li { transition-delay: 0.2s; }
@@ -272,13 +281,23 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .rail-tab[aria-selected="true"] { background: var(--surface-2); color: var(--text); }
   .rail-tab[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; border-radius: 1px; background: var(--text); }
   .sec-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; transition: border-color 0.15s; }
+  [data-reordering] > .sec-card { transition: border-color 0.15s, transform 0.2s var(--ease-out); }
+  [data-reordering] > .sec-card[data-dragging="true"] { transition: border-color 0.15s; will-change: transform; }
+  [data-reordering] > .sec-card[data-dropping="true"] { transition: border-color 0.15s, transform 0.18s var(--ease-out); }
   .sec-card:hover { border-color: var(--line-strong); }
   .sec-card[data-dragging="true"] { box-shadow: var(--sh-pop); border-color: var(--focus); position: relative; z-index: 5; }
+  .sec-card[data-settled="true"] { animation: settled-wash 0.9s var(--ease-out); }
+  @keyframes settled-wash { from { background-color: var(--tick-soft); } }
+  .sec-body, .panel-in { animation: panel-in 0.18s var(--ease-out); }
+  @keyframes panel-in { from { opacity: 0; } }
   .sec-card[data-hidden="true"] .sec-title { color: var(--text-muted); }
   .drag-handle { touch-action: none; cursor: grab; }
   .drag-handle:active { cursor: grabbing; }
-  .drop-line { height: 2px; border-radius: 1px; background: var(--tick-fill); margin: -2px 0; pointer-events: none; }
-  .swatch { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line-strong); cursor: pointer; padding: 0; transition: transform 0.12s; }
+  .drop-slot { position: absolute; z-index: -1; top: 0; left: 0; right: 0; margin: 0 !important; border-radius: 12px; border: 1.5px dashed var(--tick-fill); background: var(--tick-soft); pointer-events: none; transition: transform 0.2s var(--ease-out); animation: panel-in 0.15s var(--ease-out); }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reordering] > .sec-card, .drop-slot { transition: none !important; }
+  }
+  .swatch { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line-strong); cursor: pointer; padding: 0; transition: transform 0.12s; }
   .swatch:hover { transform: scale(1.06); }
   .swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--focus); }
   .tpl-pick { display: flex; flex-direction: column; gap: 0.4rem; align-items: stretch; padding: 8px; border-radius: 10px; border: 0; background: var(--surface-2); color: var(--text); font-family: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; text-align: left; transition: background-color 0.15s; }
@@ -309,20 +328,20 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .editor-grid { position: relative; padding: 0 var(--gutter) var(--gutter); }
   .pv-pane { border: 1px solid var(--line); border-radius: var(--r-sheet); overflow: hidden; background: var(--surface); }
   /* tablet: tools become a left drawer */
-  .tools { position: fixed; z-index: 70; top: 0; bottom: 0; left: 0; width: min(440px, 92vw); background: var(--surface); box-shadow: var(--sh-pop); transform: translateX(-102%); visibility: hidden; transition: transform 0.22s ease-out, visibility 0s linear 0.22s; overflow-y: auto; }
-  .tools[data-open="true"] { transform: none; visibility: visible; transition: transform 0.22s ease-out, visibility 0s; }
+  .tools { position: fixed; z-index: 70; top: 0; bottom: 0; left: 0; width: min(440px, 92vw); background: var(--surface); box-shadow: var(--sh-pop); transform: translateX(-102%); visibility: hidden; transition: transform 0.22s var(--ease-settle), visibility 0s linear 0.22s; overflow-y: auto; }
+  .tools[data-open="true"] { transform: none; visibility: visible; transition: transform 0.22s var(--ease-settle), visibility 0s; }
   .drawer-scrim { position: fixed; inset: 0; z-index: 65; background: var(--scrim); }
 }
 
 @media (min-width: 1024px) {
   .drawer-scrim { display: none; }
   .editor-grid { display: grid; grid-template-columns: clamp(420px, 38vw, 560px) minmax(0, 1fr); gap: var(--gutter); align-items: start; }
-  .tools { position: sticky; top: calc(var(--header-h) + 56px); z-index: auto; width: auto; max-height: calc(100dvh - var(--header-h) - 56px - var(--gutter)); transform: none; visibility: visible; box-shadow: none; border: 1px solid var(--line); border-radius: var(--r-sheet); transition: none; flex-direction: row; overflow: hidden; }
+  .tools { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: auto; width: auto; max-height: calc(100dvh - var(--header-h) - var(--bar-h) - var(--gutter)); transform: none; visibility: visible; box-shadow: none; border: 1px solid var(--line); border-radius: var(--r-sheet); transition: none; flex-direction: row; overflow: hidden; }
   .tools-tabs { flex-direction: column; flex: none; width: 104px; overflow: visible; border-bottom: 0; border-right: 1px solid var(--line); padding: 10px 8px; }
   .tools-tabs .rail-tab { flex-direction: column; justify-content: center; gap: 4px; padding: 8px 4px; min-height: 64px; font-size: 0.8125rem; }
   .tools-tabs .rail-tab[aria-selected="true"]::after { left: auto; right: -9px; top: 10px; bottom: 10px; width: 2px; height: auto; }
   .tools-scroll { flex: 1; min-width: 0; overflow-y: auto; }
-  .pv-pane { position: sticky; top: calc(var(--header-h) + 56px); height: calc(100dvh - var(--header-h) - 56px - var(--gutter)); }
+  .pv-pane { position: sticky; top: calc(var(--header-h) + var(--bar-h)); height: calc(100dvh - var(--header-h) - var(--bar-h) - var(--gutter)); }
 }
 
 @media (max-width: 1023.98px) { .tools-scroll { flex: 1; } }
@@ -331,7 +350,12 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: none; }
+  /* Keep the arrival of toasts and dialogs as a short fade instead of removing it. */
+  .toast, .dlg[open] { animation: fade-in 0.15s linear !important; }
+  /* A colour-only wash confirms a moved section, so it stays. */
+  .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }
 }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* Printing from the editor: show only the paper. Everything else carries .no-print
    (hidden by print.css). The wrappers around the preview are flattened here so the

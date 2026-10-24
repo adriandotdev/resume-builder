@@ -18,8 +18,14 @@ export function Reveal() {
         io.unobserve(e.target);
       }
     }, { rootMargin: "0px 0px -12% 0px" });
+    // Blocks already on screen or scrolled past (a reload mid-page) stay as they are,
+    // instead of blinking out and fading back in.
+    const fold = window.innerHeight * 0.88;
+    for (const b of blocks) {
+      if (b.getBoundingClientRect().top < fold) b.dataset.in = "true";
+      else io.observe(b);
+    }
     root.classList.add("reveal-on");
-    blocks.forEach((b) => io.observe(b));
     return () => { io.disconnect(); root.classList.remove("reveal-on"); };
   }, []);
   return null;

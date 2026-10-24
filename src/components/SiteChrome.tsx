@@ -1,12 +1,34 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Logo } from "./icons";
+import { useSyncExternalStore } from "react";
+import { IconMoon, IconSun, Logo } from "./icons";
 
 const LINKS = [
   { href: "/templates", label: "Templates" },
   { href: "/editor", label: "Editor" },
 ] as const;
+
+const subscribe = (cb: () => void) => {
+  const obs = new MutationObserver(cb);
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => obs.disconnect();
+};
+
+function ThemeToggle() {
+  const theme = useSyncExternalStore(subscribe, () => document.documentElement.dataset.theme ?? "light", () => "light");
+  const dark = theme === "dark";
+  const flip = () => {
+    const next = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch {}
+  };
+  return (
+    <button type="button" className="btn btn-quiet btn-icon" onClick={flip} aria-pressed={dark} aria-label="Dark mode" title={dark ? "Switch to light mode" : "Switch to dark mode"}>
+      {dark ? <IconSun /> : <IconMoon />}
+    </button>
+  );
+}
 
 export function SiteHeader() {
   const path = usePathname();
@@ -20,6 +42,7 @@ export function SiteHeader() {
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="nav-link" aria-current={path === l.href ? "page" : undefined}>{l.label}</Link>
         ))}
+        <ThemeToggle />
       </nav>
     </header>
   );
