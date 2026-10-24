@@ -104,7 +104,7 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
       <h2 id="style-h" className="serif text-2xl">Design</h2>
 
       <div role="radiogroup" aria-labelledby="layout-h" className="space-y-2">
-        <h3 id="layout-h" className="text-sm font-medium">Layout style</h3>
+        <h3 id="layout-h" className="text-sm font-medium">Template</h3>
         <div className="grid grid-cols-3 gap-2">
           {TEMPLATES.map((t) => (
             <button key={t.id} type="button" role="radio" aria-checked={s.template === t.id} aria-label={t.name} className="tpl-pick" onClick={() => set({ template: t.id })} data-testid={`pick-${t.id}`}>

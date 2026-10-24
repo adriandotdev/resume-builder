@@ -20,8 +20,8 @@ export function SaveStatus() {
   else text = "Changes save in this browser";
 
   return (
-    <p className={`flex items-center gap-1.5 text-sm ${tone === "warn" ? "font-medium text-[var(--pen-text)]" : "text-[var(--text-muted)]"}`} data-testid="save-status">
-      {tone === "warn" ? <IconWarn size={16} /> : tone === "ok" ? <span className="text-[var(--tick-text)]"><IconTick size={16} /></span> : null}
+    <p className={`flex items-start gap-1.5 text-sm ${tone === "warn" ? "font-medium text-[var(--pen-text)]" : "text-[var(--text-muted)]"}`} data-testid="save-status">
+      {tone === "warn" ? <span className="shrink-0"><IconWarn size={16} /></span> : tone === "ok" ? <span className="shrink-0 text-[var(--tick-text)]"><IconTick size={16} /></span> : null}
       <span>{text}</span>
     </p>
   );

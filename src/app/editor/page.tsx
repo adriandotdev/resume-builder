@@ -84,12 +84,12 @@ export default function EditorPage() {
 
   return (
     <div className="editor-root">
-      <div className="editor-bar no-print sticky z-30" style={{ top: "var(--header-h)", height: 56 }}>
-        <div className="flex h-full items-center gap-3 px-4 sm:px-6">
+      <div className="editor-bar no-print sticky z-30" style={{ top: "var(--header-h)", minHeight: "var(--bar-h)" }} inert={drawerActive || sheetActive}>
+        <div className="flex min-h-[var(--bar-h)] items-center gap-3 px-4 py-1 sm:px-6">
           <button type="button" className="btn hidden md:inline-flex lg:hidden" onClick={() => setToolsOpen(true)} aria-haspopup="dialog" data-testid="open-tools"><IconEdit size={18} />Edit resume</button>
           <div className="flex min-w-0 items-baseline gap-x-3 max-sm:flex-col max-sm:gap-0">
             <h1 className="truncate text-base font-semibold" data-testid="doc-name">{docName || "Untitled resume"}<span className="sr-only">, resume editor</span></h1>
-            <div className="min-w-0 shrink-0"><SaveStatus /></div>
+            <div className="min-w-0"><SaveStatus /></div>
           </div>
           <button type="button" className="btn btn-primary ml-auto hidden md:inline-flex" onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
         </div>
@@ -97,7 +97,7 @@ export default function EditorPage() {
 
       <div className="editor-grid">
         {drawerActive && <div className="drawer-scrim no-print" onClick={closeTools} aria-hidden="true" />}
-        <aside ref={toolsRef} className="tools no-print" aria-label="Editing tools" data-open={drawerActive} onKeyDown={toolsKeys}>
+        <aside ref={toolsRef} className="tools no-print" aria-label="Editing tools" data-open={drawerActive} onKeyDown={toolsKeys} role={drawerActive ? "dialog" : undefined} aria-modal={drawerActive || undefined} inert={sheetActive}>
           <div className="tools-head hidden items-center justify-between border-b border-[var(--line)] px-4 py-2 md:flex lg:hidden">
             <span className="serif text-xl">Edit resume</span>
             <button type="button" className="btn btn-quiet" onClick={closeTools}><IconClose size={18} />Close</button>
@@ -111,7 +111,7 @@ export default function EditorPage() {
             ))}
           </div>
           <div className="tools-scroll">
-            <div id="tools-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="tools-body @container" tabIndex={-1}>
+            <div key={tab} id="tools-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="tools-body panel-in @container" tabIndex={-1}>
               {tab === "content" && (
                 <div className="space-y-5">
                   {isSample && (
@@ -131,7 +131,7 @@ export default function EditorPage() {
           </div>
         </aside>
 
-        <section ref={paneRef} className="pv-pane" data-open={sheetActive} aria-label="Resume preview" onKeyDown={paneKeys}>
+        <section ref={paneRef} className="pv-pane" data-open={sheetActive} aria-label="Resume preview" onKeyDown={paneKeys} role={sheetActive ? "dialog" : undefined} aria-modal={sheetActive || undefined} inert={drawerActive}>
           <div className="pv-toolbar no-print flex flex-wrap items-center gap-x-4 gap-y-2 px-3 py-2 sm:px-4">
             <button type="button" className="btn md:hidden" onClick={closePv} data-autofocus><IconClose size={18} />Back to editing</button>
             <div role="group" aria-label="Preview mode" className="seg">
@@ -153,7 +153,7 @@ export default function EditorPage() {
                 </select>
               </div>
               <div className="field !flex-row items-center !gap-2">
-                <label htmlFor="q-page" className="whitespace-nowrap">Page size</label>
+                <label htmlFor="q-page" className="whitespace-nowrap">Paper size</label>
                 <select id="q-page" className="input !w-auto" value={doc.style.pageSize} onChange={(e) => resumeStore.update((d) => patchStyle(d, { pageSize: e.target.value as PageSizeId }))}>
                   {(Object.keys(PAGE_SIZES) as PageSizeId[]).map((k) => <option key={k} value={k}>{PAGE_SIZES[k].label}</option>)}
                 </select>
@@ -165,7 +165,7 @@ export default function EditorPage() {
               <ResumePreview doc={doc} onPages={setPages} zoom={zoom} />
             ) : (
               <div className="no-print mx-auto max-w-[820px]">
-                <p className="mb-3 text-[var(--text-muted)]">This is the text an ATS would read, in reading order. Highlighted text is what gets extracted.</p>
+                <p className="mb-3 text-[var(--text-muted)]">This is the text an ATS would read, in reading order. Check that nothing is missing or out of order.</p>
                 <pre className="paper-edge whitespace-pre-wrap rounded-[var(--r-paper)] bg-white p-5 font-mono text-sm leading-relaxed text-[#17212b]" data-testid="ats-text"><mark className="text-[#17212b]" style={{ background: "var(--hl)", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{toPlainText(doc)}</mark></pre>
               </div>
             )}
