@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState, type ReactNode } from "react";
 import { MARGINS, PAGE_SIZES, type ResumeDoc } from "@/lib/schema";
 import { getTemplate } from "@/templates/registry";
 import { useElementWidth } from "./useElementWidth";
@@ -13,7 +13,8 @@ export function PageStyle({ doc }: { doc: ResumeDoc }) {
   return <style>{`@page { size: ${p.w}mm ${p.h}mm; margin: ${m}mm; }`}</style>;
 }
 
-export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = "fit" }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual" }) {
+/** The paper sheet at the chosen size, scaled to fit. Shows the resume, or `body` (the cover letter) in its place. */
+export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = "fit", body }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual"; body?: ReactNode }) {
   const [stageRef, stageW] = useElementWidth<HTMLDivElement>();
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetH, setSheetH] = useState(0);
@@ -49,7 +50,7 @@ export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = 
             style={{ width: pageW, minHeight: pageH, padding: margin, boxSizing: "border-box" }}
             data-testid="preview-sheet"
           >
-            <Component doc={doc} idPrefix="pv" />
+            {body ?? <Component doc={doc} idPrefix="pv" />}
           </div>
         </div>
       </div>

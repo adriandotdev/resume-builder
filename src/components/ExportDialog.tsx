@@ -4,13 +4,13 @@ import { useVersionIndex } from "@/lib/versionsStore";
 import { Modal } from "./Modal";
 import { IconClose, IconDownload, IconTick } from "./icons";
 
-export function ExportDialog({ open, onClose, doc }: { open: boolean; onClose: () => void; doc: ResumeDoc }) {
+export function ExportDialog({ open, onClose, doc, kind = "resume" }: { open: boolean; onClose: () => void; doc: ResumeDoc; kind?: "resume" | "letter" }) {
   const size = PAGE_SIZES[doc.style.pageSize].label;
   const index = useVersionIndex();
   const versionName = index.versions.find((v) => v.id === index.activeId)?.name ?? "";
   const contact = doc.sections.find((s) => s.type === "contact");
   const fullName = contact?.type === "contact" ? contact.content.fullName.trim() : "";
-  const fileTitle = [fullName, versionName].filter(Boolean).join(" - ");
+  const fileTitle = [fullName, kind === "letter" ? "Cover letter" : "", versionName].filter(Boolean).join(" - ");
   const print = () => {
     onClose();
     setTimeout(() => {
@@ -27,7 +27,7 @@ export function ExportDialog({ open, onClose, doc }: { open: boolean; onClose: (
     <Modal open={open} onClose={onClose} labelledBy="export-h" testId="export-dialog">
       <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
-          <h2 id="export-h" className="display text-3xl">Save as PDF</h2>
+          <h2 id="export-h" className="display text-3xl">{kind === "letter" ? "Save the letter as PDF" : "Save as PDF"}</h2>
           <button type="button" className="btn btn-quiet btn-icon -mr-2" aria-label="Close" onClick={onClose}><IconClose /></button>
         </div>
         <p className="mt-2 text-[var(--text-muted)]">Your browser makes the PDF, so the text stays real and selectable. In the print dialog that opens:</p>

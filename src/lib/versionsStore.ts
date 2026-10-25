@@ -3,18 +3,21 @@ import { useSyncExternalStore } from "react";
 import { createDefaultDoc, newId, parseResumeDoc, type ResumeDoc } from "./schema";
 import { browserStorage, resumeStore, startResumeStore, type KeyValueStorage, type createResumeStore } from "./store";
 import { jobPostingStore, startJobPosting, type createJobPostingStore } from "./jobPostingStore";
+import { coverStore, startCoverStore, type createCoverStore } from "./coverStore";
+import { parseCoverLetter, type CoverLetter } from "./cover";
 import {
-  bootActiveId, DEFAULT_VERSION_NAME, docKey, jdKey, makeBundle, memoryIndex, normalizeName, readIndex, uniqueName, writeIndex,
+  bootActiveId, coverKey, DEFAULT_VERSION_NAME, docKey, jdKey, makeBundle, memoryIndex, normalizeName, readIndex, uniqueName, writeIndex,
   type VersionIndex, type VersionMeta,
 } from "./versions";
 
 type ResumeStore = ReturnType<typeof createResumeStore>;
 type PostingStore = ReturnType<typeof createJobPostingStore>;
+type CoverStore = ReturnType<typeof createCoverStore>;
 
 /** Everything needed to put a deleted version back (the Undo toast). */
-export interface RemovedVersion { meta: VersionMeta; position: number; doc: ResumeDoc; jd: string; wasActive: boolean }
+export interface RemovedVersion { meta: VersionMeta; position: number; doc: ResumeDoc; jd: string; cover: CoverLetter | null; wasActive: boolean }
 
-export interface VersionsStoreDeps { storage?: KeyValueStorage | null; resume: ResumeStore; posting: PostingStore }
+export interface VersionsStoreDeps { storage?: KeyValueStorage | null; resume: ResumeStore; posting: PostingStore; cover?: CoverStore }
 
 /**
  * The list of resume versions. Each version is a resume doc plus its job posting, stored under
@@ -22,12 +25,13 @@ export interface VersionsStoreDeps { storage?: KeyValueStorage | null; resume: R
  * the app never needs to know versions exist. When storage is blocked, versions live in memory
  * for the session.
  */
-export function createVersionsStore({ storage: initialStorage = null, resume, posting }: VersionsStoreDeps) {
+export function createVersionsStore({ storage: initialStorage = null, resume, posting, cover }: VersionsStoreDeps) {
   let storage = initialStorage;
   let memoryMode = true;
   let index: VersionIndex = memoryIndex();
   const memDocs = new Map<string, ResumeDoc>();
   const memJd = new Map<string, string>();
+  const memCovers = new Map<string, CoverLetter>();
   const listeners = new Set<() => void>();
   const emit = () => listeners.forEach((l) => l());
   const commit = () => { if (!memoryMode) writeIndex(storage, index); emit(); };
@@ -57,13 +61,26 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     if (memoryMode) return memJd.get(id) ?? "";
     try { return storage?.getItem(jdKey(id)) ?? ""; } catch { return ""; }
   }
-  function writeData(id: string, doc: ResumeDoc, jd: string) {
-    if (memoryMode) { memDocs.set(id, doc); memJd.set(id, jd); return; }
-    try { storage?.setItem(docKey(id), JSON.stringify(doc)); storage?.setItem(jdKey(id), jd); } catch { /* the version stays in the index; its doc loads as the sample */ }
+  /** The saved letter, or null when this version never had one (the template then applies). */
+  function readCover(id: string): CoverLetter | null {
+    if (id === index.activeId && cover) return cover.getState();
+    if (memoryMode) return memCovers.get(id) ?? null;
+    try {
+      const raw = storage?.getItem(coverKey(id));
+      return raw == null ? null : parseCoverLetter(JSON.parse(raw));
+    } catch { return null; }
+  }
+  function writeData(id: string, doc: ResumeDoc, jd: string, letter?: CoverLetter | null) {
+    if (memoryMode) { memDocs.set(id, doc); memJd.set(id, jd); if (letter) memCovers.set(id, letter); return; }
+    try {
+      storage?.setItem(docKey(id), JSON.stringify(doc));
+      storage?.setItem(jdKey(id), jd);
+      if (letter) storage?.setItem(coverKey(id), JSON.stringify(letter));
+    } catch { /* the version stays in the index; its doc loads as the sample */ }
   }
   function eraseData(id: string) {
-    memDocs.delete(id); memJd.delete(id);
-    try { storage?.removeItem?.(docKey(id)); storage?.removeItem?.(jdKey(id)); } catch { /* leaves a small orphan */ }
+    memDocs.delete(id); memJd.delete(id); memCovers.delete(id);
+    try { storage?.removeItem?.(docKey(id)); storage?.removeItem?.(jdKey(id)); storage?.removeItem?.(coverKey(id)); } catch { /* leaves a small orphan */ }
   }
 
   /** Save what the active version holds before leaving it. */
@@ -71,17 +88,19 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     const id = index.activeId;
     resume.flush();
     posting.flush();
+    cover?.flush();
     // Always write, not only when an edit is pending: an untouched version has no saved doc yet.
-    writeData(id, resume.getState(), posting.getText());
+    writeData(id, resume.getState(), posting.getText(), cover?.getState());
     index = { ...index, versions: index.versions.map((v) => (v.id === id ? { ...v, updatedAt: Date.now() } : v)) };
   }
 
   /** Make `id` the active version. Seeds are used for new or copied versions; otherwise the data is read back. */
-  function activate(id: string, seedDoc?: ResumeDoc, seedJd?: string) {
+  function activate(id: string, seedDoc?: ResumeDoc, seedJd?: string, seedCover?: CoverLetter | null) {
     index = { ...index, activeId: id };
     if (!memoryMode) writeIndex(storage, index);
     resume.switchKey(docKey(id), seedDoc ?? (memoryMode ? memDocs.get(id) : undefined));
     posting.switchKey(jdKey(id), seedJd ?? (memoryMode ? memJd.get(id) ?? "" : undefined));
+    cover?.switchKey(coverKey(id), seedCover ?? (memoryMode ? memCovers.get(id) : undefined));
     emit();
   }
 
@@ -93,12 +112,12 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
   }
 
   /** Add a version and open it. Blank unless `doc` is given. Returns the new id. */
-  function create(name?: string, doc?: ResumeDoc, jd = ""): string {
+  function create(name?: string, doc?: ResumeDoc, jd = "", letter?: CoverLetter | null): string {
     stash();
     const id = newId("v");
     const meta: VersionMeta = { id, name: uniqueName(names(), name ?? "New resume"), updatedAt: Date.now() };
     index = { ...index, versions: [...index.versions, meta] };
-    activate(id, doc ?? createDefaultDoc(), jd);
+    activate(id, doc ?? createDefaultDoc(), jd, letter);
     return id;
   }
 
@@ -106,7 +125,8 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     const source = index.versions.find((v) => v.id === id);
     const doc = source && readDoc(id);
     if (!source || !doc) return null;
-    return create(name ?? `Copy of ${source.name}`, JSON.parse(JSON.stringify(doc)) as ResumeDoc, readJd(id));
+    const letter = readCover(id);
+    return create(name ?? `Copy of ${source.name}`, JSON.parse(JSON.stringify(doc)) as ResumeDoc, readJd(id), letter && (JSON.parse(JSON.stringify(letter)) as CoverLetter));
   }
 
   /** Returns the name actually used (made unique), or null when nothing changed. */
@@ -124,7 +144,7 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     const position = index.versions.findIndex((v) => v.id === id);
     if (position < 0 || index.versions.length <= 1) return null;
     const wasActive = id === index.activeId;
-    const removed: RemovedVersion = { meta: index.versions[position], position, doc: readDoc(id) ?? createDefaultDoc(), jd: readJd(id), wasActive };
+    const removed: RemovedVersion = { meta: index.versions[position], position, doc: readDoc(id) ?? createDefaultDoc(), jd: readJd(id), cover: readCover(id), wasActive };
     const versions = index.versions.filter((v) => v.id !== id);
     index = { ...index, versions };
     if (wasActive) activate(versions[Math.min(position, versions.length - 1)].id);
@@ -135,25 +155,25 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
 
   /** Undo a delete: put the version back where it was, and reopen it if it was the active one. */
   function restore(removed: RemovedVersion): string {
-    const { meta, position, doc, jd, wasActive } = removed;
+    const { meta, position, doc, jd, cover: letter, wasActive } = removed;
     if (index.versions.some((v) => v.id === meta.id)) return meta.id;
     const versions = [...index.versions];
     versions.splice(Math.min(position, versions.length), 0, { ...meta, name: uniqueName(names(), meta.name) });
     if (wasActive) {
       stash();
       index = { ...index, versions };
-      activate(meta.id, doc, jd);
+      activate(meta.id, doc, jd, letter);
     } else {
-      writeData(meta.id, doc, jd);
+      writeData(meta.id, doc, jd, letter);
       index = { ...index, versions };
       commit();
     }
     return meta.id;
   }
 
-  /** Every version's doc for "Export all". Postings are never included. */
+  /** Every version's doc and cover letter for "Export all". Postings are never included. */
   function exportAll(applications?: unknown[]) {
-    return makeBundle(index.versions.flatMap((v) => { const doc = readDoc(v.id); return doc ? [{ id: v.id, name: v.name, doc }] : []; }), applications);
+    return makeBundle(index.versions.flatMap((v) => { const doc = readDoc(v.id); if (!doc) return []; const letter = readCover(v.id); return [letter ? { id: v.id, name: v.name, doc, cover: letter } : { id: v.id, name: v.name, doc }]; }), applications);
   }
 
   return {
@@ -164,13 +184,14 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
   };
 }
 
-export const versionsStore = createVersionsStore({ resume: resumeStore, posting: jobPostingStore });
+export const versionsStore = createVersionsStore({ resume: resumeStore, posting: jobPostingStore, cover: coverStore });
 let started = false;
 function start() {
   if (started || typeof window === "undefined") return;
   started = true;
   startResumeStore();
   startJobPosting();
+  startCoverStore();
   versionsStore.setStorage(browserStorage());
   versionsStore.load();
 }
