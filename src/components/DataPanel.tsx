@@ -6,6 +6,7 @@ import { newId, parseResumeDoc, type ResumeDoc } from "@/lib/schema";
 import { resumeStore, useStoreStatus } from "@/lib/store";
 import { fileSlug, isBundle } from "@/lib/versions";
 import { parseApplications, remapVersions } from "@/lib/applications";
+import { parseCoverLetter, type CoverLetter } from "@/lib/cover";
 import { applicationsStore, useApplications } from "@/lib/applicationsStore";
 import { useVersionIndex, versionsStore } from "@/lib/versionsStore";
 import { IconDownload, IconDoc, IconUndo } from "./icons";
@@ -52,7 +53,7 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
     let raw: unknown;
     try { raw = JSON.parse(await file.text()); } catch { setErrors(["File is not valid JSON"]); return; }
 
-    const incoming: { name: string; doc: ResumeDoc; oldId?: string }[] = [];
+    const incoming: { name: string; doc: ResumeDoc; oldId?: string; cover?: CoverLetter | null }[] = [];
     let incomingApps: ReturnType<typeof parseApplications> = [];
     let migratedFrom: number | undefined;
     if (isBundle(raw)) {
@@ -60,8 +61,8 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
       raw.versions.forEach((v, i) => {
         const res = parseResumeDoc(typeof v === "object" && v !== null ? (v as { doc?: unknown }).doc : undefined);
         if (res.ok) {
-          const { name, id } = v as { name?: unknown; id?: unknown };
-          incoming.push({ name: String(name ?? ""), doc: res.doc, oldId: typeof id === "string" ? id : undefined });
+          const { name, id, cover } = v as { name?: unknown; id?: unknown; cover?: unknown };
+          incoming.push({ name: String(name ?? ""), doc: res.doc, oldId: typeof id === "string" ? id : undefined, cover: cover === undefined ? undefined : parseCoverLetter(cover) });
         }
         else problems.push(...res.errors.map((e) => `Version ${i + 1}: ${e}`));
       });
@@ -75,7 +76,7 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
     }
 
     const previousId = index.activeId;
-    const addedIds = incoming.map((v) => versionsStore.create(v.name || "Imported resume", v.doc));
+    const addedIds = incoming.map((v) => versionsStore.create(v.name || "Imported resume", v.doc, "", v.cover));
     // Imported versions get new ids, so applications are re-pointed at them. Application ids are
     // regenerated too, so importing the same file twice never collides with what is already here.
     const idMap = new Map(incoming.flatMap((v, i) => (v.oldId ? [[v.oldId, addedIds[i]] as const] : [])));

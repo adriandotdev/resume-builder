@@ -17,6 +17,7 @@ export interface VersionIndex { activeId: string; versions: VersionMeta[] }
 
 export const docKey = (id: string) => `${LEGACY_DOC_KEY}:${id}`;
 export const jdKey = (id: string) => `${LEGACY_JD_KEY}:${id}`;
+export const coverKey = (id: string) => `resume-builder:cover:v1:${id}`;
 
 export function memoryIndex(): VersionIndex {
   return { activeId: MEMORY_VERSION_ID, versions: [{ id: MEMORY_VERSION_ID, name: DEFAULT_VERSION_NAME, updatedAt: 0 }] };
@@ -99,8 +100,8 @@ export function bootActiveId(storage: KeyValueStorage | null): string {
   return id;
 }
 
-/** `id` and `applications` are optional so bundles written before the tracker still import. */
-export interface BundleVersion { name: string; doc: unknown; id?: string }
+/** `id`, `cover` and `applications` are optional so older bundles still import. */
+export interface BundleVersion { name: string; doc: unknown; id?: string; cover?: unknown }
 export interface ResumeBundle { kind: typeof BUNDLE_KIND; versions: BundleVersion[]; applications?: unknown }
 
 export function isBundle(raw: unknown): raw is ResumeBundle {

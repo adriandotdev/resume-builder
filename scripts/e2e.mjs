@@ -432,6 +432,42 @@ await page.getByLabel("Status").selectOption("rejected");
 await page.getByTestId("save-application").click();
 check("applications: filter falls back to All when its last row moves", await page.getByTestId("application").count() === 1 && await page.getByLabel(/^All \(1\)/).isChecked());
 
+// cover letter
+await page.goto(`${BASE}/editor`);
+await page.waitForSelector("[data-resume]");
+await page.getByRole("tab", { name: /Letter/ }).click();
+await page.getByTestId("cover-panel").waitFor();
+check("letter: a fresh version starts from the template with a placeholder warning", await page.getByTestId("cover-block").count() === 5 && await page.getByTestId("cover-missing").isVisible());
+await page.getByLabel("Company", { exact: true }).fill("Northgate Freight");
+await page.getByLabel("Role", { exact: true }).fill("Operations Analyst");
+await page.getByLabel("Hiring manager (optional)").fill("Sam Lee");
+const letterSheet = await page.getByTestId("preview-sheet").innerText();
+check("letter: preview takes name from the resume and company, role and manager from the fields", letterSheet.includes("Elena Marchetti") && letterSheet.includes("Dear Sam Lee,") && letterSheet.includes("Operations Analyst position at Northgate Freight") && !letterSheet.includes("[Company]"), letterSheet.slice(0, 80));
+await page.getByRole("button", { name: "Actions for Opening" }).click();
+await page.getByRole("menuitem", { name: "Remove Opening" }).click();
+check("letter: removing a block shows Undo", await page.getByTestId("cover-block").count() === 4 && await page.getByTestId("toast").getByRole("button", { name: "Undo" }).isVisible());
+await page.getByTestId("toast").getByRole("button", { name: "Undo" }).click();
+check("letter: Undo puts the block back", await page.getByTestId("cover-block").count() === 5);
+await page.reload();
+await page.getByRole("tab", { name: /Letter/ }).click();
+check("letter: saved across reload", await page.getByLabel("Company", { exact: true }).inputValue() === "Northgate Freight");
+const storedCover = JSON.parse((await storedFor(page, "cover")) ?? "{}");
+check("letter: stored under the active version's cover key", storedCover.company === "Northgate Freight" && storedCover.blocks?.length === 5);
+await page.getByTestId("print-btn").click();
+await page.getByTestId("export-dialog").waitFor();
+check("letter: export dialog says it saves the letter", await page.getByRole("heading", { name: "Save the letter as PDF" }).isVisible());
+await page.keyboard.press("Escape");
+await page.goto(`${BASE}/print/cover`);
+await page.waitForSelector("[data-letter]");
+await page.pdf({ path: `${OUT}/cover-a4.pdf`, preferCSSPageSize: true, printBackground: true });
+const coverPdf = await pdfInfo(`${OUT}/cover-a4.pdf`);
+const at = (t) => coverPdf.text.indexOf(t);
+check("letter: PDF is one page with a real text layer in reading order", coverPdf.pages === 1 && at("Elena Marchetti") >= 0 && at("Elena Marchetti") < at("Dear Sam Lee") && at("Dear Sam Lee") < at("Operations Analyst position") && at("Operations Analyst position") < at("Sincerely"), `pages=${coverPdf.pages}`);
+await page.goto(`${BASE}/editor`);
+await page.getByRole("tab", { name: /Data/ }).click();
+const bundleJson = await page.evaluate(() => { const raw = Object.keys(localStorage).find((k) => k.startsWith("resume-builder:cover:v1:")); return raw ? localStorage.getItem(raw) : null; });
+check("letter: exists in storage for the Data export", !!bundleJson);
+
 // dark scheme: chrome themes, paper stays white
 const d = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
 const dp = await d.newPage();

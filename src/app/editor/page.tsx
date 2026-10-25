@@ -15,16 +15,20 @@ import { StylePanel } from "@/components/StylePanel";
 import { AtsPanel } from "@/components/AtsPanel";
 import type { WriteInTarget } from "@/lib/ops";
 import { DataPanel } from "@/components/DataPanel";
+import { CoverPanel } from "@/components/CoverPanel";
+import { CoverLetterBody } from "@/components/CoverPreview";
+import { useCoverLetter } from "@/lib/coverStore";
+import { letterPlainText } from "@/lib/cover";
 import { ExportDialog } from "@/components/ExportDialog";
 import { SaveStatus } from "@/components/SaveStatus";
 import { VersionSwitcher } from "@/components/VersionSwitcher";
-import { IconClose, IconData, IconDownload, IconEdit, IconEye, IconPalette, IconShield } from "@/components/icons";
+import { IconClose, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconPalette, IconShield } from "@/components/icons";
 import { useMediaQuery } from "@/components/useMediaQuery";
 import { useDialogFocus } from "@/components/useDialogFocus";
 import { useToast } from "@/components/Toast";
 import { isSampleDoc } from "@/lib/ui";
 
-type Tab = "content" | "design" | "ats" | "data";
+type Tab = "content" | "design" | "ats" | "letter" | "data";
 type View = "design" | "ats";
 type Zoom = "fit" | "actual";
 
@@ -32,11 +36,13 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "content", label: "Content", icon: <IconEdit size={20} /> },
   { id: "design", label: "Design", icon: <IconPalette size={20} /> },
   { id: "ats", label: "ATS check", icon: <IconShield size={20} /> },
+  { id: "letter", label: "Letter", icon: <IconDoc size={20} /> },
   { id: "data", label: "Data", icon: <IconData size={20} /> },
 ];
 
 export default function EditorPage() {
   const doc = useResumeDoc();
+  const letter = useCoverLetter();
   const toast = useToast();
   const [tab, setTab] = useState<Tab>("content");
   const [toolsOpen, setToolsOpen] = useState(false); // tablet drawer
@@ -51,6 +57,7 @@ export default function EditorPage() {
   const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023.98px)");
   const drawerActive = toolsOpen && isTablet;
   const sheetActive = pvOpen && isPhone;
+  const isLetter = tab === "letter";
 
   const toolsRef = useRef<HTMLElement>(null);
   const paneRef = useRef<HTMLElement>(null);
@@ -142,12 +149,13 @@ export default function EditorPage() {
               )}
               {tab === "design" && <StylePanel doc={doc} />}
               {tab === "ats" && <AtsPanel doc={doc} onWriteIn={onWriteIn} />}
+              {tab === "letter" && <CoverPanel doc={doc} />}
               {tab === "data" && <DataPanel doc={doc} />}
             </motion.div>
           </div>
         </aside>
 
-        <section ref={paneRef} className="pv-pane" data-open={sheetActive} aria-label="Resume preview" onKeyDown={paneKeys} role={sheetActive ? "dialog" : undefined} aria-modal={sheetActive || undefined} inert={drawerActive}>
+        <section ref={paneRef} className="pv-pane" data-open={sheetActive} aria-label={isLetter ? "Cover letter preview" : "Resume preview"} onKeyDown={paneKeys} role={sheetActive ? "dialog" : undefined} aria-modal={sheetActive || undefined} inert={drawerActive}>
           <div className="pv-toolbar no-print flex flex-wrap items-center gap-x-4 gap-y-2 px-3 py-2 sm:px-4">
             <button type="button" className="btn md:hidden" onClick={closePv} data-autofocus><IconClose size={18} />Back to editing</button>
             <div role="group" aria-label="Preview mode" className="seg">
@@ -176,16 +184,16 @@ export default function EditorPage() {
               </div>
             </div>
           </div>
-          <div className="pv-scroll" tabIndex={0} role="region" aria-label="Resume preview, scrollable">
+          <div className="pv-scroll" tabIndex={0} role="region" aria-label={isLetter ? "Cover letter preview, scrollable" : "Resume preview, scrollable"}>
             {view === "design" ? (
-              <ResumePreview doc={doc} onPages={setPages} zoom={zoom} />
+              <ResumePreview doc={doc} onPages={setPages} zoom={zoom} body={isLetter ? <CoverLetterBody doc={doc} letter={letter} /> : undefined} />
             ) : (
               <div className="no-print mx-auto max-w-[820px]">
-                <p className="mb-3 text-[var(--text-muted)]">This is the text an ATS would read, in reading order. Check that nothing is missing or out of order.</p>
-                <pre className="paper-edge whitespace-pre-wrap rounded-[var(--r-paper)] bg-white p-5 font-mono text-sm leading-relaxed text-[#17212b]" data-testid="ats-text"><mark className="text-[#17212b]" style={{ background: "var(--hl)", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{toPlainText(doc)}</mark></pre>
+                <p className="mb-3 text-[var(--text-muted)]">{isLetter ? "This is the letter as plain text, in reading order. Check that nothing is missing or out of order." : "This is the text an ATS would read, in reading order. Check that nothing is missing or out of order."}</p>
+                <pre className="paper-edge whitespace-pre-wrap rounded-[var(--r-paper)] bg-white p-5 font-mono text-sm leading-relaxed text-[#17212b]" data-testid="ats-text"><mark className="text-[#17212b]" style={{ background: "var(--hl)", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{isLetter ? letterPlainText(doc, letter) : toPlainText(doc)}</mark></pre>
               </div>
             )}
-            {view === "ats" && <div className="hidden print:block"><ResumePreview doc={doc} /></div>}
+            {view === "ats" && <div className="hidden print:block"><ResumePreview doc={doc} body={isLetter ? <CoverLetterBody doc={doc} letter={letter} /> : undefined} /></div>}
           </div>
         </section>
       </div>
@@ -197,7 +205,7 @@ export default function EditorPage() {
         <button type="button" className="bar-btn" onClick={() => setExportOpen(true)} aria-haspopup="dialog"><IconDownload size={20} />Export</button>
       </nav>
 
-      <ExportDialog open={exportOpen} onClose={() => setExportOpen(false)} doc={doc} />
+      <ExportDialog open={exportOpen} onClose={() => setExportOpen(false)} doc={doc} kind={isLetter ? "letter" : "resume"} />
     </div>
   );
 }

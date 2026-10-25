@@ -124,3 +124,7 @@
 @supports (color: oklch(from red l c h)) {
   .tpl-bold h2 { color: oklch(from var(--r-accent) clamp(0, (0.64 - l) * 1000, 1) 0 0); }
 }
+
+/* Cover letter: paragraphs under the same header the resume uses. */
+.resume .letter-body { margin-top: 1.4em; }
+.resume .letter-block + .letter-block { margin-top: .9em; }
