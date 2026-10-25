@@ -1,4 +1,6 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE, enter } from "@/lib/motion";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TEMPLATES } from "@/templates/registry";
@@ -41,6 +43,7 @@ export default function TemplatesPage() {
       <div className="tab-row mt-6" role="group" aria-label="Filter templates">
         {TEMPLATE_FILTERS.map((f) => (
           <button key={f} type="button" className="chip" aria-pressed={filter === f} onClick={() => setFilter(f)} data-testid={`filter-${f}`}>
+            {filter === f && <motion.span layoutId="chip-ind" className="chip-ind" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
             {CHIP_LABEL[f]}<span className="chip-count">{filterByTag(TEMPLATES, f).length}</span>
           </button>
         ))}
@@ -48,10 +51,11 @@ export default function TemplatesPage() {
       <p className="sr-only" role="status" aria-live="polite">Showing {shown.length} of {TEMPLATES.length} templates</p>
 
       <ul className="tpl-grid mt-6">
-        {shown.map((t) => {
+        <AnimatePresence mode="popLayout" initial>
+        {shown.map((t, i) => {
           const selected = current === t.id;
           return (
-            <li key={t.id} className="tpl-card" data-template={t.id} data-selected={selected}>
+            <motion.li key={t.id} layout="position" {...enter(i)} exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.15 } }} className="tpl-card" data-template={t.id} data-selected={selected}>
               <div className="tpl-well">
                 <button type="button" className="paper-thumb" onClick={() => setPreview(t)} aria-label={`Preview the ${t.name} template larger`}>
                   <Thumbnail doc={docFor(t)} uid={t.id} />
@@ -68,9 +72,10 @@ export default function TemplatesPage() {
                 </button>
                 <button type="button" className="btn btn-quiet" onClick={() => setPreview(t)}>Preview</button>
               </div>
-            </li>
+            </motion.li>
           );
         })}
+        </AnimatePresence>
       </ul>
 
       <Modal open={!!preview} onClose={() => setPreview(null)} labelledBy="tpl-modal-h" wide testId="template-modal">

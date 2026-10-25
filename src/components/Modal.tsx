@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useRef, type KeyboardEvent, type ReactNode } from "react";
+import { animate } from "motion/react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { EASE } from "@/lib/motion";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -10,15 +12,30 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
  */
 export function Modal({ open, onClose, labelledBy, children, wide = false, testId }: { open: boolean; onClose: () => void; labelledBy: string; children: ReactNode; wide?: boolean; testId?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
+  // Content stays mounted while the exit plays, so the dialog doesn't collapse before it fades.
+  const [closing, setClosing] = useState(false);
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) { setPrevOpen(open); setClosing(!open); }
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
-    if (open && !d.open) {
-      d.showModal();
-      const first = d.querySelector<HTMLElement>("[data-autofocus]") ?? d.querySelector<HTMLElement>(FOCUSABLE);
-      first?.focus();
+    if (open) {
+      // The exit animation leaves its end state inline (opacity 0), and may be cut short by a reopen.
+      // Clear it here, at the start of every open, so a stale value can never hide the dialog.
+      d.style.opacity = "";
+      d.style.transform = "";
+      if (!d.open) {
+        d.showModal();
+        const first = d.querySelector<HTMLElement>("[data-autofocus]") ?? d.querySelector<HTMLElement>(FOCUSABLE);
+        first?.focus();
+      }
+      return;
     }
-    if (!open && d.open) d.close();
+    if (!d.open) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const a = animate(d, { opacity: 0, y: reduced ? 0 : 8 }, { duration: reduced ? 0.01 : 0.14, ease: EASE });
+    a.then(() => { d.close(); setClosing(false); });
+    return () => a.stop();
   }, [open]);
 
   const onKeyDown = (e: KeyboardEvent<HTMLDialogElement>) => {
@@ -41,7 +58,7 @@ export function Modal({ open, onClose, labelledBy, children, wide = false, testI
       onKeyDown={onKeyDown}
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      {open ? children : null}
+      {open || closing ? children : null}
     </dialog>
   );
 }

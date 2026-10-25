@@ -1,5 +1,7 @@
 "use client";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { EASE } from "@/lib/motion";
 
 interface ToastItem { id: number; message: string; actionLabel?: string; onAction?: () => void }
 interface ToastApi { show: (t: Omit<ToastItem, "id"> & { duration?: number }) => void }
@@ -28,10 +30,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={api}>
+      <MotionConfig reducedMotion="user">
       {children}
       <div className="toast-region no-print" role="status" aria-live="polite" aria-atomic="false" data-testid="toast-region">
+        <AnimatePresence initial={false}>
         {items.map((t) => (
-          <div key={t.id} className="toast" data-testid="toast">
+          <motion.div
+            key={t.id} layout="position" className="toast" data-testid="toast"
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0, transition: { duration: 0.2, ease: EASE } }}
+            exit={{ opacity: 0, y: 4, transition: { duration: 0.14, ease: EASE } }}
+          >
             <span>{t.message}</span>
             {t.actionLabel && (
               <button type="button" className="btn" onClick={() => { t.onAction?.(); dismiss(t.id); }}>{t.actionLabel}</button>
@@ -39,9 +47,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <button type="button" className="btn btn-icon" aria-label="Dismiss message" onClick={() => dismiss(t.id)}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
-          </div>
+          </motion.div>
         ))}
+        </AnimatePresence>
       </div>
+      </MotionConfig>
     </Ctx.Provider>
   );
 }

@@ -22,6 +22,8 @@
   --ink: #0a0a0a;
   --tick: #256f82;        /* teal: the one action, the selected mark */
   --hl: #f2d15c;          /* highlighter: what an ATS extracts */
+  --on-hl: #0a0a0a;       /* text on the highlighter: dark in both themes, so not --ink */
+  --ats-ink: #17212b;     /* plain-text ink on the ATS lens and preview paper, both themes */
   --pen: #a8291f;         /* red pen: only what needs fixing */
 
   /* Semantic roles (names kept stable for the components) */
@@ -113,7 +115,7 @@ body {
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--hl); color: #0a0a0a; }
+::selection { background: var(--hl); color: var(--on-hl); }
 /* In the base layer so component rules (flush field offset) can override it. */
 @layer base {
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
@@ -175,17 +177,21 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .range { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; background: transparent; cursor: pointer; }
   .range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--line-strong); }
   .range::-moz-range-track { height: 4px; border-radius: 2px; background: var(--line-strong); }
-  .range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; background: var(--primary); border: 3px solid var(--surface); }
-  .range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--primary); border: 3px solid var(--surface); }
+  .range::-webkit-slider-thumb { -webkit-appearance: none; box-sizing: border-box; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; background: var(--primary); border: 3px solid var(--surface); }
+  .range::-moz-range-thumb { box-sizing: border-box; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid var(--surface); }
   .range:focus-visible { outline-offset: -2px; }
 
   /* segmented controls (native radios stretched over the label) */
   .seg { display: inline-flex; border-radius: var(--r-pill); background: var(--surface-2); padding: 3px; gap: 2px; max-width: 100%; }
   .seg-opt { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 1rem; border-radius: var(--r-pill); font-size: 0.9375rem; font-weight: 500; color: var(--text); cursor: pointer; text-align: center; transition: background-color 0.15s, color 0.15s; }
-  .seg-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .seg-opt input { z-index: 2; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
   .seg-opt:hover { background: var(--active); }
   .seg-opt:has(input:checked), .seg-opt[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
   .seg-opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .seg-opt.seg-motion:has(input:checked) { background: transparent; color: var(--on-primary); }
+  .seg-opt.seg-motion[aria-pressed="true"] { background: transparent; color: var(--on-primary); }
+  .seg-pill { position: absolute; inset: 0; z-index: 0; border-radius: var(--r-pill); background: var(--primary); }
+  .seg-opt.seg-motion > span:not(.seg-pill) { position: relative; z-index: 1; }
   button.seg-opt { border: 0; background: transparent; font-family: inherit; }
   button.seg-opt[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
 
@@ -193,9 +199,9 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .switch { position: relative; display: inline-grid; place-items: center; width: 48px; height: 44px; flex: none; }
   .switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
   .switch-track { width: 34px; height: 20px; border-radius: var(--r-pill); background: var(--surface-2); border: 1.5px solid var(--line-strong); position: relative; transition: background-color 0.15s, border-color 0.15s; pointer-events: none; }
-  .switch-track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: var(--line-strong); transition: transform 0.15s, background-color 0.15s; }
+  .switch-thumb { position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: var(--line-strong); transition: background-color 0.15s; }
   .switch input:checked + .switch-track { background: var(--primary); border-color: var(--primary); }
-  .switch input:checked + .switch-track::after { transform: translateX(14px); background: var(--on-primary); }
+  .switch input:checked + .switch-track .switch-thumb { background: var(--on-primary); }
   .switch input:focus-visible + .switch-track { outline: 2px solid var(--focus); outline-offset: 3px; }
 
   /* ---------- surfaces ---------- */
@@ -205,7 +211,9 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .badge-pen { background: var(--pen-soft); color: var(--pen-text); }
   .chip { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; padding: 0 0.15rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-muted); font-family: inherit; font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
   .chip:hover { color: var(--text); }
-  .chip[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--text); }
+  .chip[aria-pressed="true"] { color: var(--text); }
+  .chip { position: relative; }
+  .chip-ind { position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--text); }
   .chip-count { font-size: 0.875rem; font-variant-numeric: tabular-nums; color: var(--text-muted); }
   .paper-edge { outline: 1px solid var(--paper-edge); }
 
@@ -218,10 +226,11 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
 
   /* toasts */
   .toast-region { position: fixed; z-index: 80; left: 1rem; right: 1rem; bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; pointer-events: none; }
-  .toast { pointer-events: auto; display: flex; align-items: center; gap: 0.75rem; max-width: min(100%, 460px); padding: 0.4rem 0.4rem 0.4rem 1.1rem; background: var(--primary); color: var(--on-primary); border-radius: var(--r-pill); box-shadow: var(--sh-pop); font-size: 0.9375rem; animation: toast-in 0.2s var(--ease-out); }
+  .toast { pointer-events: auto; display: flex; align-items: center; gap: 0.75rem; max-width: min(100%, 460px); padding: 0.4rem 0.4rem 0.4rem 1.1rem; background: var(--primary); color: var(--on-primary); border-radius: var(--r-pill); box-shadow: var(--sh-pop); font-size: 0.9375rem; }
   .toast .btn { background: transparent; border-color: currentColor; color: inherit; }
   .toast .btn:hover { background: rgb(128 128 128 / 0.25); }
-  @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  /* --focus equals the toast fill, so the default ring would vanish; use the on-fill colour. */
+  .toast :focus-visible { outline-color: var(--on-primary); }
 
   /* dialogs (native <dialog>) */
   .dlg { margin: auto; padding: 0; width: min(94vw, 560px); max-height: 92dvh; border: 1px solid var(--line); border-radius: var(--r-sheet); background: var(--surface); color: var(--text); box-shadow: var(--sh-pop); overflow: auto; }
@@ -234,14 +243,18 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   /* ---------- app shell: the header sits on the desk, no rule, no blur ---------- */
   .site-header { position: sticky; top: 0; z-index: 40; min-height: var(--header-h); background: var(--desk); }
   .wordmark { font-family: var(--font-display-stack); font-size: 1.25rem; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; }
-  @media (max-width: 400px) { .wordmark { font-size: 1.125rem; } .nav-link { padding: 0 0.55rem; } }
-  /* The logo link keeps its aria-label; below 410px the nav links would otherwise push the page wider than the screen. */
-  @media (max-width: 409.98px) { .wordmark { display: none; } }
-  @media (min-width: 640px) { .wordmark { font-size: 1.375rem; } .nav-link { padding: 0 0.9rem; } .nav-link[aria-current="page"]::after { left: 0.9rem; right: 0.9rem; } }
+  /* The header must fit its content: mark + 3 links + theme toggle. The wordmark only fits from 38rem; below that the
+     logo link keeps its aria-label. Under 400px the links tighten in steps (never below 44px tall) so the toggle stays on screen down to 320px. */
+  @media (max-width: 37.99rem) { .wordmark { display: none; } }
+  @media (min-width: 640px) { .wordmark { font-size: 1.375rem; } .nav-link { padding: 0 0.9rem; } .nav-ind { left: 0.9rem; right: 0.9rem; } }
   .nav-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.7rem; border-radius: var(--r-pill); font-size: 0.9375rem; font-weight: 500; color: var(--text); text-decoration: none; transition: background-color 0.15s; }
   .nav-link:hover { background: var(--active); }
   .nav-link { position: relative; }
-  .nav-link[aria-current="page"]::after { content: ""; position: absolute; left: 0.7rem; right: 0.7rem; bottom: 6px; height: 2px; border-radius: 1px; background: var(--text); }
+  .nav-ind { position: absolute; left: 0.7rem; right: 0.7rem; bottom: 6px; height: 2px; border-radius: 1px; background: var(--text); }
+  /* After the base rules above: equal specificity, so source order decides. */
+  @media (max-width: 400px) { .nav-link { padding: 0 0.55rem; } .nav-ind { left: 0.55rem; right: 0.55rem; } }
+  @media (max-width: 380px) { .nav-link { padding: 0 0.4rem; font-size: 0.875rem; } .nav-ind { left: 0.4rem; right: 0.4rem; } }
+  @media (max-width: 359.98px) { .nav-link { padding: 0 0.3rem; font-size: 0.8125rem; } .nav-ind { left: 0.3rem; right: 0.3rem; } }
 
   /* framed sheet: app screens put their work on one white sheet inset from the desk */
   .app-sheet { margin: 0 var(--gutter) var(--gutter); padding: 24px 16px 32px; min-height: calc(100svh - var(--header-h) - var(--gutter)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sheet); }
@@ -260,7 +273,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: translateY(-3px); }
   .tpl-well { background: var(--surface-2); border-radius: var(--r-inset); padding: 18px; transition: background-color 0.2s; }
   .tpl-card[data-selected="true"] .tpl-well { background: var(--tick-soft); }
-  .paper-thumb { display: block; width: 100%; padding: 0; border: 0; text-align: left; border-radius: var(--r-paper); background: #fff; outline: 1px solid var(--paper-edge); cursor: zoom-in; }
+  .paper-thumb { display: block; width: 100%; padding: 0; border: 0; text-align: left; border-radius: var(--r-paper); background: #fff; /* paper is never themed */ outline: 1px solid var(--paper-edge); cursor: zoom-in; }
 
   /* landing: ATS view highlighting. Scoped to a wrapper so the resume DOM is untouched. */
   .ats-lens .resume :is(h1, h2, h3, p, li, .dates) {
@@ -270,13 +283,13 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   }
   .ats-lens[data-on="true"] .resume :is(h1, h2, h3, p, li, .dates) {
     width: fit-content; max-width: 100%; background-size: 100% 100%;
-    color: #17212b !important; border-color: transparent !important;
+    color: var(--ats-ink) !important; border-color: transparent !important;
     transition: background-size 0.6s var(--ease-pen), color 0.3s;
   }
   .ats-lens[data-on="true"] .resume h2 { transition-delay: 0.1s; }
   .ats-lens[data-on="true"] .resume li { transition-delay: 0.2s; }
   .ats-lens[data-on="true"] .resume :is(h2, .resume-head) { border-color: transparent !important; }
-  .ats-lens[data-on="true"] .resume .bullets li::marker { color: #17212b; }
+  .ats-lens[data-on="true"] .resume .bullets li::marker { color: var(--ats-ink); }
   .ats-lens[data-on="true"] .resume .entry-row :is(h3, .dates) { width: auto; }
 
   /* editor */
@@ -284,7 +297,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .rail-tab:hover { color: var(--text); background: var(--surface-2); }
   .rail-tab { position: relative; }
   .rail-tab[aria-selected="true"] { background: var(--surface-2); color: var(--text); }
-  .rail-tab[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; border-radius: 1px; background: var(--text); }
+  .rail-ind { position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; border-radius: 1px; background: var(--text); }
   .sec-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-inset); transition: border-color 0.15s; }
   [data-reordering] > .sec-card { transition: border-color 0.15s, transform 0.2s var(--ease-out); }
   [data-reordering] > .sec-card[data-dragging="true"] { transition: border-color 0.15s; will-change: transform; }
@@ -293,7 +306,6 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .sec-card[data-dragging="true"] { box-shadow: var(--sh-pop); border-color: var(--focus); position: relative; z-index: 5; }
   .sec-card[data-settled="true"] { animation: settled-wash 0.9s var(--ease-out); }
   @keyframes settled-wash { from { background-color: var(--tick-soft); } }
-  .sec-body, .panel-in { animation: panel-in 0.18s var(--ease-out); }
   @keyframes panel-in { from { opacity: 0; } }
   .sec-card[data-hidden="true"] .sec-title { color: var(--text-muted); }
   .drag-handle { touch-action: none; cursor: grab; }
@@ -304,12 +316,14 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   }
   .swatch { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line-strong); cursor: pointer; padding: 0; transition: transform 0.12s; }
   .swatch:hover { transform: scale(1.06); }
-  .swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--focus); }
+  .swatch-ring { position: absolute; inset: -5px; border-radius: 50%; box-shadow: 0 0 0 2px var(--focus); pointer-events: none; }
   /* A dot in the surface colour marks the choice by shape, not only by the ring. */
   .swatch[aria-checked="true"]::after { content: ""; position: absolute; inset: 50% auto auto 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--surface); box-shadow: 0 0 0 1px var(--ink); }
   .tpl-pick { display: flex; flex-direction: column; gap: 0.4rem; align-items: stretch; padding: 8px; border-radius: var(--r-control); border: 0; background: var(--surface-2); color: var(--text); font-family: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; text-align: left; transition: background-color 0.15s; }
   .tpl-pick:hover { background: var(--active); }
-  .tpl-pick[aria-checked="true"] { background: var(--tick-soft); box-shadow: inset 0 0 0 2px var(--tick-fill); }
+  .tpl-pick { position: relative; }
+  .tpl-pick > :not(.pick-ring) { position: relative; }
+  .pick-ring { position: absolute; inset: 0; border-radius: var(--r-control); background: var(--tick-soft); box-shadow: inset 0 0 0 2px var(--tick-fill); }
 
   /* Framed sheet: the tools and the preview are two sheets on the desk. */
   .tools { display: flex; flex-direction: column; min-width: 0; background: var(--surface); }
@@ -346,7 +360,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .tools { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: auto; width: auto; max-height: calc(100dvh - var(--header-h) - var(--bar-h) - var(--gutter)); transform: none; visibility: visible; box-shadow: none; border: 1px solid var(--line); border-radius: var(--r-sheet); transition: none; flex-direction: row; overflow: hidden; }
   .tools-tabs { flex-direction: column; flex: none; width: 104px; overflow: visible; border-bottom: 0; border-right: 1px solid var(--line); padding: 10px 8px; }
   .tools-tabs .rail-tab { flex-direction: column; justify-content: center; gap: 4px; padding: 8px 4px; min-height: 64px; font-size: 0.8125rem; }
-  .tools-tabs .rail-tab[aria-selected="true"]::after { left: auto; right: -9px; top: 10px; bottom: 10px; width: 2px; height: auto; }
+  .tools-tabs .rail-ind { left: auto; right: -9px; top: 10px; bottom: 10px; width: 2px; height: auto; }
   .tools-scroll { flex: 1; min-width: 0; overflow-y: auto; }
   .pv-pane { position: sticky; top: calc(var(--header-h) + var(--bar-h)); height: calc(100dvh - var(--header-h) - var(--bar-h) - var(--gutter)); }
 }
@@ -359,7 +373,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-property: color, background-color, border-color, outline-color, opacity !important; transition-duration: 0.15s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: none; }
   /* Keep the arrival of toasts, dialogs and tab panels as a short fade instead of removing it. */
-  .toast, .dlg[open], .sec-body, .panel-in { animation: fade-in 0.15s linear !important; }
+  .dlg[open] { animation: fade-in 0.15s linear !important; }
   /* A colour-only wash confirms a moved section, so it stays. */
   .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }
 }

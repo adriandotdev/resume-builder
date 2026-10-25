@@ -1,4 +1,6 @@
 "use client";
+import { motion } from "motion/react";
+import { EASE } from "@/lib/motion";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -62,7 +64,8 @@ export function StartForm() {
         <legend className="mb-1.5 text-sm font-semibold">Paper size</legend>
         <div className="seg">
           {(Object.keys(PAGE_SIZES) as PageSizeId[]).map((k) => (
-            <label key={k} className="seg-opt">
+            <label key={k} className="seg-opt seg-motion">
+              {size === k && <motion.span layoutId="start-size-pill" className="seg-pill" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
               <input type="radio" name="start-size" value={k} checked={size === k} onChange={() => setSize(k)} />
               <span>{PAGE_SIZES[k].label}</span>
             </label>

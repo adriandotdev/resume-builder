@@ -1,4 +1,6 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "@/lib/motion";
 import { useDeferredValue, useMemo, useRef } from "react";
 import { runAtsChecks, type AtsCheck } from "@/lib/ats";
 import { matchJobDescription, MAX_JD_CHARS, type TermMatch } from "@/lib/jobmatch";
@@ -16,7 +18,7 @@ const WORD = { pass: "Passed", warn: "Review", fail: "Fix" } as const;
 function Row({ c }: { c: AtsCheck }) {
   const pass = c.level === "pass";
   return (
-    <li className={`flex gap-3 rounded-[var(--r-control)] ${pass ? "px-1 py-2.5" : "p-3"}`} style={pass ? undefined : { background: "var(--pen-soft)" }} data-level={c.level}>
+    <motion.li layout="position" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, transition: { duration: 0.12 } }} transition={{ duration: 0.2, ease: EASE }} className={`flex gap-3 rounded-[var(--r-control)] ${pass ? "px-1 py-2.5" : "p-3"}`} style={pass ? undefined : { background: "var(--pen-soft)" }} data-level={c.level}>
       <span className={`mt-0.5 shrink-0 ${pass ? "text-[var(--tick-text)]" : "text-[var(--pen-text)]"}`}>
         {pass ? <IconTick size={20} /> : c.level === "fail" ? <IconAlert size={20} /> : <IconWarn size={20} />}
       </span>
@@ -24,13 +26,13 @@ function Row({ c }: { c: AtsCheck }) {
         <strong className={`mr-1.5 font-semibold ${pass ? "sr-only" : "text-[var(--pen-text)]"}`}>{WORD[c.level]}:</strong>
         {c.message}
       </p>
-    </li>
+    </motion.li>
   );
 }
 
 function FoundRow({ t }: { t: TermMatch }) {
   return (
-    <li className="flex gap-3 px-1 py-2.5">
+    <motion.li layout="position" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, transition: { duration: 0.12 } }} transition={{ duration: 0.2, ease: EASE }} className="flex gap-3 px-1 py-2.5">
       <span className="mt-0.5 shrink-0 text-[var(--tick-text)]"><IconTick size={20} /></span>
       <p className="min-w-0 break-words text-[0.9375rem] leading-snug">
         <strong className="font-semibold">{t.term}</strong>
@@ -40,7 +42,7 @@ function FoundRow({ t }: { t: TermMatch }) {
           <span className="ml-1.5 text-[var(--text-muted)]">in {t.where.join(", ")}</span>
         )}
       </p>
-    </li>
+    </motion.li>
   );
 }
 
@@ -85,8 +87,9 @@ function JobMatch({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (target: Wri
                 <h4 className="text-sm font-semibold" tabIndex={-1} data-missing-heading>Not found ({missing.length})</h4>
                 {missing.length > 0 ? (
                   <ul className="divide-y divide-[var(--line)]" data-testid="jd-missing">
+                    <AnimatePresence initial={false} mode="popLayout">
                     {missing.map((t, i) => (
-                      <li key={t.term} className="space-y-2 px-1 py-3">
+                      <motion.li key={t.term} layout="position" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, transition: { duration: 0.12 } }} transition={{ duration: 0.2, ease: EASE }} className="space-y-2 px-1 py-3">
                         <p className="min-w-0 break-words text-[0.9375rem] font-semibold leading-snug text-[var(--pen-text)]">{t.term}</p>
                         <div className="flex flex-wrap gap-2">
                           {targets.map((target) => (
@@ -94,8 +97,9 @@ function JobMatch({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (target: Wri
                           ))}
                           <button type="button" className="btn" data-add-term={t.term} aria-label={`Add "${t.term}" to Skills`} onClick={() => addTerm(t.term, i)}>Add to Skills</button>
                         </div>
-                      </li>
+                      </motion.li>
                     ))}
+                    </AnimatePresence>
                   </ul>
                 ) : (
                   <p className="field-hint">Every key term appears in your resume.</p>
@@ -104,7 +108,7 @@ function JobMatch({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (target: Wri
               <div className="space-y-2">
                 <h4 className="text-sm font-semibold">Found ({found.length})</h4>
                 {found.length > 0 ? (
-                  <ul className="divide-y divide-[var(--line)]" data-testid="jd-found">{found.map((t) => <FoundRow key={t.term} t={t} />)}</ul>
+                  <ul className="divide-y divide-[var(--line)]" data-testid="jd-found"><AnimatePresence initial={false}>{found.map((t) => <FoundRow key={t.term} t={t} />)}</AnimatePresence></ul>
                 ) : (
                   <p className="field-hint">None of the key terms appear in your resume yet.</p>
                 )}
@@ -136,14 +140,14 @@ export function AtsPanel({ doc, onWriteIn }: { doc: ResumeDoc; onWriteIn?: (targ
         {issues > 0 ? (
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">To review ({issues})</h3>
-            <ul className="space-y-2">{review.map((c) => <Row key={c.id} c={c} />)}</ul>
+            <ul className="space-y-2"><AnimatePresence initial={false}>{review.map((c) => <Row key={c.id} c={c} />)}</AnimatePresence></ul>
           </div>
         ) : (
           <p className="rounded-[var(--r-control)] border border-dashed border-[var(--line-strong)] p-4 text-[0.9375rem] text-[var(--text-muted)]">Nothing to fix right now. Keep this tab in mind as you edit, since the checks run on every change.</p>
         )}
         <div className="space-y-2">
           <h3 className="text-sm font-semibold">Passed ({passed.length})</h3>
-          <ul className="divide-y divide-[var(--line)]">{passed.map((c) => <Row key={c.id} c={c} />)}</ul>
+          <ul className="divide-y divide-[var(--line)]"><AnimatePresence initial={false}>{passed.map((c) => <Row key={c.id} c={c} />)}</AnimatePresence></ul>
         </div>
       </div>
       <JobMatch doc={doc} onWriteIn={onWriteIn} />

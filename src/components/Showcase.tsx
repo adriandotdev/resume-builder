@@ -1,5 +1,7 @@
 "use client";
+import { motion } from "motion/react";
 import { useMemo, useState } from "react";
+import { EASE } from "@/lib/motion";
 import { createSampleDoc } from "@/lib/sample";
 import { toPlainText } from "@/lib/plaintext";
 import { ClassicTemplate } from "@/templates/classic";
@@ -45,7 +47,7 @@ export function Showcase() {
             </div>
           </div>
           <p className="show-cap mt-8">What a parser reads</p>
-          <pre className="show-ats"><mark>{text}</mark></pre>
+          <pre className="show-ats"><motion.mark key={text} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: EASE }}>{text}</motion.mark></pre>
         </div>
         <p className="show-h show-h-b" aria-hidden="true">read it twice</p>
       </div>

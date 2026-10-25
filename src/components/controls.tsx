@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "@/lib/motion";
 import { IconMore } from "./icons";
 
 /** Segmented control built from native radios (keyboard + screen reader friendly). */
@@ -10,7 +12,8 @@ export function Segmented<T extends string>({ legend, value, options, onChange, 
       <legend className="mb-1.5 text-sm font-medium">{legend}</legend>
       <div className="seg" role="presentation">
         {options.map((o) => (
-          <label key={o.value} className="seg-opt">
+          <label key={o.value} className="seg-opt seg-motion">
+            {value === o.value && <motion.span layoutId={`${name}-pill`} className="seg-pill" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
             <input type="radio" name={name} value={o.value} checked={value === o.value} onChange={() => onChange(o.value)} />
             <span>{o.label}{o.sub && <span className="ml-1.5 text-sm font-normal">{o.sub}</span>}</span>
           </label>
@@ -18,6 +21,16 @@ export function Segmented<T extends string>({ legend, value, options, onChange, 
       </div>
       {hint && <p className="field-hint mt-1.5">{hint}</p>}
     </fieldset>
+  );
+}
+
+/** A pressed-state button for a `.seg` group; the highlight slides between buttons that share `group`. */
+export function SegButton({ group, pressed, onClick, children, testId }: { group: string; pressed: boolean; onClick: () => void; children: ReactNode; testId?: string }) {
+  return (
+    <button type="button" className="seg-opt seg-motion" aria-pressed={pressed} onClick={onClick} data-testid={testId}>
+      {pressed && <motion.span layoutId={`${group}-pill`} className="seg-pill" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
+      <span>{children}</span>
+    </button>
   );
 }
 
@@ -38,7 +51,9 @@ export function Switch({ checked, onChange, label }: { checked: boolean; onChang
   return (
     <label className="switch">
       <input type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} aria-label={label} />
-      <span className="switch-track" aria-hidden="true" />
+      <span className="switch-track" aria-hidden="true">
+        <motion.span className="switch-thumb" initial={false} animate={{ x: checked ? 14 : 0 }} transition={{ type: "spring", stiffness: 600, damping: 32 }} />
+      </span>
     </label>
   );
 }
@@ -78,8 +93,12 @@ export function ActionMenu({ label, actions, testId }: { label: string; actions:
       <button ref={btn} type="button" className="btn btn-quiet btn-icon" aria-label={label} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? menuId : undefined} data-testid={testId} onClick={() => setOpen((o) => !o)}>
         <IconMore />
       </button>
+      <AnimatePresence>
       {open && (
-        <div id={menuId} role="menu" aria-label={label} className="menu">
+        <motion.div
+          id={menuId} role="menu" aria-label={label} className="menu" style={{ transformOrigin: "top right" }}
+          initial={{ opacity: 0, scale: 0.96, y: -4 }} animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.14, ease: EASE } }} exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.1, ease: EASE } }}
+        >
           {actions.map((a) => (
             <button
               key={a.label} type="button" role="menuitem" aria-label={a.ariaLabel} aria-disabled={a.disabled || undefined} tabIndex={-1}
@@ -89,8 +108,9 @@ export function ActionMenu({ label, actions, testId }: { label: string; actions:
               {a.icon}{a.label}
             </button>
           ))}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }

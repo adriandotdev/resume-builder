@@ -19,6 +19,7 @@ colors:
   line-strong: "#7d776d"
   paper-edge: "#c9c3b9"
   ats-ink: "#17212b"
+  field-well: "#1c1c1c"
 typography:
   display:
     fontFamily: "Young Serif, Georgia, Times New Roman, serif"
@@ -37,6 +38,18 @@ typography:
     fontSize: "1.5rem"
     fontWeight: 400
     lineHeight: 1.1
+    letterSpacing: "-0.01em"
+  wordmark:
+    fontFamily: "Young Serif, Georgia, Times New Roman, serif"
+    fontSize: "1.25rem"
+    fontWeight: 400
+    lineHeight: 1
+    letterSpacing: "-0.01em"
+  wordmark-wide:
+    fontFamily: "Young Serif, Georgia, Times New Roman, serif"
+    fontSize: "1.375rem"
+    fontWeight: 400
+    lineHeight: 1
     letterSpacing: "-0.01em"
   body:
     fontFamily: "Source Serif 4, Georgia, Times New Roman, serif"
@@ -161,6 +174,7 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 - **Control Edge** (`line-strong`, #7d776d): borders on interactive controls, kept at 3:1 on paper.
 - **Paper Edge** (`paper-edge`, #c9c3b9): the 1px outline that makes a resume page read as paper on the desk.
 - **Plain-Text Ink** (`ats-ink`, #17212b): text in the editor's ATS text preview, which is a white paper surface in both themes, so it does not follow the app ink.
+- **Field Well** (`field-well`, #1c1c1c): the typed-in field on the landing's dark showcase stage, one step above the stage itself (#0a0a0a, #000000 in dark mode). Its 1px border is #77726a, the same Control Edge value dark mode uses.
 
 ### Named Rules
 **The One Teal Rule.** Teal marks the single action or the single selected item in a region. It is never used for decoration, headings or large backgrounds, with one exception: the landing page's final call-to-action panel.
@@ -180,13 +194,14 @@ A restrained neutral palette with one cool accent and two functional marks. Dark
 ### Hierarchy
 - **Display** (400, clamp(2.75rem, 1.5rem + 4.4vw, 5.5rem), 0.98): the landing hero, the showcase halves and the final call to action. Tracking −0.02em. Scales up at 1600px+ to 6–8.5rem.
 - **Headline** (400, clamp(2rem, 1.4rem + 2vw, 3.25rem), 0.98): landing section headings ("how it works", questions).
-- **Title** (400, 1.5rem rising to 2rem at 640px, 1.1): app screen titles, wordmark (1.25–1.375rem), start-card title.
+- **Title** (400, 1.5rem rising to 2rem at 640px, 1.1): app screen titles. On the landing, card titles (the start-card and the "fragment" titles) use Title too: 1.5rem, stepping to 2rem at 1600px+ with the rest of the landing scale.
+- **Wordmark** (400, 1.25rem rising to 1.375rem at 640px, 1, −0.01em): the "Resume Builder" lockup in the header, Young Serif. It is a brand mark, not a content role, and shows only from 38rem (see Layout).
 - **Body** (400, clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem), 1.6): landing reading text. App UI body is 1rem; hints are 0.875rem at 1.45.
 - **Label** (500, 0.9375rem, 1.2): buttons, navigation, segmented options. Field labels are 0.875rem at 600. Two small steps sit below Label: **Hint** (0.875rem, 1.45) for field hints and secondary lines, and **Caption** (0.8125rem, 500) for badges, bottom-bar and rail-tab labels.
 - **Plain-text preview** (system monospace, 0.875rem): the ATS text view only. It is the one place a mono face is used, because it shows the raw text a parser reads. Nothing else is set in mono.
 
 ### Named Rules
-**The Five Steps Rule.** The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section.
+**The Five Steps Rule.** The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section. Card titles take the Title role and form fields on the dark stage take the body step; neither is a sixth step.
 
 **The Measure Rule.** Reading text is held to about 62ch (`.measure`) and balanced or pretty-wrapped. Numbers in counters and tables use tabular lining figures.
 
@@ -199,6 +214,10 @@ The landing page is a split stage: a reading sheet on one side and the sample re
 The editor changes shape by width. Phones: a full-screen preview sheet and a bottom bar. 768–1023px: tools in a left drawer (max 440px) with a scrim. 1024px+: a two-column grid, tools (clamp(420px, 38vw, 560px)) beside a sticky preview, both as sheets. The template gallery is a grid of 1, 2, 3 and 4 columns at 0, 560, 1024 and 1280px.
 
 At 1600px+ the whole landing scale steps up (type, padding, form widths) so a 1920×1080 screen is filled rather than floating small.
+
+The header must fit its content at every width from 320px: the logo mark, three links (Templates, Editor, Applications) and the theme toggle. The wordmark joins only from 38rem (608px), because with it the row needs about 560px. Below 400px the nav links tighten in steps: horizontal padding 0.7rem to 0.55rem (400px), then 0.4rem with Hint-size text (380px), then 0.3rem with Caption-size text and no gap (under 360px). Links stay 44px tall throughout. The footer links wrap onto a second line instead of widening the page, each 44px tall.
+
+**The Header Fits Rule.** When the header runs out of room, tighten padding, then step the text down one documented size. Never hide a link, push the theme toggle off screen, or let the page grow wider than the viewport. Check it at 320px and at 430px, where the wordmark is still hidden.
 
 ## Elevation & Depth
 
@@ -251,7 +270,7 @@ Soft sheets, round controls, almost-square paper.
 - Chips are text with a 2px underline when pressed, on a Paper Fold baseline. Rail tabs in the editor are 10px-radius tiles with an Inset Well selected state and a 2px ink underline (a vertical bar on desktop).
 
 ### Navigation
-- Header on the desk: wordmark in Young Serif, pill nav links with a Worn Desk hover and a 2px ink underline for the current page. On phones the editor uses a four-button bottom bar on the desk; the active button fills ink.
+- Header on the desk: logo mark, then the wordmark in Young Serif from 38rem up, pill nav links with a Worn Desk hover and a 2px ink underline for the current page, and the theme toggle at the right. The underline is inset to match the link padding at each step. On phones the editor uses a four-button bottom bar on the desk; the active button fills ink.
 
 ### Template thumbnail (signature)
 - A resume page at 2px radius with a Paper Edge outline, sitting inside an Inset Well. On hover the paper rises 3px; the selected template's well turns Teal Wash and the picker gains a 2px teal inset ring. The thumbnail renders live from sample data.
@@ -260,7 +279,7 @@ Soft sheets, round controls, almost-square paper.
 - A flat highlighter sweep that draws across each line of the sample resume, left to right, to show what a parser reads. It shows on the landing page only, scoped to a wrapper so the resume DOM is untouched.
 
 ### Toasts and dialogs
-- Toasts are Press Black pills at the bottom left. Dialogs are native `<dialog>` elements, 560px wide (up to 1000px for wide ones), 16px radius, Pop shadow, ink-tinted scrim. Both settle in with an 8px rise.
+- Toasts are Press Black pills at the bottom left. Dialogs are native `<dialog>` elements, 560px wide (up to 1000px for wide ones), 16px radius, Pop shadow, ink-tinted scrim. Both settle in with an 8px rise. Inside a toast the focus ring is drawn in the on-fill colour (white in light mode, ink in dark), because the default ring is the same colour as the toast and would disappear.
 
 ## Do's and Don'ts
 
@@ -271,6 +290,8 @@ Soft sheets, round controls, almost-square paper.
 - **Do** separate surfaces by tone or a 1px edge; reserve the Pop shadow for what floats.
 - **Do** use the shared easings: `--ease-out` for feedback, `--ease-settle` for paper arriving, `--ease-pen` for the highlighter sweep. Honor `prefers-reduced-motion`.
 - **Do** run `scripts/contrast.mjs` after any token change; light and dark must both pass WCAG 2.2 AA.
+- **Do** give any focus ring that sits on a Press Black fill the on-fill colour. `--focus` equals `--primary`, so the default ring is invisible on an ink surface.
+- **Do** check the header and footer at 320px and 430px after adding a nav link or changing nav text.
 
 ### Don't:
 - **Don't** theme the resume paper or add element selectors (h1, p, li, a) to the app stylesheet; the resume DOM and its PDF text layer must not change.

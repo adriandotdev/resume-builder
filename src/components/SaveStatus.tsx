@@ -1,5 +1,7 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { EASE } from "@/lib/motion";
 import { useSavedAt, usePending, useStoreStatus } from "@/lib/store";
 import { formatSavedAgo } from "@/lib/ui";
 import { IconTick, IconWarn } from "./icons";
@@ -22,7 +24,9 @@ export function SaveStatus() {
   return (
     <p role={tone === "warn" ? "alert" : undefined} className={`flex items-start gap-1.5 text-sm ${tone === "warn" ? "font-medium text-[var(--pen-text)]" : "text-[var(--text-muted)]"}`} data-testid="save-status">
       {tone === "warn" ? <span className="shrink-0"><IconWarn size={16} /></span> : tone === "ok" ? <span className="shrink-0 text-[var(--tick-text)]"><IconTick size={16} /></span> : null}
-      <span>{text}</span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span key={pending ? "saving" : tone} initial={{ opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.14, ease: EASE }}>{text}</motion.span>
+      </AnimatePresence>
     </p>
   );
 }
