@@ -382,6 +382,54 @@ const overT = await tp.evaluate(() => document.documentElement.scrollWidth - win
 check("tablet 768px no horizontal scroll", overT <= 1, `overflow=${overT}`);
 await t.close();
 
+// application tracker
+await page.goto(`${BASE}/applications`);
+await page.getByTestId("applications-empty").waitFor();
+check("applications: empty state explains the tracker", true);
+await page.getByTestId("add-application").click();
+await page.getByLabel("Company").fill("Acme");
+await page.getByLabel("Role", { exact: true }).fill("Engineer");
+await page.getByLabel("Status").selectOption("applied");
+await page.getByLabel("Job posting").fill("We need TypeScript experience.");
+await page.getByTestId("save-application").click();
+await page.getByTestId("application").first().waitFor();
+const appText = await page.getByTestId("application").first().innerText();
+check("applications: added row shows role, company and status in words", appText.includes("Engineer") && appText.includes("Acme") && appText.includes("Status: Applied"), appText.slice(0, 80));
+await page.reload();
+await page.getByTestId("application").first().waitFor();
+check("applications: persists across reload", await page.getByTestId("application").count() === 1);
+const storedApps = await page.evaluate(() => JSON.parse(localStorage.getItem("resume-builder:applications:v1") ?? "{}"));
+check("applications: stored with posting snapshot and appliedAt", storedApps.items?.[0]?.posting === "We need TypeScript experience." && typeof storedApps.items?.[0]?.appliedAt === "number");
+await page.getByRole("button", { name: "Delete Acme" }).click();
+check("applications: delete shows Undo, not a confirm", await page.getByTestId("applications-empty").isVisible() && await page.getByTestId("toast").getByRole("button", { name: "Undo" }).isVisible());
+await page.getByTestId("toast").getByRole("button", { name: "Undo" }).click();
+check("applications: Undo restores the row", await page.getByTestId("application").count() === 1);
+await page.getByTestId("add-application").click();
+check("applications: dialog opens with Company focused", await page.evaluate(() => document.activeElement?.closest("label,.field")?.querySelector("label")?.textContent === "Company"));
+await page.getByTestId("save-application").click();
+check("applications: Save with no company or role explains why", await page.getByRole("alert").filter({ hasText: "Enter a company or a role" }).isVisible());
+await page.getByLabel("Company").fill("Draft Co");
+await page.keyboard.press("Escape");
+check("applications: Esc on a changed draft asks before discarding", await page.getByTestId("discard-confirm").isVisible());
+await page.getByRole("button", { name: "Keep editing" }).click();
+check("applications: Keep editing keeps the draft", await page.getByLabel("Company").inputValue() === "Draft Co");
+await page.getByRole("button", { name: "Cancel" }).click();
+await page.getByTestId("discard-application").click();
+check("applications: Discard closes without adding", await page.getByTestId("application").count() === 1);
+await page.getByRole("button", { name: "Delete Acme" }).click();
+await page.waitForTimeout(100);
+check("applications: focus moves to Add after deleting the last row", await page.evaluate(() => document.activeElement?.getAttribute("data-testid")) === "add-application");
+await page.getByTestId("toast").getByRole("button", { name: "Undo" }).click();
+await page.getByTestId("application").first().waitFor();
+await page.getByRole("button", { name: "Edit Acme" }).click();
+await page.getByLabel("Status").selectOption("offer");
+await page.getByTestId("save-application").click();
+await page.getByLabel("Offer (1)").check();
+await page.getByRole("button", { name: "Edit Acme" }).click();
+await page.getByLabel("Status").selectOption("rejected");
+await page.getByTestId("save-application").click();
+check("applications: filter falls back to All when its last row moves", await page.getByTestId("application").count() === 1 && await page.getByLabel(/^All \(1\)/).isChecked());
+
 // dark scheme: chrome themes, paper stays white
 const d = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
 const dp = await d.newPage();

@@ -230,6 +230,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .dlg[open] { animation: dlg-in 0.18s var(--ease-settle); }
   @keyframes dlg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
+
   /* ---------- app shell: the header sits on the desk, no rule, no blur ---------- */
   .site-header { position: sticky; top: 0; z-index: 40; min-height: var(--header-h); background: var(--desk); }
   .wordmark { font-family: var(--font-display-stack); font-size: 1.25rem; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; }

@@ -7,23 +7,25 @@ import { ActionMenu } from "./controls";
 import { IconDown, IconPlus, IconTrash, IconUp } from "./icons";
 import { useToast } from "./Toast";
 
-export function TextField({ label, value, onChange, placeholder, type = "text", hint, autoComplete = "off" }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; hint?: string; autoComplete?: string }) {
+export function TextField({ label, value, onChange, placeholder, type = "text", hint, autoComplete = "off", maxLength, error, autoFocus }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; hint?: string; autoComplete?: string; maxLength?: number; error?: string; autoFocus?: boolean }) {
   const id = useId();
+  const described = [hint && `${id}-h`, error && `${id}-e`].filter(Boolean).join(" ") || undefined;
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
-      <input id={id} type={type} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} aria-describedby={hint ? `${id}-h` : undefined} autoComplete={autoComplete} />
+      <input id={id} type={type} value={value} placeholder={placeholder} maxLength={maxLength} onChange={(e) => onChange(e.target.value)} aria-describedby={described} aria-invalid={error ? true : undefined} data-autofocus={autoFocus ? "" : undefined} autoComplete={autoComplete} />
       {hint && <span id={`${id}-h`} className="field-hint">{hint}</span>}
+      {error && <span id={`${id}-e`} role="alert" className="field-hint font-medium text-[var(--pen-text)]">{error}</span>}
     </div>
   );
 }
 
-export function TextArea({ label, value, onChange, rows = 4, hint }: { label: string; value: string; onChange: (v: string) => void; rows?: number; hint?: string }) {
+export function TextArea({ label, value, onChange, rows = 4, hint, maxLength }: { label: string; value: string; onChange: (v: string) => void; rows?: number; hint?: string; maxLength?: number }) {
   const id = useId();
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
-      <textarea id={id} rows={rows} value={value} onChange={(e) => onChange(e.target.value)} aria-describedby={hint ? `${id}-h` : undefined} />
+      <textarea id={id} rows={rows} value={value} maxLength={maxLength} onChange={(e) => onChange(e.target.value)} aria-describedby={hint ? `${id}-h` : undefined} />
       {hint && <span id={`${id}-h`} className="field-hint">{hint}</span>}
     </div>
   );

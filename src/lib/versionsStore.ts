@@ -152,8 +152,8 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
   }
 
   /** Every version's doc for "Export all". Postings are never included. */
-  function exportAll() {
-    return makeBundle(index.versions.flatMap((v) => { const doc = readDoc(v.id); return doc ? [{ name: v.name, doc }] : []; }));
+  function exportAll(applications?: unknown[]) {
+    return makeBundle(index.versions.flatMap((v) => { const doc = readDoc(v.id); return doc ? [{ id: v.id, name: v.name, doc }] : []; }), applications);
   }
 
   return {
