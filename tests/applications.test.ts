@@ -113,3 +113,29 @@ describe("remapVersions", () => {
     expect(out[1]).toMatchObject({ versionId: null, versionName: "Two" });
   });
 });
+
+describe("save failures", () => {
+  it("reports a failed write and clears it once a write succeeds", () => {
+    let blocked = true;
+    const st: KeyValueStorage = {
+      getItem: () => null,
+      setItem: () => { if (blocked) throw new Error("quota"); },
+      removeItem: () => {},
+    };
+    const store = createApplicationsStore({ storage: st });
+    expect(store.didSaveFail()).toBe(false);
+    store.add({ company: "Acme" });
+    expect(store.didSaveFail()).toBe(true);
+    expect(store.getAll()).toHaveLength(1);
+    blocked = false;
+    store.add({ company: "Beta" });
+    expect(store.didSaveFail()).toBe(false);
+  });
+
+  it("is not loaded until load() runs", () => {
+    const store = createApplicationsStore({ storage: null });
+    expect(store.isLoaded()).toBe(false);
+    store.load();
+    expect(store.isLoaded()).toBe(true);
+  });
+});

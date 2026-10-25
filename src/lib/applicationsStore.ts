@@ -17,16 +17,21 @@ const EMPTY: Application[] = [];
 export function createApplicationsStore({ storage: initialStorage = null }: { storage?: KeyValueStorage | null } = {}) {
   let storage = initialStorage;
   let items: Application[] = EMPTY;
+  let loaded = false;
+  let saveFailed = false;
   const listeners = new Set<() => void>();
   const emit = () => listeners.forEach((l) => l());
-  const commit = (next: Application[]) => { items = next; writeApplications(storage, items); emit(); };
+  const commit = (next: Application[]) => { items = next; saveFailed = !writeApplications(storage, items); emit(); };
 
   return {
     getAll: () => items,
+    isLoaded: () => loaded,
+    /** True when the last write did not reach browser storage (blocked or full). */
+    didSaveFail: () => saveFailed,
     subscribe(l: () => void) { listeners.add(l); return () => { listeners.delete(l); }; },
     setStorage(s: KeyValueStorage | null) { storage = s; },
     /** Read the saved list once the browser storage is known. Never throws. */
-    load() { items = sortApplications(readApplications(storage)); emit(); },
+    load() { items = sortApplications(readApplications(storage)); loaded = true; emit(); },
     add(input: ApplicationInput): Application {
       const app = makeApplication(input);
       commit([app, ...items]);
@@ -75,4 +80,12 @@ export function useApplications(): Application[] {
     applicationsStore.getAll,
     () => EMPTY,
   );
+}
+
+/** False until the saved list has been read, so a returning user never sees the empty state first. */
+export function useApplicationsStatus(): { loaded: boolean; saveFailed: boolean } {
+  const sub = (cb: () => void) => { startApplications(); return applicationsStore.subscribe(cb); };
+  const loaded = useSyncExternalStore(sub, applicationsStore.isLoaded, () => false);
+  const saveFailed = useSyncExternalStore(sub, applicationsStore.didSaveFail, () => false);
+  return { loaded, saveFailed };
 }
