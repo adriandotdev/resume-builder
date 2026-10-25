@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-24T09:37:27.850438+00:00",
+  "generatedAt": "2026-10-25T11:30:45.766237+00:00",
   "title": "Design System: Resume Builder",
   "extensions": {
     "colorMeta": {
@@ -198,6 +198,21 @@
           "#c6cfd6",
           "#e8ecef"
         ]
+      },
+      "field-well": {
+        "role": "neutral",
+        "displayName": "Field Well",
+        "canonical": "#1c1c1c",
+        "tonalRamp": [
+          "#1c1c1c",
+          "#3a3a3a",
+          "#585858",
+          "#767676",
+          "#949494",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#efefef"
+        ]
       }
     },
     "typographyMeta": {
@@ -211,7 +226,7 @@
       },
       "title": {
         "displayName": "Title",
-        "purpose": "App screen titles, wordmark, start card."
+        "purpose": "App screen titles and landing card titles (start card, fragment titles)."
       },
       "body": {
         "displayName": "Body",
@@ -232,6 +247,14 @@
       "base": {
         "displayName": "Base",
         "purpose": "App UI body and input text (1rem)."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "The header lockup, shown from 38rem; 1.375rem from 640px."
+      },
+      "wordmark-wide": {
+        "displayName": "Wordmark (wide)",
+        "purpose": "The header lockup from 640px up."
       }
     },
     "shadows": [
@@ -282,6 +305,22 @@
       {
         "name": "wide",
         "value": "1600px"
+      },
+      {
+        "name": "wordmark",
+        "value": "38rem (608px): header wordmark appears"
+      },
+      {
+        "name": "nav-tight",
+        "value": "400px: nav link padding 0.55rem"
+      },
+      {
+        "name": "nav-tighter",
+        "value": "380px: padding 0.4rem, Hint-size text"
+      },
+      {
+        "name": "nav-tightest",
+        "value": "359.98px: padding 0.3rem, Caption-size text, no gap"
       }
     ]
   },
@@ -387,7 +426,7 @@
       },
       {
         "name": "The Five Steps Rule",
-        "body": "The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section.",
+        "body": "The landing page uses five type steps only: small, body, lead, head, display. New sizes are not invented per section. Card titles take the Title role and form fields on the dark stage take the body step; neither is a sixth step.",
         "section": "typography"
       },
       {
@@ -399,6 +438,11 @@
         "name": "The Flat-At-Rest Rule",
         "body": "Nothing casts a shadow until it floats. Template thumbnails lift 3px on hover with a transform, not a shadow. Resume pages sit on the desk with a 1px paper-edge outline.",
         "section": "elevation"
+      },
+      {
+        "name": "The Header Fits Rule",
+        "body": "When the header runs out of room, tighten padding, then step the text down one documented size. Never hide a link, push the theme toggle off screen, or let the page grow wider than the viewport. Check it at 320px and at 430px, where the wordmark is still hidden.",
+        "section": "layout"
       }
     ],
     "dos": [
@@ -407,7 +451,9 @@
       "Do keep every interactive target at least 44px and every control border at 3:1 contrast (Control Edge #7d776d).",
       "Do separate surfaces by tone or a 1px edge; reserve the Pop shadow for what floats.",
       "Do use the shared easings: --ease-out for feedback, --ease-settle for paper arriving, --ease-pen for the highlighter sweep. Honor prefers-reduced-motion.",
-      "Do run scripts/contrast.mjs after any token change; light and dark must both pass WCAG 2.2 AA."
+      "Do run scripts/contrast.mjs after any token change; light and dark must both pass WCAG 2.2 AA.",
+      "**Do** give any focus ring that sits on a Press Black fill the on-fill colour. `--focus` equals `--primary`, so the default ring is invisible on an ink surface.",
+      "**Do** check the header and footer at 320px and 430px after adding a nav link or changing nav text."
     ],
     "donts": [
       "Don't theme the resume paper or add element selectors (h1, p, li, a) to the app stylesheet; the resume DOM and its PDF text layer must not change.",

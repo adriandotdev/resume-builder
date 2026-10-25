@@ -1,4 +1,6 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "@/lib/motion";
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { SECTION_TYPES, STANDARD_TITLES, type ResumeDoc, type SectionType } from "@/lib/schema";
 import { addSection, insertSection, moveSection, patchSection, removeSection, type WriteInTarget } from "@/lib/ops";
@@ -130,7 +132,6 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
     const esc = (e: globalThis.KeyboardEvent) => { if (e.key === "Escape") { clearTimeout(dropTimer.current); setDrag(null); } };
     window.addEventListener("keydown", esc);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("keydown", esc); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dragging]);
 
   const onHandleKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
@@ -157,6 +158,7 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
         </p>
       )}
       <ol className="relative isolate space-y-2" data-testid="section-list" data-reordering={dragging || undefined}>
+        <AnimatePresence initial={false} mode="popLayout">
         {doc.sections.map((s, i) => {
           const isOpen = openId === s.id;
           const isDrag = drag?.from === i;
@@ -168,8 +170,11 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
             else if (drag.target < drag.from && i >= drag.target && i < drag.from) shift = h;
           }
           return (
-            <li
+            <motion.li
               key={s.id}
+              layout={dragging ? false : "position"}
+              exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.15, ease: EASE } }}
+              transition={{ layout: { duration: 0.22, ease: EASE } }}
               ref={(el) => { rows.current[i] = el; }}
               data-section-type={s.type}
               data-dragging={isDrag}
@@ -178,7 +183,7 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
               data-settled={settled === s.id || undefined}
               onAnimationEnd={(e) => { if (e.target === e.currentTarget) setSettled((c) => (c === s.id ? null : c)); }}
               className="sec-card relative"
-              style={isDrag ? { transform: `translateY(${drag.dy}px) scale(${drag.dropping ? 1 : 1.015})` } : shift ? { transform: `translateY(${shift}px)` } : undefined}
+              style={isDrag ? { y: drag.dy, scale: drag.dropping ? 1 : 1.015 } : shift ? { y: shift } : undefined}
             >
               <div className="flex items-center gap-0.5 p-1 pr-1.5">
                 <button
@@ -197,7 +202,7 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
                   <span className="text-[var(--text-muted)]"><SectionIcon type={s.type} size={18} /></span>
                   <span className="sec-title min-w-0 flex-1 truncate font-semibold">{s.title}</span>
                   {!s.visible && <span className="text-xs text-[var(--text-muted)]" aria-hidden="true">Hidden</span>}
-                  <span className={`text-[var(--text-muted)] transition-transform ${isOpen ? "rotate-180" : ""}`}><IconChevron size={18} /></span>
+                  <motion.span className="text-[var(--text-muted)]" animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2, ease: EASE }}><IconChevron size={18} /></motion.span>
                 </button>
                 <Switch checked={s.visible} label={`Show ${s.title} on resume`} onChange={(v) => resumeStore.update((d) => patchSection(d, s.id, (x) => ({ ...x, visible: v })))} />
                 <ActionMenu label={`Actions for ${s.title}`} testId={`menu-${s.type}`} actions={[
@@ -206,15 +211,24 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
                   { label: `Remove ${s.title}`, onSelect: () => remove(i), danger: true, icon: <IconTrash size={18} /> },
                 ]} />
               </div>
+              <AnimatePresence initial={false}>
               {isOpen && (
+                <motion.div
+                  key="body" style={{ overflow: "hidden" }}
+                  initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: EASE }}
+                >
                 <div id={`panel-${s.id}`} className="sec-body space-y-4 border-t border-[var(--line)] p-3.5">
                   {s.type !== "contact" && <TextField label="Section heading" value={s.title} onChange={(v) => resumeStore.update((d) => patchSection(d, s.id, (x) => ({ ...x, title: v })))} hint="Standard names (Experience, Education, Skills) work best with ATS." />}
                   <SectionEditor section={s} onChange={(next) => resumeStore.update((d) => patchSection(d, s.id, () => next))} />
                 </div>
+                </motion.div>
               )}
-            </li>
+              </AnimatePresence>
+            </motion.li>
           );
         })}
+        </AnimatePresence>
         {drag && <div className="drop-slot" style={{ height: drag.geom.heights[drag.from], transform: `translateY(${slotTop(drag)}px)` }} aria-hidden="true" />}
       </ol>
       <p id="drag-help" className="sr-only">Press the up or down arrow key to move this section, or drag with a pointer.</p>

@@ -92,6 +92,7 @@ const h2s = await page.locator("[data-resume] h2").allTextContents();
 check("preview follows new order (Education before Experience)", h2s.indexOf("Education") < h2s.indexOf("Experience"), h2s.join(","));
 // pointer-event drag (mouse; same code path as touch)
 const handle = page.locator('[data-testid="section-list"] > li').nth(1).getByTestId("drag-handle");
+await handle.scrollIntoViewIfNeeded(); // bounding boxes are viewport-relative, so bring the handle on screen first
 const hb = await handle.boundingBox();
 const tb = await page.locator('[data-testid="section-list"] > li').nth(4).boundingBox();
 await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
@@ -109,6 +110,7 @@ page.on("dialog", (d) => { dialogSeen = true; d.dismiss(); });
 const nBefore = (await order()).length;
 await page.getByRole("button", { name: "Actions for Languages" }).click();
 await page.getByRole("menuitem", { name: "Remove Languages" }).click();
+await page.waitForTimeout(300); // the removed card fades out before it leaves the list
 check("Remove shows an Undo toast, not a confirm dialog", (await order()).length === nBefore - 1 && !dialogSeen && await page.getByTestId("toast").getByRole("button", { name: "Undo" }).isVisible());
 await page.getByTestId("toast").getByRole("button", { name: "Undo" }).click();
 check("Undo restores the removed section at its position", (await order()).join() === afterDrag.join(), (await order()).join(","));

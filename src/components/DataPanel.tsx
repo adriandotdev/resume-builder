@@ -1,4 +1,6 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { fade } from "@/lib/motion";
 import { useRef, useState } from "react";
 import { newId, parseResumeDoc, type ResumeDoc } from "@/lib/schema";
 import { resumeStore, useStoreStatus } from "@/lib/store";
@@ -129,13 +131,15 @@ export function DataPanel({ doc }: { doc: ResumeDoc }) {
       </div>
 
       <div role="status" aria-live="polite">
-        {note && <p className="text-[0.9375rem] font-medium text-[var(--tick-text)]">{note}</p>}
+        <AnimatePresence initial={false}>
+        {note && <motion.p key="note" {...fade} className="text-[0.9375rem] font-medium text-[var(--tick-text)]">{note}</motion.p>}
         {errors.length > 0 && (
-          <div className="rounded-[var(--r-control)] border border-[var(--pen-text)] bg-[var(--pen-soft)] p-3 text-[0.9375rem]" role="alert" data-testid="import-error">
+          <motion.div key="errors" {...fade} className="overflow-hidden rounded-[var(--r-control)] border border-[var(--pen-text)] bg-[var(--pen-soft)] p-3 text-[0.9375rem]" role="alert" data-testid="import-error">
             <p className="font-semibold text-[var(--pen-text)]">Import failed. Nothing was changed.</p>
             <ul className="mt-1 list-disc pl-5">{errors.map((e, i) => <li key={i}>{e}</li>)}</ul>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </div>
     </section>
   );

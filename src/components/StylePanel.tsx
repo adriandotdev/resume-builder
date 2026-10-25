@@ -1,4 +1,6 @@
 "use client";
+import { motion } from "motion/react";
+import { EASE } from "@/lib/motion";
 import { memo } from "react";
 import { DATE_FORMATS, FONTS, MARGINS, PAGE_SIZES, type FontId, type MarginId, type PageSizeId, type ResumeDoc, type TemplateId } from "@/lib/schema";
 import { patchStyle } from "@/lib/ops";
@@ -108,6 +110,7 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
         <div className="grid grid-cols-3 gap-2">
           {TEMPLATES.map((t) => (
             <button key={t.id} type="button" role="radio" aria-checked={s.template === t.id} tabIndex={s.template === t.id ? 0 : -1} aria-label={t.name} className="tpl-pick" onClick={() => set({ template: t.id })} data-testid={`pick-${t.id}`}>
+              {s.template === t.id && <motion.span layoutId="tpl-ring" className="pick-ring" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
               <Sketch id={t.id} accent={s.accent} />
               <span>{t.name}</span>
             </button>
@@ -119,7 +122,9 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
         <h3 id="accent-h" className="text-sm font-medium">Accent color</h3>
         <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-labelledby="accent-h" onKeyDown={onRadioGroupKey}>
           {ACCENT_SWATCHES.map((w, wi) => (
-            <button key={w.value} type="button" role="radio" aria-checked={s.accent.toLowerCase() === w.value} tabIndex={isSwatch ? (s.accent.toLowerCase() === w.value ? 0 : -1) : wi === 0 ? 0 : -1} aria-label={w.name} title={w.name} className="swatch" style={{ background: w.value }} onClick={() => set({ accent: w.value })} />
+            <button key={w.value} type="button" role="radio" aria-checked={s.accent.toLowerCase() === w.value} tabIndex={isSwatch ? (s.accent.toLowerCase() === w.value ? 0 : -1) : wi === 0 ? 0 : -1} aria-label={w.name} title={w.name} className="swatch" style={{ background: w.value }} onClick={() => set({ accent: w.value })}>
+              {s.accent.toLowerCase() === w.value && <motion.span layoutId="swatch-ring" className="swatch-ring" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
+            </button>
           ))}
         </div>
         <div className="field mt-1 max-w-[16rem]">

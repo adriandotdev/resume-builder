@@ -1,4 +1,7 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { SegButton } from "@/components/controls";
+import { EASE } from "@/lib/motion";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useResumeDoc, resumeStore } from "@/lib/store";
 import { toPlainText } from "@/lib/plaintext";
@@ -106,7 +109,9 @@ export default function EditorPage() {
       </div>
 
       <div className="editor-grid">
-        {drawerActive && <div className="drawer-scrim no-print" onClick={closeTools} aria-hidden="true" />}
+        <AnimatePresence>
+          {drawerActive && <motion.div className="drawer-scrim no-print" onClick={closeTools} aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: EASE }} />}
+        </AnimatePresence>
         <aside ref={toolsRef} className="tools no-print" aria-label="Editing tools" data-open={drawerActive} onKeyDown={toolsKeys} role={drawerActive ? "dialog" : undefined} aria-modal={drawerActive || undefined} inert={sheetActive}>
           <div className="tools-head hidden items-center justify-between border-b border-[var(--line)] px-4 py-2 md:flex lg:hidden">
             <span className="serif text-xl">Edit resume</span>
@@ -115,13 +120,14 @@ export default function EditorPage() {
           <div className="tools-tabs" role="tablist" aria-label="Editor sections" onKeyDown={onTabKey}>
             {TABS.map((t) => (
               <button key={t.id} type="button" role="tab" id={`tab-${t.id}`} className="rail-tab" aria-selected={tab === t.id} aria-controls="tools-panel" tabIndex={tab === t.id ? 0 : -1} onClick={() => setTab(t.id)}>
+                {tab === t.id && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
                 {t.icon}<span>{t.label}</span>
                 {t.id === "ats" && issues > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{issues} to review</span><span aria-hidden="true">{issues}</span></span>}
               </button>
             ))}
           </div>
           <div className="tools-scroll">
-            <div key={tab} id="tools-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="tools-body panel-in @container" tabIndex={-1}>
+            <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: EASE }} id="tools-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="tools-body @container" tabIndex={-1}>
               {tab === "content" && (
                 <div className="space-y-5">
                   {isSample && (
@@ -137,7 +143,7 @@ export default function EditorPage() {
               {tab === "design" && <StylePanel doc={doc} />}
               {tab === "ats" && <AtsPanel doc={doc} onWriteIn={onWriteIn} />}
               {tab === "data" && <DataPanel doc={doc} />}
-            </div>
+            </motion.div>
           </div>
         </aside>
 
@@ -145,13 +151,13 @@ export default function EditorPage() {
           <div className="pv-toolbar no-print flex flex-wrap items-center gap-x-4 gap-y-2 px-3 py-2 sm:px-4">
             <button type="button" className="btn md:hidden" onClick={closePv} data-autofocus><IconClose size={18} />Back to editing</button>
             <div role="group" aria-label="Preview mode" className="seg">
-              <button type="button" className="seg-opt" aria-pressed={view === "design"} onClick={() => setView("design")}>Design preview</button>
-              <button type="button" className="seg-opt" aria-pressed={view === "ats"} onClick={() => setView("ats")}>ATS text preview</button>
+              <SegButton group="pv-view" pressed={view === "design"} onClick={() => setView("design")}>Design preview</SegButton>
+              <SegButton group="pv-view" pressed={view === "ats"} onClick={() => setView("ats")}>ATS text preview</SegButton>
             </div>
             {view === "design" && (
               <div role="group" aria-label="Zoom" className="seg">
-                <button type="button" className="seg-opt" aria-pressed={zoom === "fit"} onClick={() => setZoom("fit")}>Fit</button>
-                <button type="button" className="seg-opt" aria-pressed={zoom === "actual"} onClick={() => setZoom("actual")}>100%</button>
+                <SegButton group="pv-zoom" pressed={zoom === "fit"} onClick={() => setZoom("fit")}>Fit</SegButton>
+                <SegButton group="pv-zoom" pressed={zoom === "actual"} onClick={() => setZoom("actual")}>100%</SegButton>
               </div>
             )}
             <span className="num text-sm text-[var(--text-muted)]" data-testid="page-count">About {pages} page{pages === 1 ? "" : "s"}</span>

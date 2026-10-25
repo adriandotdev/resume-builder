@@ -1,4 +1,6 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE, fade } from "@/lib/motion";
 import { useEffect, useRef, useState } from "react";
 import { MAX_NAME_LENGTH } from "@/lib/versions";
 import { useVersionIndex, versionsStore, type RemovedVersion } from "@/lib/versionsStore";
@@ -42,6 +44,7 @@ function VersionsDialog({ open, onClose }: { open: boolean; onClose: () => void 
         <p className="mt-2 text-[var(--text-muted)]">Keep one resume per role, each with its own content, design and job posting. Everything stays in this browser.</p>
 
         <ul className="mt-4 space-y-2" aria-label="Your versions">
+          <AnimatePresence initial={false}>
           {index.versions.map((v) => (
             <VersionRow
               key={v.id}
@@ -55,15 +58,18 @@ function VersionsDialog({ open, onClose }: { open: boolean; onClose: () => void 
               onDelete={() => { setRemoved(versionsStore.remove(v.id)); setRenameId(null); }}
             />
           ))}
+          </AnimatePresence>
         </ul>
 
         <div role="status" aria-live="polite" className="mt-3 min-h-[1.5rem]">
+          <AnimatePresence initial={false}>
           {removed && (
-            <p className="flex flex-wrap items-center gap-2 text-[0.9375rem]" data-testid="version-removed">
+            <motion.p key="removed" {...fade} className="flex flex-wrap items-center gap-2 overflow-hidden text-[0.9375rem]" data-testid="version-removed">
               <span>Deleted “{removed.meta.name}”.</span>
               <button type="button" className="btn" onClick={() => { versionsStore.restore(removed); setRemoved(null); }} data-testid="version-undo">Undo</button>
-            </p>
+            </motion.p>
           )}
+          </AnimatePresence>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -89,7 +95,7 @@ function VersionRow({ id, name, active, canDelete, focusName, onOpen, onDuplicat
   };
 
   return (
-    <li className="well flex flex-wrap items-center gap-2 p-3" data-testid="version-row">
+    <motion.li layout="position" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.14 } }} transition={{ duration: 0.2, ease: EASE }} className="well flex flex-wrap items-center gap-2 p-3" data-testid="version-row">
       <label className="sr-only" htmlFor={`vname-${id}`}>Version name</label>
       <input
         ref={ref}
@@ -107,6 +113,6 @@ function VersionRow({ id, name, active, canDelete, focusName, onOpen, onDuplicat
       {active ? <span className="badge">Editing</span> : <button type="button" className="btn" onClick={onOpen} aria-label={`Open ${name}`}>Open</button>}
       <button type="button" className="btn" onClick={onDuplicate} aria-label={`Duplicate ${name}`}>Duplicate</button>
       <button type="button" className="btn" onClick={onDelete} disabled={!canDelete} aria-label={`Delete ${name}`}>Delete</button>
-    </li>
+    </motion.li>
   );
 }

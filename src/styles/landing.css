@@ -11,6 +11,7 @@
   --step-display: clamp(2.75rem, 1.5rem + 4.4vw, 5.5rem);
   --field-dark: #0a0a0a;
   --on-dark: #efeeec;
+  --field-well: #1c1c1c; /* the typed-in field on the dark stage, one step above --field-dark */
 }
 /* Large desktops (1920x1080 and up): scale the type and tighten the rhythm so the columns fill. */
 @media (min-width: 1600px) {
@@ -34,13 +35,11 @@
   .stage { order: 1; display: flex; flex-direction: column; gap: 14px; height: 50svh; min-height: 380px; padding: 14px; background: var(--surface-sunk); border-radius: var(--r-sheet); }
   .stage-bar { display: flex; }
   .stage-box { flex: 1; min-height: 0; display: grid; place-items: center; }
-  /* The page is laid on the desk once the stage has measured it. */
-  .stage-page { position: relative; background: #fff; outline: 1px solid var(--paper-edge); opacity: 0; transform: translateY(12px) scale(0.985); transition: opacity 0.9s var(--ease-out) 0.2s, transform 1.4s var(--ease-settle) 0.2s; }
-  .stage-page[data-ready="true"] { opacity: 1; transform: none; }
-  /* Slow crossfade: the next page develops over the current one, which stays put
+  /* The page is laid on the desk once the stage has measured it (motion, in HeroSheet). */
+  .stage-page { position: relative; background: #fff; outline: 1px solid var(--paper-edge); }
+  /* Slow crossfade (motion, in HeroSheet): the next page develops over the current one, which stays put
      underneath until it is covered and only then drops away, so the stage never washes to white. */
-  .stage-layer { position: absolute; inset: 0; overflow: hidden; background: #fff; opacity: 0; visibility: hidden; filter: blur(5px); transform: scale(1.012); transition: opacity 0s 1.2s, filter 0s 1.2s, transform 0s 1.2s, visibility 0s 1.2s; }
-  .stage-layer[data-shown="true"] { z-index: 1; opacity: 1; visibility: visible; filter: none; transform: none; transition: opacity 1.1s ease, filter 0.9s var(--ease-out), transform 1.6s var(--ease-settle), visibility 0s; }
+  .stage-layer { position: absolute; inset: 0; overflow: hidden; background: #fff; }
   .stage-caption { font-size: var(--step-small); line-height: 1.45; color: var(--text-muted); max-width: 60ch; min-height: 2.9em; }
 
   @media (min-width: 1024px) {
@@ -93,7 +92,7 @@
     .how-thumbs { gap: 20px; margin-top: 28px; }
     .how-frag { margin-top: 28px; padding: 8px 24px; }
     .frag-row { min-height: 56px; }
-    .frag-title { font-size: 1.875rem; }
+    .frag-title { font-size: 2rem; }
     .text-link { font-size: 1.1875rem; }
     .hero-sub { max-width: 40ch; margin-top: 40px; }
     .hero-card { padding: 72px 72px 32px; }
@@ -107,7 +106,7 @@
   .show-h { font-family: var(--font-display-stack); font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.02em; }
   .show-h-b { text-align: right; order: -1; }
   .show-label { display: block; margin-bottom: 10px; font-size: var(--step-small); font-weight: 600; color: #c9c5bd; }
-  .show-input { /* taste-skill-ignore: a real form field keeps its 3:1 boundary */ display: block; width: 100%; max-width: 34ch; padding: 10px 14px; border: 1px solid #77726a; border-radius: var(--r-control); background: #1c1c1c; color: var(--on-dark); font-family: inherit; font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem); line-height: 1.4; }
+  .show-input { /* taste-skill-ignore: a real form field keeps its 3:1 boundary */ display: block; width: 100%; max-width: 34ch; padding: 10px 14px; border: 1px solid #77726a; border-radius: var(--r-control); background: var(--field-well); color: var(--on-dark); font-family: inherit; font-size: var(--step-body); line-height: 1.4; }
   .show-input:focus-visible { outline: 2px solid var(--hl); outline-offset: 2px; border-color: var(--hl); }
   .show-area { resize: vertical; min-height: 7.5em; }
   .show-result { width: 100%; max-width: 520px; }
@@ -156,7 +155,7 @@
   .cta-h { font-size: var(--step-display); max-width: 9ch; }
   .cta-sub { margin-top: 24px; max-width: 40ch; font-size: var(--step-body); line-height: 1.55; }
   .start-card { width: 100%; max-width: 560px; padding: 28px; background: var(--surface); color: var(--text); border-radius: var(--r-sheet); }
-  .start-title { font-family: var(--font-display-stack); font-size: 1.75rem; line-height: 1.1; }
+  .start-title { font-family: var(--font-display-stack); font-size: 1.5rem; line-height: 1.1; }
   @media (min-width: 900px) {
     .cta { grid-template-columns: repeat(12, minmax(0, 1fr)); min-height: 90svh; margin-top: 200px; padding: 48px; }
     .cta-text { grid-column: 1 / span 6; align-self: end; }
@@ -166,26 +165,16 @@
     .cta { min-height: 72svh; margin-top: 140px; padding: 72px; }
     .cta-form { max-width: 600px; }
     .start-card { padding: 40px; max-width: 600px; }
-    .start-title { font-size: 2.25rem; }
+    .start-title { font-size: 2rem; }
   }
 
   /* ---------- entrances: heading, then text, then picture ----------
-     Hiding is instant and only arriving animates; each piece comes into focus as it rises. */
-  .reveal-on [data-reveal]:not([data-in]) > * { opacity: 0; transform: translateY(16px); filter: blur(6px); }
-  .reveal-on [data-reveal][data-in] > * { transition: opacity 0.8s var(--ease-out), filter 0.8s var(--ease-out), transform 1.1s var(--ease-settle); }
-  .reveal-on [data-reveal] > :nth-child(2) { transition-delay: 0.08s; }
-  .reveal-on [data-reveal] > :nth-child(3) { transition-delay: 0.16s; }
-  .reveal-on [data-reveal] > :nth-child(n + 4) { transition-delay: 0.24s; }
-  /* Answers arrive one after another, down each column. */
-  .reveal-on .faq-cols[data-reveal] > * { transition-delay: calc(0.1s + var(--i, 0) * 35ms); }
-  /* Showcase: the two halves are already on the desk; their contents arrive. Blurring or
-     moving the 90svh panels themselves would be costly and would open a gap in the clip. */
-  .reveal-on .show[data-reveal]:not([data-in]) > * { opacity: 1; transform: none; filter: none; }
-  .reveal-on .show[data-reveal]:not([data-in]) :is(.show-in, .show-out) > * { opacity: 0; transform: translateY(16px); filter: blur(6px); }
-  .reveal-on .show[data-reveal][data-in] :is(.show-in, .show-out) > * { transition: opacity 0.8s var(--ease-out), filter 0.8s var(--ease-out), transform 1.1s var(--ease-settle); }
-  .reveal-on .show[data-reveal][data-in] :is(.show-in, .show-out) > :nth-child(2) { transition-delay: 0.1s; }
-  .reveal-on .show[data-reveal][data-in] .show-out > * { transition-delay: 0.16s; }
-  .reveal-on .show[data-reveal][data-in] .show-out > :nth-child(2) { transition-delay: 0.26s; }
+     Reveal.tsx (motion) animates each piece in; this only holds them hidden until their block arrives. */
+  .reveal-on [data-reveal]:not([data-in]) > * { opacity: 0; }
+  /* Showcase: the two halves are already on the desk; their contents arrive. Fading
+     the 90svh panels themselves would open a gap in the clip. */
+  .reveal-on .show[data-reveal]:not([data-in]) > * { opacity: 1; }
+  .reveal-on .show[data-reveal]:not([data-in]) :is(.show-in, .show-out) > * { opacity: 0; }
 }
 
 /* First screen: the hero sets itself on load (no script, so nothing waits on hydration).
@@ -195,10 +184,8 @@
   .hero-mid > :nth-child(2) { animation-delay: 0.08s; }
   .hero-mid > :nth-child(3) { animation-delay: 0.16s; }
   .hero-promises { animation-delay: 0.3s; }
-  .stage-caption { animation: caption-in 0.6s var(--ease-out) both; }
 }
 @keyframes settle-in { from { opacity: 0; transform: translateY(14px); } }
-@keyframes caption-in { from { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
   .stage-layer, .stage-page { transform: none !important; filter: none !important; }

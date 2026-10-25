@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useRouter } from "next/navigation";
+import { EASE, enter } from "@/lib/motion";
 import { MAX_FIELD, MAX_NOTES, MAX_POSTING, MAX_URL, STATUSES, STATUS_LABELS, type AppStatus, type Application } from "@/lib/applications";
 import { applicationsStore, useApplications, useApplicationsStatus } from "@/lib/applicationsStore";
 import { jobPostingStore } from "@/lib/jobPostingStore";
@@ -18,13 +19,6 @@ type Filter = "all" | AppStatus;
 type Draft = { company: string; role: string; url: string; status: AppStatus; versionId: string; posting: string; notes: string };
 
 const NO_VERSION = "";
-const EASE = [0.23, 1, 0.32, 1] as const;
-/** Fade-up entrance. Only the first few steps are staggered so a long list never lags. */
-const enter = (i = 0) => ({
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.26, ease: EASE, delay: Math.min(i, 7) * 0.04 },
-});
 const nf = new Intl.NumberFormat();
 /** Counter text once a field is within 10% of its limit; undefined while there is plenty of room. */
 const nearLimit = (len: number, max: number) => (len >= max * 0.9 ? `${nf.format(len)} of ${nf.format(max)} characters${len >= max ? ". Limit reached." : "."}` : undefined);
