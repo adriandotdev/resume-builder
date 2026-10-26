@@ -1,6 +1,6 @@
 # Resume Builder
 
-A free, private, ATS-friendly resume builder. Next.js (App Router) + TypeScript + Tailwind. No database, no API routes, no analytics and no third-party network calls. System fonts only.
+A free, private, ATS-friendly resume builder. Next.js (App Router) + TypeScript + Tailwind. No database, no API routes, no analytics and no third-party network calls. The app's own fonts are self-hosted, and resumes use system fonts.
 
 Everything is original: templates, sample data (a fictional person), copy and styling were written from a behavior spec (`../resume-builder-spec.md`) only.
 
@@ -35,6 +35,7 @@ Set `CHROME=/path/to/chrome` if Chrome is not at the macOS default path.
 - `/print`: clean view of the saved resume (same renderer). The editor's "Print / Save as PDF" calls `window.print()`; `print.css` hides all chrome and an injected `@page` rule sets paper size and margins. Choose "Save as PDF" and turn off headers and footers. Text stays selectable.
 - Job match: in the ATS tab, paste a job posting to see which of its key terms already appear in your resume, which are missing, and which sections hold them. It uses plain rules, not AI, and shows counts and term lists, not a score. Each missing term has an "Add to Skills" button that puts it in an "Additional skills" group (with Undo). "Write in Summary" and "Write in Experience" take you to that text box so you can work the term into a sentence. Add only terms that truly describe your experience.
 - Versions: keep one resume per role (Frontend, Backend, QA, ...). Use the Version picker in the editor bar and "Manage" to add, duplicate, rename or delete (with Undo). Each version has its own content, design and job posting. Your resume from before versions existed appears as "My resume".
+- Compare versions: in "Manage", "Compare versions" shows what changed going from one version to another: per section, the lines added and removed (marked with +, − and words, not color alone), plus which key terms of a job posting each version covers (in both, only one, in neither). Counts and lists, no score. Read-only; nothing is stored.
 - Applications: the Applications page tracks where each version went (company, role, status, dates, link, notes). Each application links a resume version and keeps its own copy of the job posting, so later edits to a version's posting do not change it. Deleting a version keeps the application and shows the version name as deleted.
 - Export/import JSON in "Your data" to back up or move a resume. Export saves the open version, or all versions as one file that also includes your applications (and their posting copies). Importing that file re-links applications to the new versions. Imports are validated and migrated, and always add a new version; a bad file changes nothing.
 

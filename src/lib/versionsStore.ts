@@ -176,11 +176,17 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     return makeBundle(index.versions.flatMap((v) => { const doc = readDoc(v.id); if (!doc) return []; const letter = readCover(v.id); return [letter ? { id: v.id, name: v.name, doc, cover: letter } : { id: v.id, name: v.name, doc }]; }), applications);
   }
 
+  /** Read-only view of one version for comparing. `doc` is null when its saved data cannot be read. */
+  function getVersion(id: string): { meta: VersionMeta; doc: ResumeDoc | null; jd: string } | null {
+    const meta = index.versions.find((v) => v.id === id);
+    return meta ? { meta, doc: readDoc(id), jd: readJd(id) } : null;
+  }
+
   return {
     getIndex: () => index,
     subscribe(l: () => void) { listeners.add(l); return () => { listeners.delete(l); }; },
     setStorage(s: KeyValueStorage | null) { storage = s; },
-    load, switchTo, create, duplicate, rename, remove, restore, exportAll,
+    load, switchTo, create, duplicate, rename, remove, restore, exportAll, getVersion,
   };
 }
 

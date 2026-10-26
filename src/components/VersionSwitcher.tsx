@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { MAX_NAME_LENGTH } from "@/lib/versions";
 import { useVersionIndex, versionsStore, type RemovedVersion } from "@/lib/versionsStore";
 import { Modal } from "./Modal";
+import { VersionCompare } from "./VersionCompare";
 import { IconClose } from "./icons";
 
 /** Pick which version of the resume to edit, and open the dialog to manage them. */
@@ -29,13 +30,15 @@ function VersionsDialog({ open, onClose }: { open: boolean; onClose: () => void 
   const index = useVersionIndex();
   const [removed, setRemoved] = useState<RemovedVersion | null>(null);
   const [renameId, setRenameId] = useState<string | null>(null);
+  const [comparing, setComparing] = useState(false);
   const only = index.versions.length <= 1;
 
   const add = (id: string | null) => { setRemoved(null); setRenameId(id); };
-  const close = () => { setRemoved(null); setRenameId(null); onClose(); };
+  const close = () => { setRemoved(null); setRenameId(null); setComparing(false); onClose(); };
 
   return (
-    <Modal open={open} onClose={close} labelledBy="versions-h" testId="versions-dialog">
+    <Modal open={open} onClose={close} labelledBy={comparing ? "compare-h" : "versions-h"} wide={comparing} testId={comparing ? "compare-dialog" : "versions-dialog"}>
+      {comparing ? <VersionCompare onBack={() => setComparing(false)} onClose={close} /> : (
       <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <h2 id="versions-h" className="display text-3xl">Resume versions</h2>
@@ -74,9 +77,12 @@ function VersionsDialog({ open, onClose }: { open: boolean; onClose: () => void 
 
         <div className="mt-4 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary" onClick={() => add(versionsStore.create())} data-autofocus data-testid="version-new">New blank version</button>
+          <button type="button" className="btn" onClick={() => { setRemoved(null); setRenameId(null); setComparing(true); }} disabled={only} aria-describedby={only ? "compare-hint" : undefined} data-testid="version-compare">Compare versions</button>
           <button type="button" className="btn" onClick={close}>Done</button>
         </div>
+        {only && <p id="compare-hint" className="field-hint mt-2">Add a second version to compare.</p>}
       </div>
+      )}
     </Modal>
   );
 }
