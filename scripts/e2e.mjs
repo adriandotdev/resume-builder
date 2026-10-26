@@ -248,6 +248,19 @@ await page.getByRole("button", { name: /^Delete Copy of New resume$/ }).click();
 check("Delete removes the version and offers Undo in the dialog", (await page.getByTestId("version-row").count()) === 3 && await page.getByTestId("version-undo").isVisible() && !dialogSeen);
 await page.getByTestId("version-undo").click();
 check("Undo puts the version back with its content", (await names()).includes("Copy of New resume") && (await page.locator("[data-resume] h1").innerText()) === "Quinn QA");
+
+// Compare: the active copy against the Elena version, then against its identical original
+await page.getByTestId("version-compare").click();
+await page.getByTestId("compare-view").waitFor();
+await page.getByTestId("compare-b").selectOption({ index: 1 });
+check("Compare shows the changed contact name as removed and added lines", (await page.locator('[data-diff="removed"]').filter({ hasText: "Name: Quinn QA" }).count()) === 1 && (await page.locator('[data-diff="added"]').filter({ hasText: "Name: Elena Marchetti-Rossi" }).count()) === 1);
+check("Compare states changes in words and counts", /sections? differ/.test(await page.getByTestId("compare-summary").innerText()) && (await page.locator('[data-testid="diff-section"][data-status="changed"]').first().innerText()).includes("Changed"));
+await page.getByTestId("compare-b").selectOption({ label: "New resume" });
+check("Comparing identical versions says so and hides unchanged sections", (await page.getByTestId("compare-summary").innerText()).includes("same content") && (await page.getByTestId("diff-section").count()) === 0);
+await page.getByTestId("compare-show-same").click();
+check("Show unchanged lists the sections", (await page.getByTestId("diff-section").count()) > 0);
+await page.getByTestId("compare-back").click();
+check("Back returns to the versions list", await page.getByTestId("versions-dialog").isVisible());
 await page.getByRole("button", { name: "Done" }).click();
 
 await page.getByRole("tab", { name: "Data" }).click();

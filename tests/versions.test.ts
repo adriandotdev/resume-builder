@@ -228,6 +228,41 @@ describe("versions", () => {
   });
 });
 
+describe("getVersion (for comparing)", () => {
+  it("reads the active version live and inactive ones from storage", () => {
+    const { resume, posting, versions } = boot(mem());
+    const first = versions.getIndex().activeId;
+    edit(resume, "#111111");
+    posting.setText("one");
+    const qa = versions.create("QA");
+    edit(resume, "#222222");
+    posting.setText("two");
+    // Active (qa) is live, even before any autosave; the first version was stashed on switch.
+    expect(versions.getVersion(qa)!.doc!.style.accent).toBe("#222222");
+    expect(versions.getVersion(qa)!.jd).toBe("two");
+    expect(versions.getVersion(first)!.doc!.style.accent).toBe("#111111");
+    expect(versions.getVersion(first)!.jd).toBe("one");
+    expect(versions.getVersion(first)!.meta.id).toBe(first);
+  });
+  it("returns null for an unknown id and a null doc when saved data is unreadable", () => {
+    const st = mem();
+    const { versions } = boot(st);
+    const first = versions.getIndex().activeId;
+    const qa = versions.create("QA");
+    expect(versions.getVersion("nope")).toBeNull();
+    st.setItem(docKey(first), "{broken");
+    expect(versions.getVersion(first)!.doc).toBeNull();
+    expect(versions.getVersion(qa)!.doc).not.toBeNull();
+  });
+  it("works from memory when storage is blocked", () => {
+    const { resume, versions } = boot(null);
+    const first = versions.getIndex().activeId;
+    edit(resume, "#101010");
+    versions.create("QA");
+    expect(versions.getVersion(first)!.doc!.style.accent).toBe("#101010");
+  });
+});
+
 describe("versions without usable storage", () => {
   it("keeps versions in memory for the session when storage is blocked", () => {
     const { resume, posting, versions } = boot(null);
