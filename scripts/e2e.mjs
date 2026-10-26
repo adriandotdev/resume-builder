@@ -164,6 +164,22 @@ await page.getByRole("tab", { name: /ATS check/ }).click();
 await page.getByTestId("jd-found").getByText("kubernetes", { exact: true }).waitFor();
 check("a term added to Skills moves to Found, with its section", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes("kubernetes"));
 check("job posting survives switching tabs", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING);
+
+// 4b bullet coach
+await page.getByRole("tab", { name: "Content" }).click();
+await page.locator('[data-section-type="experience"]').getByRole("button", { expanded: false }).first().click();
+const achievements = page.locator('[data-section-type="experience"]').getByLabel("Achievements").first();
+await achievements.fill("Built a weekly report that saved 6 hours.\nResponsible for various reports.");
+await page.getByRole("tab", { name: /Coach/ }).click();
+await page.getByTestId("coach-list").getByText("Weak opener").first().waitFor();
+check("Coach lists a weak opener and filler for the second bullet", (await page.getByTestId("coach-list").innerText()).includes("Responsible for") && (await page.getByTestId("coach-list").innerText()).includes("various"));
+check("Coach summary counts suggestions", /^\d+ suggestions? to review\.$/.test(await page.getByTestId("coach-summary").innerText()), await page.getByTestId("coach-summary").innerText());
+await page.getByTestId("coach-list").getByRole("button", { name: /Go to bullet 2 of .*Weak opener/ }).click();
+await page.waitForFunction(() => document.activeElement?.tagName === "TEXTAREA" && document.activeElement.labels?.[0]?.textContent === "Achievements");
+check("Go to bullet opens Content and selects that line", await page.evaluate(() => { const t = document.activeElement; return t.value.slice(t.selectionStart, t.selectionEnd) === "Responsible for various reports."; }));
+await achievements.fill("Built a weekly report that saved 6 hours.\nCut late arrivals by 14 percent.");
+await page.getByRole("tab", { name: /Coach/ }).click();
+check("Coach clears once the bullets are fixed", (await page.getByTestId("coach-summary").innerText()) === "No wording issues found.", await page.getByTestId("coach-summary").innerText());
 await page.getByRole("button", { name: "Design preview" }).click();
 
 // 5 persistence

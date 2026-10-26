@@ -84,7 +84,7 @@ export function ItemsEditor<T extends { id: string }>({ sectionId, items, onChan
         {items.map((it, n) => {
           const label = itemLabel(it, n);
           return (
-            <li key={it.id} className="rounded-[var(--r-control)] border border-[var(--line)] bg-[var(--surface-2)] p-3">
+            <li key={it.id} data-item-id={it.id} className="rounded-[var(--r-control)] border border-[var(--line)] bg-[var(--surface-2)] p-3">
               <div className="mb-2 flex items-center justify-between gap-2">
                 <span className="min-w-0 truncate text-[0.9375rem] font-semibold">{label}</span>
                 <ActionMenu label={`Actions for ${label}`} actions={[

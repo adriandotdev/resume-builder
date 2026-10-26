@@ -24,6 +24,7 @@ export const IconMinus = (p: P) => <Svg {...p}><path d="M5 12h14" /></Svg>;
 export const IconCompare = (p: P) => <Svg {...p}><path d="M9 4H5v16h4M15 4h4v16h-4M12 3v18" /></Svg>;
 export const IconDownload = (p: P) => <Svg {...p}><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></Svg>;
 export const IconEye = (p: P) => <Svg {...p}><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></Svg>;
+export const IconCoach = (p: P) => <Svg {...p}><path d="M5 5h14v10H11l-4 4v-4H5z" /><path d="M9 9h6M9 12h3" /></Svg>;
 export const IconWarn = (p: P) => <Svg {...p}><path d="M12 4l9 16H3L12 4z" /><path d="M12 10v4M12 17.2v.1" /></Svg>;
 export const IconAlert = (p: P) => <Svg {...p}><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.2v.1" /></Svg>;
 export const IconLock = (p: P) => <Svg {...p}><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 018 0v3" /></Svg>;

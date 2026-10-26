@@ -47,6 +47,9 @@ export function addSkillTerm(doc: ResumeDoc, term: string, groupLabel = ADDED_SK
   });
 }
 
+/** One bullet line in an entry, for the coach to ask Content to open and focus. */
+export interface BulletJump { sectionId: string; itemId: string; bulletIndex: number }
+
 export type WriteInTarget = "summary" | "experience";
 
 /** Where a missing term can be written into a sentence: the summary, and the first (most recent) job. */
