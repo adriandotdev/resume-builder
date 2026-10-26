@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { EASE } from "@/lib/motion";
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { SECTION_TYPES, STANDARD_TITLES, type ResumeDoc, type SectionType } from "@/lib/schema";
-import { addSection, insertSection, moveSection, patchSection, removeSection, type WriteInTarget } from "@/lib/ops";
+import { addSection, insertSection, moveSection, patchSection, removeSection, type BulletJump, type WriteInTarget } from "@/lib/ops";
 import { resumeStore } from "@/lib/store";
 import { dragTargetIndex } from "@/lib/ui";
 import { SectionEditor } from "./SectionEditor";
@@ -37,7 +37,7 @@ function writeInField(panel: HTMLElement, target: WriteInTarget): HTMLTextAreaEl
   return [...panel.querySelectorAll("textarea")].find((t) => t.labels?.[0]?.textContent === label) ?? null;
 }
 
-export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: ResumeDoc; writeIn?: WriteInTarget | null; onWriteInDone?: () => void }) {
+export function SectionList({ doc, writeIn = null, onWriteInDone, jump = null, onJumpDone }: { doc: ResumeDoc; writeIn?: WriteInTarget | null; onWriteInDone?: () => void; jump?: BulletJump | null; onJumpDone?: () => void }) {
   const toast = useToast();
   // undefined = "first section open" (the default); null = user closed everything.
   const [open, setOpen] = useState<string | null | undefined>(undefined);
@@ -53,6 +53,20 @@ export function SectionList({ doc, writeIn = null, onWriteInDone }: { doc: Resum
     if (field) { field.focus(); field.setSelectionRange(field.value.length, field.value.length); }
     done.current?.();
   }, [writeIn, writeInId]);
+  if (jump && open !== jump.sectionId) setOpen(jump.sectionId);
+  const jumped = useRef(onJumpDone);
+  useEffect(() => { jumped.current = onJumpDone; });
+  useEffect(() => {
+    if (!jump) return;
+    const field = document.querySelector<HTMLTextAreaElement>(`#panel-${CSS.escape(jump.sectionId)} li[data-item-id="${CSS.escape(jump.itemId)}"] textarea`);
+    if (field) {
+      const lines = field.value.split("\n");
+      const start = lines.slice(0, jump.bulletIndex).reduce((n, l) => n + l.length + 1, 0);
+      field.focus();
+      field.setSelectionRange(start, start + (lines[jump.bulletIndex]?.length ?? 0));
+    }
+    jumped.current?.();
+  }, [jump]);
   const [msg, setMsg] = useState("");
   const [settled, setSettled] = useState<string | null>(null); // row that just moved or came back, for the wash
   const [addType, setAddType] = useState<SectionType>("custom");
