@@ -4,7 +4,7 @@ import { toPlainText } from "./plaintext";
 export type AtsLevel = "pass" | "warn" | "fail";
 export interface AtsCheck { id: string; level: AtsLevel; message: string }
 
-const STANDARD_HEADINGS = new Set([
+export const STANDARD_HEADINGS = new Set([
   "contact", "contact information", "summary", "professional summary", "profile", "objective",
   "experience", "work experience", "professional experience", "employment history", "work history",
   "education", "skills", "technical skills", "core skills", "projects", "certifications", "licenses",

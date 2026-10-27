@@ -180,6 +180,22 @@ check("Go to bullet opens Content and selects that line", await page.evaluate(()
 await achievements.fill("Built a weekly report that saved 6 hours.\nCut late arrivals by 14 percent.");
 await page.getByRole("tab", { name: /Coach/ }).click();
 check("Coach clears once the bullets are fixed", (await page.getByTestId("coach-summary").innerText()) === "No wording issues found.", await page.getByTestId("coach-summary").innerText());
+// 4c parser view
+await page.getByRole("tab", { name: "Content" }).click();
+const expBtn = page.locator('[data-section-type="experience"]').getByRole("button", { expanded: false }).first();
+if (await expBtn.count()) await expBtn.click();
+const startInput = page.locator('[data-section-type="experience"]').getByLabel("Start (YYYY-MM)").first();
+const startWas = await startInput.inputValue();
+await startInput.fill("Spring 2022");
+await page.getByRole("tab", { name: /Parser/ }).click();
+await page.getByTestId("parse-findings").getByText("not a date format").first().waitFor();
+check("Parser flags a date it cannot read", /^\d+ things? to review\.$/.test(await page.getByTestId("parse-summary").innerText()), await page.getByTestId("parse-summary").innerText());
+await page.getByTestId("parse-findings").getByRole("button", { name: /Go to Start \(YYYY-MM\)/ }).first().click();
+await page.waitForFunction(() => document.activeElement?.tagName === "INPUT" && document.activeElement.labels?.[0]?.textContent === "Start (YYYY-MM)");
+check("Go to field focuses that input", await page.evaluate(() => document.activeElement.value === "Spring 2022"));
+await startInput.fill(startWas);
+await page.getByRole("tab", { name: /Parser/ }).click();
+check("Parser clears once the date is fixed", (await page.getByTestId("parse-summary").innerText()) === "Everything was read into a field.", await page.getByTestId("parse-summary").innerText());
 await page.getByRole("button", { name: "Design preview" }).click();
 
 // 5 persistence
