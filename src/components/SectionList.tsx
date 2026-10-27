@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { EASE } from "@/lib/motion";
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { SECTION_TYPES, STANDARD_TITLES, type ResumeDoc, type SectionType } from "@/lib/schema";
-import { addSection, insertSection, moveSection, patchSection, removeSection, type BulletJump, type WriteInTarget } from "@/lib/ops";
+import { addSection, insertSection, moveSection, patchSection, removeSection, type BulletJump, type FieldJump, type WriteInTarget } from "@/lib/ops";
 import { resumeStore } from "@/lib/store";
 import { dragTargetIndex } from "@/lib/ui";
 import { SectionEditor } from "./SectionEditor";
@@ -37,7 +37,7 @@ function writeInField(panel: HTMLElement, target: WriteInTarget): HTMLTextAreaEl
   return [...panel.querySelectorAll("textarea")].find((t) => t.labels?.[0]?.textContent === label) ?? null;
 }
 
-export function SectionList({ doc, writeIn = null, onWriteInDone, jump = null, onJumpDone }: { doc: ResumeDoc; writeIn?: WriteInTarget | null; onWriteInDone?: () => void; jump?: BulletJump | null; onJumpDone?: () => void }) {
+export function SectionList({ doc, writeIn = null, onWriteInDone, jump = null, onJumpDone }: { doc: ResumeDoc; writeIn?: WriteInTarget | null; onWriteInDone?: () => void; jump?: BulletJump | FieldJump | null; onJumpDone?: () => void }) {
   const toast = useToast();
   // undefined = "first section open" (the default); null = user closed everything.
   const [open, setOpen] = useState<string | null | undefined>(undefined);
@@ -58,6 +58,14 @@ export function SectionList({ doc, writeIn = null, onWriteInDone, jump = null, o
   useEffect(() => { jumped.current = onJumpDone; });
   useEffect(() => {
     if (!jump) return;
+    if ("label" in jump) {
+      const scope = `#panel-${CSS.escape(jump.sectionId)}${jump.itemId ? ` li[data-item-id="${CSS.escape(jump.itemId)}"]` : ""}`;
+      const label = [...document.querySelectorAll<HTMLLabelElement>(`${scope} label`)].find((l) => l.textContent?.trim() === jump.label);
+      const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+      if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) { input.focus(); input.select(); } // select(), not setSelectionRange: that throws on type="email"
+      jumped.current?.();
+      return;
+    }
     const field = document.querySelector<HTMLTextAreaElement>(`#panel-${CSS.escape(jump.sectionId)} li[data-item-id="${CSS.escape(jump.itemId)}"] textarea`);
     if (field) {
       const lines = field.value.split("\n");

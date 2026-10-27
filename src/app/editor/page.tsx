@@ -7,6 +7,7 @@ import { useResumeDoc, resumeStore } from "@/lib/store";
 import { toPlainText } from "@/lib/plaintext";
 import { runAtsChecks } from "@/lib/ats";
 import { runCoach } from "@/lib/coach";
+import { runParseSim } from "@/lib/parsesim";
 import { TEMPLATES } from "@/templates/registry";
 import { PAGE_SIZES, type PageSizeId, type TemplateId } from "@/lib/schema";
 import { patchStyle } from "@/lib/ops";
@@ -14,8 +15,9 @@ import { ResumePreview } from "@/components/ResumePreview";
 import { SectionList } from "@/components/SectionList";
 import { StylePanel } from "@/components/StylePanel";
 import { AtsPanel } from "@/components/AtsPanel";
-import type { BulletJump, WriteInTarget } from "@/lib/ops";
+import type { BulletJump, FieldJump, WriteInTarget } from "@/lib/ops";
 import { CoachPanel } from "@/components/CoachPanel";
+import { ParsePanel } from "@/components/ParsePanel";
 import { DataPanel } from "@/components/DataPanel";
 import { CoverPanel } from "@/components/CoverPanel";
 import { CoverLetterBody } from "@/components/CoverPreview";
@@ -24,13 +26,13 @@ import { letterPlainText } from "@/lib/cover";
 import { ExportDialog } from "@/components/ExportDialog";
 import { SaveStatus } from "@/components/SaveStatus";
 import { VersionSwitcher } from "@/components/VersionSwitcher";
-import { IconClose, IconCoach, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconPalette, IconShield } from "@/components/icons";
+import { IconClose, IconCoach, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconPalette, IconParse, IconShield } from "@/components/icons";
 import { useMediaQuery } from "@/components/useMediaQuery";
 import { useDialogFocus } from "@/components/useDialogFocus";
 import { useToast } from "@/components/Toast";
 import { isSampleDoc } from "@/lib/ui";
 
-type Tab = "content" | "design" | "ats" | "coach" | "letter" | "data";
+type Tab = "content" | "design" | "ats" | "parse" | "coach" | "letter" | "data";
 type View = "design" | "ats";
 type Zoom = "fit" | "actual";
 
@@ -38,6 +40,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "content", label: "Content", icon: <IconEdit size={20} /> },
   { id: "design", label: "Design", icon: <IconPalette size={20} /> },
   { id: "ats", label: "ATS check", icon: <IconShield size={20} /> },
+  { id: "parse", label: "Parser", icon: <IconParse size={20} /> },
   { id: "coach", label: "Coach", icon: <IconCoach size={20} /> },
   { id: "letter", label: "Letter", icon: <IconDoc size={20} /> },
   { id: "data", label: "Data", icon: <IconData size={20} /> },
@@ -54,7 +57,7 @@ export default function EditorPage() {
   const [view, setView] = useState<View>("design");
   const [zoom, setZoom] = useState<Zoom>("fit");
   const [pages, setPages] = useState(1);
-  const [jump, setJump] = useState<BulletJump | null>(null); // asks Content to focus one bullet line
+  const [jump, setJump] = useState<BulletJump | FieldJump | null>(null); // asks Content to focus one bullet line
   const [writeIn, setWriteIn] = useState<WriteInTarget | null>(null); // asks Content to open and focus a field
 
   const isPhone = useMediaQuery("(max-width: 767.98px)");
@@ -78,6 +81,7 @@ export default function EditorPage() {
   }, [drawerActive, sheetActive]);
 
   const issues = useMemo(() => runAtsChecks(doc).filter((c) => c.level !== "pass").length, [doc]);
+  const parseCount = useMemo(() => runParseSim(doc).findings.length, [doc]);
   const coachCount = useMemo(() => runCoach(doc).length, [doc]);
   const isSample = isSampleDoc(doc);
   const contact = doc.sections.find((s) => s.type === "contact");
@@ -100,7 +104,7 @@ export default function EditorPage() {
     toast.show({ message: `Write "${term}" into a sentence about work you have done.` });
   };
 
-  const onJump = (target: BulletJump) => {
+  const onJump = (target: BulletJump | FieldJump) => {
     setJump(target);
     setTab("content");
   };
@@ -139,6 +143,7 @@ export default function EditorPage() {
               <button key={t.id} type="button" role="tab" id={`tab-${t.id}`} className="rail-tab" aria-selected={tab === t.id} aria-controls="tools-panel" tabIndex={tab === t.id ? 0 : -1} onClick={() => setTab(t.id)}>
                 {tab === t.id && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
                 {t.icon}<span>{t.label}</span>
+                {t.id === "parse" && parseCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{parseCount} to review</span><span aria-hidden="true">{parseCount}</span></span>}
                 {t.id === "coach" && coachCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{coachCount} to review</span><span aria-hidden="true">{coachCount}</span></span>}
                 {t.id === "ats" && issues > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{issues} to review</span><span aria-hidden="true">{issues}</span></span>}
               </button>
@@ -160,6 +165,7 @@ export default function EditorPage() {
               )}
               {tab === "design" && <StylePanel doc={doc} />}
               {tab === "ats" && <AtsPanel doc={doc} onWriteIn={onWriteIn} />}
+              {tab === "parse" && <ParsePanel doc={doc} onJump={onJump} />}
               {tab === "coach" && <CoachPanel doc={doc} onJump={onJump} />}
               {tab === "letter" && <CoverPanel doc={doc} />}
               {tab === "data" && <DataPanel doc={doc} />}
