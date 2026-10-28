@@ -32,6 +32,7 @@ import { useMediaQuery } from "@/components/useMediaQuery";
 import { useDialogFocus } from "@/components/useDialogFocus";
 import { useToast } from "@/components/Toast";
 import { isSampleDoc } from "@/lib/ui";
+import { useBackupStatus } from "@/lib/backupStore";
 
 type Tab = "content" | "design" | "fit" | "ats" | "parse" | "coach" | "letter" | "data";
 type View = "design" | "ats";
@@ -86,6 +87,7 @@ export default function EditorPage() {
   const issues = useMemo(() => runAtsChecks(doc).filter((c) => c.level !== "pass").length, [doc]);
   const parseCount = useMemo(() => runParseSim(doc).findings.length, [doc]);
   const coachCount = useMemo(() => runCoach(doc).length, [doc]);
+  const backupDue = useBackupStatus() === "due";
   const isSample = isSampleDoc(doc);
   const contact = doc.sections.find((s) => s.type === "contact");
   const docName = contact?.type === "contact" ? contact.content.fullName.trim() : "";
@@ -154,6 +156,7 @@ export default function EditorPage() {
                 {t.id === "fit" && pages > 1 && !isLetter && <span className="badge badge-quiet" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{pages} pages, over one</span><span aria-hidden="true">{pages}</span></span>}
                 {t.id === "parse" && parseCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{parseCount} to review</span><span aria-hidden="true">{parseCount}</span></span>}
                 {t.id === "coach" && coachCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{coachCount} to review</span><span aria-hidden="true">{coachCount}</span></span>}
+                {t.id === "data" && backupDue && <span className="badge badge-quiet" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">backup due</span><span aria-hidden="true">!</span></span>}
                 {t.id === "ats" && issues > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{issues} to review</span><span aria-hidden="true">{issues}</span></span>}
               </button>
             ))}

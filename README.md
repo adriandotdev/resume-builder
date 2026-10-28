@@ -38,10 +38,11 @@ Set `CHROME=/path/to/chrome` if Chrome is not at the macOS default path.
 - Compare versions: in "Manage", "Compare versions" shows what changed going from one version to another: per section, the lines added and removed (marked with +, − and words, not color alone), plus which key terms of a job posting each version covers (in both, only one, in neither). Counts and lists, no score. Read-only; nothing is stored.
 - Applications: the Applications page tracks where each version went (company, role, status, dates, link, notes). Each application links a resume version and keeps its own copy of the job posting, so later edits to a version's posting do not change it. Deleting a version keeps the application and shows the version name as deleted.
 - Export/import JSON in "Your data" to back up or move a resume. Export saves the open version, or all versions as one file that also includes your applications (and their posting copies). Importing that file re-links applications to the new versions. Imports are validated and migrated, and always add a new version; a bad file changes nothing.
+- Encrypted backup: tick "Protect exports with a passphrase" in "Your data" and the file is encrypted in the browser (WebCrypto: PBKDF2-SHA-256 key, AES-256-GCM). Importing an encrypted file asks for the passphrase first. There is no recovery: a lost passphrase means the file cannot be opened. Only the exported file is encrypted; resumes stored in the browser are not. The panel shows when you last backed up and, once changes older than 7 days are not in a backup, a quiet reminder and a badge on the Data tab. Which changes count is decided by comparing a fingerprint of your data with the one saved at the last backup, so undoing an edit clears it. Nothing is uploaded.
 
 ## Privacy
 
-Resumes live in `localStorage` in your browser only: a version list under `resume-builder:versions:v1` and each version's resume under `resume-builder:doc:v1:<id>`. Applications are kept under `resume-builder:applications:v1`. A pasted job posting is kept per version under `resume-builder:jd:v1:<id>`, is never part of the version export (the copy saved on an application is), and is removed only by its Clear button or by deleting its version. Nothing is uploaded. Clearing site data removes it, so export JSON for a backup. If storage is blocked the app still works and warns that changes will not persist.
+Resumes live in `localStorage` in your browser only: a version list under `resume-builder:versions:v1` and each version's resume under `resume-builder:doc:v1:<id>`. Applications are kept under `resume-builder:applications:v1`. Backup reminder state (time of the last backup and a data fingerprint, never resume text) is under `resume-builder:backup:v1`. A pasted job posting is kept per version under `resume-builder:jd:v1:<id>`, is never part of the version export (the copy saved on an application is), and is removed only by its Clear button or by deleting its version. Nothing is uploaded. Clearing site data removes it, so export JSON for a backup. If storage is blocked the app still works and warns that changes will not persist.
 
 ## Layout
 
@@ -53,6 +54,10 @@ src/lib/versionsStore.ts  create/duplicate/rename/delete/switch versions on top 
 src/lib/ops.ts         pure reorder/add/remove/patch helpers
 src/lib/ats.ts         ATS checklist rules + page-length estimate
 src/lib/plaintext.ts   plain-text (ATS) rendering, per section and whole resume
+src/lib/crypto.ts      passphrase encryption of backups (PBKDF2 + AES-GCM), envelope check, passphrase rules
+src/lib/backup.ts      last-backup state, change fingerprint, reminder status
+src/lib/backupStore.ts store and hooks for backup state
+src/lib/importFile.ts  validation of an imported file (bundle or single resume)
 src/lib/jobmatch.ts    job-posting key-term extraction and matching against the resume
 src/lib/applications.ts  application records, validation and id remapping for imports
 src/lib/applicationsStore.ts  store and hook for the application list
