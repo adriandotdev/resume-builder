@@ -1,10 +1,9 @@
 "use client";
 import { memo, useEffect, useRef, useState, type ReactNode } from "react";
 import { MARGINS, PAGE_SIZES, type ResumeDoc } from "@/lib/schema";
+import { PX_PER_MM, pagesFor } from "@/lib/fit";
 import { getTemplate } from "@/templates/registry";
 import { useElementWidth } from "./useElementWidth";
-
-const PX_PER_MM = 96 / 25.4;
 
 /** Injects @page rules so the browser prints at the chosen paper size and margins. */
 export function PageStyle({ doc }: { doc: ResumeDoc }) {
@@ -36,7 +35,7 @@ export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = 
     return () => ro.disconnect();
   }, []);
 
-  const pages = sheetH ? Math.max(1, Math.ceil((sheetH - 2 * margin - 2) / (pageH - 2 * margin))) : 1;
+  const pages = pagesFor(sheetH, pageH, margin);
   useEffect(() => { onPages?.(pages); }, [pages, onPages]);
 
   return (

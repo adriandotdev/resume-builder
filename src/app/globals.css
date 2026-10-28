@@ -208,6 +208,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); }
   .well { background: var(--surface-2); border-radius: var(--r-inset); }
   .badge { display: inline-flex; flex: none; align-items: center; gap: 0.35rem; min-height: 24px; padding: 0 0.6rem; border-radius: var(--r-pill); font-size: 0.8125rem; font-weight: 600; white-space: nowrap; background: var(--tick-soft); color: var(--tick-text); }
+  .badge-quiet { background: var(--surface-2); color: var(--text-muted); }
   .badge-pen { background: var(--pen-soft); color: var(--pen-text); }
   .chip { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; padding: 0 0.15rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-muted); font-family: inherit; font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
   .chip:hover { color: var(--text); }
@@ -307,6 +308,12 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .sec-card[data-settled="true"] { animation: settled-wash 0.9s var(--ease-out); }
   @keyframes settled-wash { from { background-color: var(--tick-soft); } }
   @keyframes panel-in { from { opacity: 0; } }
+  /* Fit panel: results arrive with a short rise, the status line swaps with a blur-fade so the two texts read as one, and rows cascade. Enter only; exits unmount instantly so a re-check never feels slow. */
+  .fit-in { animation: fit-in 0.22s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 40ms); }
+  .fit-text { display: inline-block; animation: fit-text 0.2s var(--ease-out) both; }
+  .fit-status { min-height: 1.5rem; }
+  @keyframes fit-in { from { opacity: 0; transform: translateY(6px); } }
+  @keyframes fit-text { from { opacity: 0; filter: blur(2px); } }
   .sec-card[data-hidden="true"] .sec-title { color: var(--text-muted); }
   .drag-handle { touch-action: none; cursor: grab; }
   .drag-handle:active { cursor: grabbing; }
@@ -374,6 +381,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: none; }
   /* Keep the arrival of toasts, dialogs and tab panels as a short fade instead of removing it. */
   .dlg[open] { animation: fade-in 0.15s linear !important; }
+  .fit-in, .fit-text { animation: fade-in 0.15s linear both !important; animation-delay: 0s !important; }
   /* A colour-only wash confirms a moved section, so it stays. */
   .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }
 }

@@ -15,7 +15,8 @@ import { ResumePreview } from "@/components/ResumePreview";
 import { SectionList } from "@/components/SectionList";
 import { StylePanel } from "@/components/StylePanel";
 import { AtsPanel } from "@/components/AtsPanel";
-import type { BulletJump, FieldJump, WriteInTarget } from "@/lib/ops";
+import type { BulletJump, DesignJump, FieldJump, WriteInTarget } from "@/lib/ops";
+import { FitPanel } from "@/components/FitPanel";
 import { CoachPanel } from "@/components/CoachPanel";
 import { ParsePanel } from "@/components/ParsePanel";
 import { DataPanel } from "@/components/DataPanel";
@@ -26,19 +27,20 @@ import { letterPlainText } from "@/lib/cover";
 import { ExportDialog } from "@/components/ExportDialog";
 import { SaveStatus } from "@/components/SaveStatus";
 import { VersionSwitcher } from "@/components/VersionSwitcher";
-import { IconClose, IconCoach, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconPalette, IconParse, IconShield } from "@/components/icons";
+import { IconClose, IconCoach, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconFit, IconPalette, IconParse, IconShield } from "@/components/icons";
 import { useMediaQuery } from "@/components/useMediaQuery";
 import { useDialogFocus } from "@/components/useDialogFocus";
 import { useToast } from "@/components/Toast";
 import { isSampleDoc } from "@/lib/ui";
 
-type Tab = "content" | "design" | "ats" | "parse" | "coach" | "letter" | "data";
+type Tab = "content" | "design" | "fit" | "ats" | "parse" | "coach" | "letter" | "data";
 type View = "design" | "ats";
 type Zoom = "fit" | "actual";
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "content", label: "Content", icon: <IconEdit size={20} /> },
   { id: "design", label: "Design", icon: <IconPalette size={20} /> },
+  { id: "fit", label: "Fit", icon: <IconFit size={20} /> },
   { id: "ats", label: "ATS check", icon: <IconShield size={20} /> },
   { id: "parse", label: "Parser", icon: <IconParse size={20} /> },
   { id: "coach", label: "Coach", icon: <IconCoach size={20} /> },
@@ -58,6 +60,7 @@ export default function EditorPage() {
   const [zoom, setZoom] = useState<Zoom>("fit");
   const [pages, setPages] = useState(1);
   const [jump, setJump] = useState<BulletJump | FieldJump | null>(null); // asks Content to focus one bullet line
+  const [designJump, setDesignJump] = useState<DesignJump | null>(null); // asks Design to focus one control
   const [writeIn, setWriteIn] = useState<WriteInTarget | null>(null); // asks Content to open and focus a field
 
   const isPhone = useMediaQuery("(max-width: 767.98px)");
@@ -109,6 +112,11 @@ export default function EditorPage() {
     setTab("content");
   };
 
+  const onDesignJump = (target: DesignJump) => {
+    setDesignJump(target);
+    setTab("design");
+  };
+
   const startBlank = () => {
     const previous = resumeStore.getState();
     resumeStore.resetToBlank();
@@ -143,6 +151,7 @@ export default function EditorPage() {
               <button key={t.id} type="button" role="tab" id={`tab-${t.id}`} className="rail-tab" aria-selected={tab === t.id} aria-controls="tools-panel" tabIndex={tab === t.id ? 0 : -1} onClick={() => setTab(t.id)}>
                 {tab === t.id && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ duration: 0.22, ease: EASE }} aria-hidden="true" />}
                 {t.icon}<span>{t.label}</span>
+                {t.id === "fit" && pages > 1 && !isLetter && <span className="badge badge-quiet" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{pages} pages, over one</span><span aria-hidden="true">{pages}</span></span>}
                 {t.id === "parse" && parseCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{parseCount} to review</span><span aria-hidden="true">{parseCount}</span></span>}
                 {t.id === "coach" && coachCount > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{coachCount} to review</span><span aria-hidden="true">{coachCount}</span></span>}
                 {t.id === "ats" && issues > 0 && <span className="badge badge-pen" style={{ minHeight: 22, padding: "0 .45rem" }}><span className="sr-only">{issues} to review</span><span aria-hidden="true">{issues}</span></span>}
@@ -163,7 +172,8 @@ export default function EditorPage() {
                   <SectionList doc={doc} writeIn={writeIn} onWriteInDone={() => setWriteIn(null)} jump={jump} onJumpDone={() => setJump(null)} />
                 </div>
               )}
-              {tab === "design" && <StylePanel doc={doc} />}
+              {tab === "design" && <StylePanel doc={doc} jump={designJump} onJumpDone={() => setDesignJump(null)} />}
+              {tab === "fit" && <FitPanel doc={doc} onJump={onJump} onDesignJump={onDesignJump} />}
               {tab === "ats" && <AtsPanel doc={doc} onWriteIn={onWriteIn} />}
               {tab === "parse" && <ParsePanel doc={doc} onJump={onJump} />}
               {tab === "coach" && <CoachPanel doc={doc} onJump={onJump} />}

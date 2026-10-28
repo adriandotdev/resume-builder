@@ -50,10 +50,13 @@ export function addSkillTerm(doc: ResumeDoc, term: string, groupLabel = ADDED_SK
 /** One bullet line in an entry, for the coach to ask Content to open and focus. */
 export interface BulletJump { sectionId: string; itemId: string; bulletIndex: number }
 
-/** One input in a section or entry, found by its visible label, for the parser view to open and focus. */
+/** One input in a section or entry, found by its visible label, for the parser view to open and focus. An empty label opens the section and focuses its header. */
 export interface FieldJump { sectionId: string; itemId?: string; label: string }
 
-export type WriteInTarget = "summary" | "experience";
+/** One Design control, for the fit assistant to ask the Design tab to focus. */
+export interface DesignJump { control: "fontSize" | "lineSpacing" | "margins" }
+
+export type WriteInTarget ="summary" | "experience";
 
 /** Where a missing term can be written into a sentence: the summary, and the first (most recent) job. */
 export function writeInTargets(doc: ResumeDoc): WriteInTarget[] {
