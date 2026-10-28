@@ -1,13 +1,16 @@
 import { sectionPlainText } from "./plaintext";
 import { STANDARD_TITLES, type ResumeDoc } from "./schema";
+import { SYNONYM_GROUPS } from "./synonyms";
 
 /** Longest posting the matcher reads. Anything past this is ignored. */
 export const MAX_JD_CHARS = 20_000;
 const MAX_TERMS = 25;
 const MAX_PHRASE_WORDS = 3;
 
-export interface JobTerm { term: string; key: string; weight: number }
-export interface TermMatch { term: string; found: boolean; where: string[]; hiddenOnly: boolean }
+/** `key` is the canonical stemmed key of the term's synonym group; `variants` are all keys that count as the same skill. */
+export interface JobTerm { term: string; key: string; weight: number; variants: string[] }
+/** `matchedAs` is the spelling the resume uses when it is a variant of the term ("k8s" for Kubernetes). `alsoCounts` lists the other spellings that would count. */
+export interface TermMatch { term: string; key: string; found: boolean; where: string[]; hiddenOnly: boolean; hiddenIn: { id: string; title: string }[]; matchedAs?: string; alsoCounts?: string[] }
 
 const ENGLISH_STOPWORDS = `a an the and or but if of to in on at by for with from as is are was were be been being have has had do does did
 will would can could should may might must shall this that these those it its we our you your they their them he she his her who whom which what
@@ -77,6 +80,34 @@ export function stem(token: string): string {
   return s.length > 4 && s.endsWith("e") ? s.slice(0, -1) : s;
 }
 
+/** The stemmed key the matcher uses for a phrase. */
+export function phraseKey(phrase: string): string {
+  return tokenize(normalize(phrase)).map(stem).join(" ");
+}
+
+const GROUP_KEYS: string[][] = SYNONYM_GROUPS.map((g) => [...new Set(g.map(phraseKey))]);
+const GROUP_OF = new Map<string, string[]>();
+const LABEL_OF = new Map<string, string>();
+SYNONYM_GROUPS.forEach((g, i) => {
+  for (const k of GROUP_KEYS[i]) GROUP_OF.set(k, GROUP_KEYS[i]);
+  for (const phrase of g) if (!LABEL_OF.has(phraseKey(phrase))) LABEL_OF.set(phraseKey(phrase), phrase);
+});
+
+/** The key every spelling of one skill shares. Keys outside the synonym table stand for themselves. */
+export function canonicalKey(key: string): string {
+  return GROUP_OF.get(key)?.[0] ?? key;
+}
+
+/** Every key that counts as the same skill, the key itself included. */
+export function variantKeys(key: string): string[] {
+  return GROUP_OF.get(key) ?? [key];
+}
+
+/** A readable spelling for a variant key, or the key itself when it has none. */
+export function variantLabel(key: string): string {
+  return LABEL_OF.get(key) ?? key;
+}
+
 const STOP = new Set([...ENGLISH_STOPWORDS, ...POSTING_FILLER]);
 const STOP_STEMS = new Set([...STOP].map(stem));
 const isNumber = (t: string) => /^\d[\d.,]*\+?$/.test(t);
@@ -94,7 +125,11 @@ function contains(hay: string[], needle: string[]): boolean {
   return false;
 }
 
-interface Candidate { forms: Map<string, number>; stems: string[]; n: number; count: number; weight: number; first: number }
+/** `alts` holds the stems of every spelling merged into this candidate; `stems` is the first one seen. */
+interface Candidate { forms: Map<string, number>; stems: string[]; alts: string[][]; key: string; n: number; count: number; weight: number; first: number }
+
+/** Whether any spelling of `outer` contains the phrase `inner` and is longer than it. */
+const nests = (outer: Candidate, inner: Candidate) => outer.alts.some((a) => a.length > inner.n && contains(a, inner.stems));
 
 /** The spelling used most often in the posting; the first one seen wins a tie. */
 function displayForm(forms: Map<string, number>): string {
@@ -134,11 +169,13 @@ export function extractTerms(jd: string): JobTerm[] {
           if (!ok) continue;
           const words = seg.slice(i, i + n);
           const stems = words.map(stem);
-          const key = stems.join(" ");
+          const key = canonicalKey(stems.join(" "));
           const form = rawSeg.slice(i, i + n).join(" ");
           const c = cands.get(key);
-          if (c) { c.count++; c.weight += w; c.forms.set(form, (c.forms.get(form) ?? 0) + 1); }
-          else cands.set(key, { forms: new Map([[form, 1]]), stems, n, count: 1, weight: w, first: pos + i });
+          if (c) {
+            c.count++; c.weight += w; c.forms.set(form, (c.forms.get(form) ?? 0) + 1);
+            if (!c.alts.some((a) => a.join(" ") === stems.join(" "))) c.alts.push(stems);
+          } else cands.set(key, { forms: new Map([[form, 1]]), stems, alts: [stems], key, n, count: 1, weight: w, first: pos + i });
         }
       }
       pos += seg.length;
@@ -154,8 +191,8 @@ export function extractTerms(jd: string): JobTerm[] {
     for (const c of all) {
       if (c.n !== n || (n > 1 && c.weight < 2)) continue;
       // Phrases nested in each other share occurrences, so only the shortest ones are summed.
-      const supers = kept.filter((k) => k.n > n && contains(k.stems, c.stems));
-      const covered = supers.reduce((sum, k) => (supers.some((o) => o.n < k.n && contains(k.stems, o.stems)) ? sum : sum + k.count), 0);
+      const supers = kept.filter((k) => nests(k, c));
+      const covered = supers.reduce((sum, k) => (supers.some((o) => o !== k && nests(k, o)) ? sum : sum + k.count), 0);
       if (covered >= c.count) continue;
       kept.push(c);
     }
@@ -163,7 +200,20 @@ export function extractTerms(jd: string): JobTerm[] {
   return kept
     .sort((a, b) => b.weight - a.weight || b.n - a.n || a.first - b.first)
     .slice(0, MAX_TERMS)
-    .map((c) => ({ term: displayForm(c.forms), key: c.stems.join(" "), weight: c.weight }));
+    .map((c) => ({ term: displayForm(c.forms), key: c.key, weight: c.weight, variants: variantKeys(c.key) }));
+}
+
+const TERM_CACHE = new Map<string, JobTerm[]>();
+const TERM_CACHE_SIZE = 16;
+
+/** extractTerms for a posting already seen, so matching many postings after each resume edit parses each one once. */
+function cachedTerms(jd: string): JobTerm[] {
+  const hit = TERM_CACHE.get(jd);
+  if (hit) { TERM_CACHE.delete(jd); TERM_CACHE.set(jd, hit); return hit; }
+  const terms = extractTerms(jd);
+  TERM_CACHE.set(jd, terms);
+  if (TERM_CACHE.size > TERM_CACHE_SIZE) TERM_CACHE.delete(TERM_CACHE.keys().next().value!);
+  return terms;
 }
 
 /** Which key terms of the posting appear in the resume, and in which sections. */
@@ -172,18 +222,25 @@ export function matchJobDescription(doc: ResumeDoc, jd: string): { terms: TermMa
   const sections = doc.sections.map((s) => {
     let text = sectionPlainText(s, f);
     if (s.type !== "contact") text = text.split("\n").slice(1).join("\n"); // heading line
-    return { title: s.title.trim() || STANDARD_TITLES[s.type], visible: s.visible, segs: segments(text).map((t) => t.map(stem)) };
+    return { id: s.id, title: s.title.trim() || STANDARD_TITLES[s.type], visible: s.visible, segs: segments(text).map((t) => t.map(stem)) };
   });
-  const terms = extractTerms(jd).map(({ term, key }): TermMatch => {
-    const needle = key.split(" ");
+  const terms = cachedTerms(jd).map(({ term, key, variants }): TermMatch => {
+    const needles = variants.map((v) => ({ v, words: v.split(" ") }));
+    const own = phraseKey(term);
     const where: string[] = [];
-    let hidden = false;
+    const hiddenIn: { id: string; title: string }[] = [];
+    let exact = false; // the resume uses the posting's own spelling somewhere visible
+    let alias: string | undefined;
     for (const s of sections) {
-      if (!s.segs.some((seg) => contains(seg, needle))) continue;
-      if (s.visible) { if (!where.includes(s.title)) where.push(s.title); }
-      else hidden = true;
+      const hits = needles.filter((n) => s.segs.some((seg) => contains(seg, n.words))).map((n) => n.v);
+      if (hits.length === 0) continue;
+      if (!s.visible) { hiddenIn.push({ id: s.id, title: s.title }); continue; }
+      if (!where.includes(s.title)) where.push(s.title);
+      if (hits.includes(own)) exact = true;
+      else alias ??= variantLabel(hits[0]);
     }
-    return { term, found: where.length > 0, where, hiddenOnly: where.length === 0 && hidden };
+    const others = variants.filter((v) => v !== own).map(variantLabel);
+    return { term, key, found: where.length > 0, where, hiddenOnly: where.length === 0 && hiddenIn.length > 0, hiddenIn, ...(!exact && alias ? { matchedAs: alias } : {}), ...(others.length ? { alsoCounts: others } : {}) };
   });
   return { terms };
 }

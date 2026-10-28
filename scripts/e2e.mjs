@@ -140,19 +140,20 @@ await page.getByLabel("Paste the job posting").fill(POSTING);
 await page.getByTestId("jd-missing").getByText("Kubernetes", { exact: true }).waitFor();
 check("job match summary counts key terms", /^\d+ of \d+ key terms from this posting appear in your resume\.$/.test(await page.getByTestId("jd-summary").innerText()), await page.getByTestId("jd-summary").innerText());
 check("job match lists a missing term", await page.getByTestId("jd-missing").getByText("Kubernetes", { exact: true }).isVisible() && (await page.getByTestId("jd-found").innerText()).includes("Looker"));
-const addBtn = page.getByTestId("jd-missing").getByRole("button", { name: /^Add ".+" to Skills$/ }).first();
+const addBtn = page.getByTestId("jd-missing").getByRole("button", { name: /^Add to Skills\W+for .+$/ }).first();
 const addedTerm = (await addBtn.getAttribute("data-add-term"));
 await addBtn.click();
 await page.getByTestId("jd-found").getByText(addedTerm, { exact: true }).waitFor();
+await page.getByTestId("jd-missing").getByText(addedTerm, { exact: true }).waitFor({ state: "detached" }); // the row fades out first
 check("Add to Skills moves the term to Found, in Skills", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes(addedTerm));
 await page.getByRole("button", { name: "Undo" }).click();
 await page.getByTestId("jd-missing").getByText(addedTerm, { exact: true }).waitFor();
 check("Undo puts the term back in Not found", true);
-await page.getByTestId("jd-missing").getByRole("button", { name: /^Write ".+" in your experience$/ }).first().click();
+await page.getByTestId("jd-missing").getByRole("button", { name: /^Write in Experience\W+for .+$/ }).first().click();
 await page.waitForFunction(() => document.activeElement?.tagName === "TEXTAREA" && document.activeElement.labels?.[0]?.textContent === "Achievements");
 check("Write in Experience opens Content and focuses the first job's achievements", (await page.getByRole("tab", { name: "Content" }).getAttribute("aria-selected")) === "true");
 await page.getByRole("tab", { name: /ATS check/ }).click();
-await page.getByTestId("jd-missing").getByRole("button", { name: /^Write ".+" in your summary$/ }).first().click();
+await page.getByTestId("jd-missing").getByRole("button", { name: /^Write in Summary\W+for .+$/ }).first().click();
 await page.waitForFunction(() => document.activeElement?.tagName === "TEXTAREA" && document.activeElement.labels?.[0]?.textContent === "Summary");
 check("Write in Summary focuses the summary text box", true);
 await page.getByRole("tab", { name: /ATS check/ }).click();
@@ -164,6 +165,76 @@ await page.getByRole("tab", { name: /ATS check/ }).click();
 await page.getByTestId("jd-found").getByText("Kubernetes", { exact: true }).waitFor();
 check("a term added to Skills moves to Found, with its section", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes("Kubernetes"));
 check("job posting survives switching tabs", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING);
+
+// job match v2: a variant spelling counts, key terms group by category, and coverage spans every saved posting
+await page.getByLabel("Paste the job posting").fill("Requirements:\n- k8s\n- k8s");
+await page.getByTestId("jd-found").getByText("k8s", { exact: true }).waitFor();
+check("job match counts Kubernetes in the resume as k8s and says how it was written", (await page.getByTestId("jd-found").innerText()).includes('written as "Kubernetes"'), await page.getByTestId("jd-found").innerText());
+await page.getByLabel("Paste the job posting").fill(POSTING);
+await page.getByTestId("jd-missing").getByText("Docker", { exact: true }).waitFor();
+await page.locator("label.seg-opt", { hasText: "By category" }).click();
+await page.getByTestId("jd-categories").waitFor();
+const cloud = page.locator('[data-category="Cloud & DevOps"]');
+check("By category groups Docker and Kubernetes under Cloud & DevOps", (await cloud.innerText()).includes("Docker") && (await cloud.innerText()).includes("Kubernetes"), await cloud.innerText());
+await cloud.getByRole("button", { name: /^Add to Skills\W+for Docker$/ }).click();
+await page.getByText('Added "Docker" to Cloud & DevOps in Skills.').waitFor();
+await cloud.getByTestId("jd-cat-found").getByText("Docker", { exact: true }).waitFor();
+check("Add to Skills in the category view files the term under its category", (await cloud.getByTestId("jd-cat-found").innerText()).includes("in Skills"));
+await page.getByRole("button", { name: "Undo" }).click();
+await cloud.getByTestId("jd-cat-missing").getByText("Docker", { exact: true }).waitFor();
+check("Undo in the category view puts the term back in Not found", true);
+await page.locator("label.seg-opt", { hasText: "By status" }).click();
+await page.getByTestId("jd-missing").waitFor();
+
+// a term only in a hidden section is not counted as found, and can be shown again
+await page.getByRole("tab", { name: "Content" }).click();
+await page.getByRole("switch", { name: "Show Skills on resume" }).uncheck();
+await page.getByRole("tab", { name: /ATS check/ }).click();
+const hiddenRow = page.getByTestId("jd-hidden").locator('[data-hidden-term="Kubernetes"]');
+await hiddenRow.waitFor();
+check("a term only in a hidden section is listed as hidden, not found", (await hiddenRow.innerText()).includes("won't be in the PDF") && ((await page.getByTestId("jd-found").count()) === 0 || !(await page.getByTestId("jd-found").innerText()).includes("Kubernetes")), await hiddenRow.innerText());
+check("the summary counts hidden-only terms apart from found ones", /only in a hidden section\.$/.test(await page.getByTestId("jd-summary").innerText()), await page.getByTestId("jd-summary").innerText());
+await hiddenRow.getByRole("button", { name: /^Show Skills\b/ }).click();
+await page.getByTestId("jd-found").getByText("Kubernetes", { exact: true }).waitFor();
+check("Show section makes the term count as found again", (await page.getByTestId("jd-hidden").count()) === 0 && !(await page.getByTestId("jd-summary").innerText()).includes("hidden section"));
+
+// skipping a missing term moves it to Skipped, survives a reload, and can be restored
+const skipRow = page.getByTestId("jd-missing").locator("li", { hasText: "Docker" });
+await skipRow.getByRole("button", { name: /^Skip\W+for Docker$/ }).click();
+await page.getByTestId("jd-skipped").waitFor();
+check("Skip moves the term out of Not found into Skipped", (await page.getByTestId("jd-missing").count()) === 0 || !(await page.getByTestId("jd-missing").innerText()).includes("Docker"));
+await page.getByTestId("jd-skipped").locator("summary").click();
+check("the skipped term is listed under Skipped", (await page.getByTestId("jd-skipped").innerText()).includes("Docker"), await page.getByTestId("jd-skipped").innerText());
+await page.waitForTimeout(500);
+await page.reload();
+await page.waitForSelector("[data-resume]");
+await page.getByRole("tab", { name: /ATS check/ }).click();
+await page.getByTestId("jd-skipped").waitFor();
+await page.getByTestId("jd-skipped").locator("summary").click();
+check("a skipped term stays skipped after a reload", (await page.getByTestId("jd-skipped").innerText()).includes("Docker"), await page.getByTestId("jd-skipped").innerText());
+await page.getByTestId("jd-skipped").getByRole("button", { name: /^Restore\W+for Docker$/ }).click();
+await page.getByTestId("jd-missing").getByText("Docker", { exact: true }).waitFor();
+check("Restore puts a skipped term back in Not found", (await page.getByTestId("jd-skipped").count()) === 0);
+
+const ctx2 = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+const page2 = await ctx2.newPage();
+await page2.addInitScript(() => {
+  if (localStorage.getItem("resume-builder:versions:v1") !== null) return;
+  localStorage.setItem("resume-builder:versions:v1", JSON.stringify({ activeId: "va", versions: [{ id: "va", name: "Backend", updatedAt: 1 }, { id: "vb", name: "Platform", updatedAt: 2 }] }));
+  localStorage.setItem("resume-builder:jd:v1:va", "Requirements:\n- Kubernetes\n- Terraform\n- Kubernetes\n- Terraform");
+  localStorage.setItem("resume-builder:jd:v1:vb", "Requirements:\n- k8s\n- Terraform\n- k8s\n- Terraform");
+});
+await page2.goto(`${BASE}/editor`);
+await page2.waitForSelector("[data-resume]");
+await page2.getByRole("tab", { name: /ATS check/ }).click();
+await page2.getByTestId("jd-all").locator("summary").click();
+check("Across all postings lists a row for each saved posting", (await page2.getByTestId("jd-all-list").locator("li").count()) === 2, await page2.getByTestId("jd-all-list").innerText());
+const sharedText = await page2.getByTestId("jd-shared").innerText();
+check("a term missing from both postings is listed once, even spelled Kubernetes and k8s", sharedText.includes("Terraform") && /Kubernetes|k8s/.test(sharedText) && (await page2.getByTestId("jd-shared").locator("li").count()) === 2, sharedText);
+await page2.getByTestId("jd-shared").getByRole("button", { name: /^Add to Skills\W+for Terraform$/ }).click();
+await page2.waitForFunction(() => !document.querySelector('[data-testid="jd-shared"]')?.textContent?.includes("Terraform"));
+check("Add to Skills from the shared list removes the term from it", (await page2.getByTestId("jd-shared").locator("li").count()) === 1);
+await ctx2.close();
 
 // 4b bullet coach
 await page.getByRole("tab", { name: "Content" }).click();
@@ -333,6 +404,8 @@ await page.getByTestId("version-new").click();
 check("New blank version adds a row and opens it", (await page.getByTestId("version-row").count()) === 3 && await page.getByTestId("version-row").nth(2).getByText("Editing").isVisible());
 await page.getByRole("button", { name: "Done" }).click();
 check("the new version is blank and selected", (await page.locator("[data-resume] h1").count()) === 0 && (await page.getByTestId("version-select").inputValue()) !== "");
+// Done closes the dialog after a short exit animation; until then it is modal and typing behind it is lost
+await page.getByTestId("versions-dialog").waitFor({ state: "hidden" });
 await page.getByLabel("Full name").fill("Quinn QA");
 await page.waitForTimeout(500);
 await page.getByTestId("version-select").selectOption({ index: 1 });
