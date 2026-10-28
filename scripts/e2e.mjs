@@ -137,9 +137,9 @@ check("ATS panel groups items into To review and Passed", (await page.getByTestI
 // job match: paste a posting, add a missing term to Skills, watch it move to Found
 const POSTING = "Requirements:\n- Proficient in Kubernetes\n- Experience with Kubernetes and Docker\n- Looker";
 await page.getByLabel("Paste the job posting").fill(POSTING);
-await page.getByTestId("jd-missing").getByText("kubernetes", { exact: true }).waitFor();
+await page.getByTestId("jd-missing").getByText("Kubernetes", { exact: true }).waitFor();
 check("job match summary counts key terms", /^\d+ of \d+ key terms from this posting appear in your resume\.$/.test(await page.getByTestId("jd-summary").innerText()), await page.getByTestId("jd-summary").innerText());
-check("job match lists a missing term", await page.getByTestId("jd-missing").getByText("kubernetes", { exact: true }).isVisible() && (await page.getByTestId("jd-found").innerText()).includes("looker"));
+check("job match lists a missing term", await page.getByTestId("jd-missing").getByText("Kubernetes", { exact: true }).isVisible() && (await page.getByTestId("jd-found").innerText()).includes("Looker"));
 const addBtn = page.getByTestId("jd-missing").getByRole("button", { name: /^Add ".+" to Skills$/ }).first();
 const addedTerm = (await addBtn.getAttribute("data-add-term"));
 await addBtn.click();
@@ -161,8 +161,8 @@ await page.locator('[data-section-type="skills"]').getByRole("button", { expande
 const skillsField = page.locator('[data-section-type="skills"]').getByLabel("Skills (comma separated)").first();
 await skillsField.fill((await skillsField.inputValue()) + ", Kubernetes");
 await page.getByRole("tab", { name: /ATS check/ }).click();
-await page.getByTestId("jd-found").getByText("kubernetes", { exact: true }).waitFor();
-check("a term added to Skills moves to Found, with its section", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes("kubernetes"));
+await page.getByTestId("jd-found").getByText("Kubernetes", { exact: true }).waitFor();
+check("a term added to Skills moves to Found, with its section", (await page.getByTestId("jd-found").innerText()).includes("in Skills") && !(await page.getByTestId("jd-missing").innerText()).includes("Kubernetes"));
 check("job posting survives switching tabs", (await page.getByLabel("Paste the job posting").inputValue()) === POSTING);
 
 // 4b bullet coach
@@ -196,6 +196,76 @@ check("Go to field focuses that input", await page.evaluate(() => document.activ
 await startInput.fill(startWas);
 await page.getByRole("tab", { name: /Parser/ }).click();
 check("Parser clears once the date is fixed", (await page.getByTestId("parse-summary").innerText()) === "Everything was read into a field.", await page.getByTestId("parse-summary").innerText());
+// 4d one-page fit
+await page.getByRole("button", { name: "Design preview" }).click(); // the page count only updates in the design preview
+const bulletsOf = (n) => Array.from({ length: n }, (_, i) => `Cut handling time ${i + 1} percent on queue ${i + 1}.`).join("\n");
+const twoBullets = "Built a weekly report that saved 6 hours.\nCut late arrivals by 14 percent.";
+const openExperience = async () => { // the section list resets to its first section whenever the Content tab remounts
+  await page.getByRole("tab", { name: "Content" }).click();
+  const closed = page.locator('[data-section-type="experience"]').getByRole("button", { expanded: false }).first();
+  if (await closed.count()) await closed.click();
+};
+await page.getByRole("tab", { name: "Design" }).click();
+const fitStyleBefore = { fs: await page.getByTestId("fs-value").innerText(), ls: await page.getByTestId("ls-value").innerText() };
+await openExperience();
+for (let n = 2; n < 80; n++) { // add one bullet at a time until the preview says 2 pages, so the overflow is as small as it gets
+  await achievements.fill(bulletsOf(n));
+  await page.waitForTimeout(120);
+  if ((await page.getByTestId("page-count").innerText()).includes("2 pages")) break;
+}
+check("preview reports 2 pages once the bullets overflow", (await page.getByTestId("page-count").innerText()).includes("2 pages"), await page.getByTestId("page-count").innerText());
+await page.getByRole("tab", { name: /^Fit/ }).click();
+await page.getByTestId("fit-suggestion").waitFor();
+check("Fit summary says it is over one page", /^Runs to 2 pages, about \d+ lines? over one page\.$/.test(await page.getByTestId("fit-summary").innerText()), await page.getByTestId("fit-summary").innerText());
+check("Fit suggests a style change with before and after", /→/.test(await page.getByTestId("fit-suggestion").innerText()), await page.getByTestId("fit-suggestion").innerText());
+check("the measuring copy leaves nothing in the page", (await page.locator("[data-resume]").count()) === 1);
+await page.getByTestId("fit-suggestion").getByRole("button", { name: /^Adjust/ }).first().click();
+await page.waitForFunction(() => ["fs", "ls"].includes(document.activeElement?.id) || document.activeElement?.closest("#margins-control"));
+check("Adjust opens Design and focuses that control", await page.getByRole("tab", { name: "Design" }).getAttribute("aria-selected") === "true");
+await page.getByRole("tab", { name: /^Fit/ }).click();
+await page.getByTestId("fit-apply").click();
+await page.waitForFunction(() => document.querySelector('[data-testid="page-count"]')?.textContent?.includes("1 page"));
+check("Apply brings the resume to one page", (await page.getByTestId("page-count").innerText()).includes("About 1 page"), await page.getByTestId("page-count").innerText());
+await page.getByTestId("fit-summary").getByText("Fits on 1 page.").waitFor();
+check("Fit summary says it fits", true);
+await page.getByTestId("toast").getByRole("button", { name: "Undo" }).click();
+await page.waitForFunction(() => document.querySelector('[data-testid="page-count"]')?.textContent?.includes("2 pages"));
+await page.getByRole("tab", { name: "Design" }).click();
+check("Undo restores the previous font size and line spacing", (await page.getByTestId("fs-value").innerText()) === fitStyleBefore.fs && (await page.getByTestId("ls-value").innerText()) === fitStyleBefore.ls, `${await page.getByTestId("fs-value").innerText()} / ${await page.getByTestId("ls-value").innerText()}`);
+// far too long: style alone cannot fix it, so it lists where to cut
+await openExperience();
+await achievements.fill(bulletsOf(90));
+await page.getByRole("tab", { name: /^Fit/ }).click();
+await page.getByTestId("fit-none").waitFor();
+check("cuts that cannot reach one page stay folded", (await page.getByTestId("fit-trims").getByRole("button", { name: /^Edit / }).count()) === 0);
+await page.getByTestId("fit-trims").getByRole("button", { name: "Show where I could cut" }).click();
+check("Fit says style alone cannot do it and lists where to cut", (await page.getByTestId("fit-none").innerText()).includes("cannot reach one page") && (await page.getByTestId("fit-trims").getByRole("button", { name: /^Edit / }).count()) > 0);
+await page.getByTestId("fit-trims").getByRole("button", { name: /^Edit / }).first().click();
+await page.waitForFunction(() => document.activeElement?.tagName === "TEXTAREA" && document.activeElement.labels?.[0]?.textContent === "Achievements");
+check("a cut suggestion jumps to that bullet", true);
+await achievements.fill(twoBullets);
+// overflow from a long summary instead: no bullet is cuttable, so whole sections are what it lists
+const summarySec = page.locator('[data-section-type="summary"]');
+if (await summarySec.getByRole("button", { expanded: false }).count()) await summarySec.getByRole("button", { expanded: false }).first().click();
+const summaryBox = summarySec.getByLabel("Summary", { exact: true });
+const summaryWas = await summaryBox.inputValue();
+const longSummary = Array.from({ length: 80 }, (_, i) => `Led project ${i + 1} across the team and shipped it on time.`).join(" ");
+await summaryBox.fill(longSummary);
+await page.getByRole("tab", { name: /^Fit/ }).click();
+await page.getByTestId("fit-trims").waitFor();
+const foldedCuts = page.getByTestId("fit-trims").getByRole("button", { name: "Show where I could cut" });
+if (await foldedCuts.count()) await foldedCuts.click();
+const openSection = page.getByTestId("fit-trims").getByRole("button", { name: /^Open / }).first();
+check("with no cuttable bullets Fit lists a whole section to open", (await openSection.count()) > 0, await page.getByTestId("fit-trims").innerText());
+await openSection.click();
+await page.waitForFunction(() => document.activeElement?.getAttribute("aria-controls")?.startsWith("panel-"));
+check("Open section focuses that section's header", await page.evaluate(() => document.activeElement?.getAttribute("aria-expanded") === "true"));
+await openExperience();
+if (await summarySec.getByRole("button", { expanded: false }).count()) await summarySec.getByRole("button", { expanded: false }).first().click();
+await summaryBox.fill(summaryWas);
+await page.getByRole("tab", { name: /^Fit/ }).click();
+await page.getByTestId("fit-summary").getByText("Fits on 1 page.").waitFor();
+check("Fit clears once the resume is short again", true);
 await page.getByRole("button", { name: "Design preview" }).click();
 
 // 5 persistence

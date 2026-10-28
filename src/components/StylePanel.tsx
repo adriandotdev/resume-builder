@@ -1,9 +1,10 @@
 "use client";
 import { motion } from "motion/react";
 import { EASE } from "@/lib/motion";
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import { DATE_FORMATS, FONTS, MARGINS, PAGE_SIZES, type FontId, type MarginId, type PageSizeId, type ResumeDoc, type TemplateId } from "@/lib/schema";
-import { patchStyle } from "@/lib/ops";
+import { patchStyle, type DesignJump } from "@/lib/ops";
+import { FONT_SIZE_RANGE, LINE_SPACING_RANGE } from "@/lib/fit";
 import { resumeStore } from "@/lib/store";
 import { TEMPLATES } from "@/templates/registry";
 import { ACCENT_SWATCHES } from "@/lib/ui";
@@ -97,8 +98,16 @@ const Sketch = memo(function Sketch({ id, accent }: { id: TemplateId; accent: st
   );
 });
 
-export function StylePanel({ doc }: { doc: ResumeDoc }) {
+export function StylePanel({ doc, jump = null, onJumpDone }: { doc: ResumeDoc; jump?: DesignJump | null; onJumpDone?: () => void }) {
   const s = doc.style;
+  const done = useRef(onJumpDone);
+  useEffect(() => { done.current = onJumpDone; });
+  useEffect(() => {
+    if (!jump) return;
+    const target = jump.control === "margins" ? document.querySelector<HTMLElement>("#margins-control input:checked") : document.getElementById(jump.control === "fontSize" ? "fs" : "ls");
+    target?.focus();
+    done.current?.();
+  }, [jump]);
   const set = (p: Parameters<typeof patchStyle>[1]) => resumeStore.update((d) => patchStyle(d, p));
   const isSwatch = ACCENT_SWATCHES.some((w) => w.value.toLowerCase() === s.accent.toLowerCase());
   return (
@@ -146,16 +155,18 @@ export function StylePanel({ doc }: { doc: ResumeDoc }) {
           <label htmlFor="fs" className="text-sm font-medium">Font size</label>
           <output htmlFor="fs" className="text-sm tabular-nums" data-testid="fs-value">{s.fontSize} pt</output>
         </div>
-        <input id="fs" className="range" type="range" min={9} max={12} step={0.5} value={s.fontSize} onChange={(e) => set({ fontSize: Number(e.target.value) })} />
+        <input id="fs" className="range" type="range" min={FONT_SIZE_RANGE.min} max={FONT_SIZE_RANGE.max} step={FONT_SIZE_RANGE.step} value={s.fontSize} onChange={(e) => set({ fontSize: Number(e.target.value) })} />
         <div className="flex items-baseline justify-between gap-3">
           <label htmlFor="ls" className="text-sm font-medium">Line spacing</label>
           <output htmlFor="ls" className="text-sm tabular-nums" data-testid="ls-value">{s.lineSpacing.toFixed(2)}</output>
         </div>
-        <input id="ls" className="range" type="range" min={1} max={1.5} step={0.05} value={s.lineSpacing} onChange={(e) => set({ lineSpacing: Number(e.target.value) })} />
+        <input id="ls" className="range" type="range" min={LINE_SPACING_RANGE.min} max={LINE_SPACING_RANGE.max} step={LINE_SPACING_RANGE.step} value={s.lineSpacing} onChange={(e) => set({ lineSpacing: Number(e.target.value) })} />
       </div>
 
-      <Segmented<MarginId> legend="Margins" value={s.margins} onChange={(v) => set({ margins: v })}
-        options={(Object.keys(MARGINS) as MarginId[]).map((k) => ({ value: k, label: `${k[0].toUpperCase()}${k.slice(1)}`, sub: `${MARGINS[k]} mm` }))} />
+      <div id="margins-control">
+        <Segmented<MarginId> legend="Margins" value={s.margins} onChange={(v) => set({ margins: v })}
+          options={(Object.keys(MARGINS) as MarginId[]).map((k) => ({ value: k, label: `${k[0].toUpperCase()}${k.slice(1)}`, sub: `${MARGINS[k]} mm` }))} />
+      </div>
       <Segmented<PageSizeId> legend="Paper size" value={s.pageSize} onChange={(v) => set({ pageSize: v })}
         options={(Object.keys(PAGE_SIZES) as PageSizeId[]).map((k) => ({ value: k, label: PAGE_SIZES[k].label }))}
         hint="Pick the size your country uses. The PDF is set to match." />

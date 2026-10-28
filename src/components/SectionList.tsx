@@ -59,6 +59,11 @@ export function SectionList({ doc, writeIn = null, onWriteInDone, jump = null, o
   useEffect(() => {
     if (!jump) return;
     if ("label" in jump) {
+      if (jump.label === "") { // no field named: land on the section's own header so focus is not lost
+        document.querySelector<HTMLElement>(`button[aria-controls="panel-${CSS.escape(jump.sectionId)}"]`)?.focus();
+        jumped.current?.();
+        return;
+      }
       const scope = `#panel-${CSS.escape(jump.sectionId)}${jump.itemId ? ` li[data-item-id="${CSS.escape(jump.itemId)}"]` : ""}`;
       const label = [...document.querySelectorAll<HTMLLabelElement>(`${scope} label`)].find((l) => l.textContent?.trim() === jump.label);
       const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;

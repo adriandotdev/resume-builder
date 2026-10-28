@@ -116,7 +116,7 @@ export function runAtsChecks(doc: ResumeDoc): AtsCheck[] {
 
   // Length
   const pages = estimatePages(doc);
-  if (pages > 1.05) add("length", "warn", `Estimated length is about ${pages.toFixed(1)} pages. Consider trimming, or reduce font size or margins.`);
+  if (pages > 1.05) add("length", "warn", `Estimated length is about ${pages.toFixed(1)} pages. The Fit tab can suggest the smallest change that fits one page.`);
   else add("length", "pass", "Estimated to fit on one page.");
 
   return checks;
