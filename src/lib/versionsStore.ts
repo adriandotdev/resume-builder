@@ -2,7 +2,7 @@
 import { useSyncExternalStore } from "react";
 import { createDefaultDoc, newId, parseResumeDoc, type ResumeDoc } from "./schema";
 import { browserStorage, resumeStore, startResumeStore, type KeyValueStorage, type createResumeStore } from "./store";
-import { jobPostingStore, startJobPosting, type createJobPostingStore } from "./jobPostingStore";
+import { jobPostingStore, SKIPPED_SUFFIX, startJobPosting, type createJobPostingStore } from "./jobPostingStore";
 import { coverStore, startCoverStore, type createCoverStore } from "./coverStore";
 import { parseCoverLetter, type CoverLetter } from "./cover";
 import {
@@ -80,7 +80,7 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
   }
   function eraseData(id: string) {
     memDocs.delete(id); memJd.delete(id); memCovers.delete(id);
-    try { storage?.removeItem?.(docKey(id)); storage?.removeItem?.(jdKey(id)); storage?.removeItem?.(coverKey(id)); } catch { /* leaves a small orphan */ }
+    try { storage?.removeItem?.(docKey(id)); storage?.removeItem?.(jdKey(id)); storage?.removeItem?.(`${jdKey(id)}${SKIPPED_SUFFIX}`); storage?.removeItem?.(coverKey(id)); } catch { /* leaves a small orphan */ }
   }
 
   /** Save what the active version holds before leaving it. */
@@ -182,11 +182,16 @@ export function createVersionsStore({ storage: initialStorage = null, resume, po
     return meta ? { meta, doc: readDoc(id), jd: readJd(id) } : null;
   }
 
+  /** Every version's name and saved posting, in index order, for coverage across postings. Goes through the index, so deleted versions' leftover keys are never read. */
+  function listPostings(): { id: string; name: string; jd: string }[] {
+    return index.versions.map((v) => ({ id: v.id, name: v.name, jd: readJd(v.id) }));
+  }
+
   return {
     getIndex: () => index,
     subscribe(l: () => void) { listeners.add(l); return () => { listeners.delete(l); }; },
     setStorage(s: KeyValueStorage | null) { storage = s; },
-    load, switchTo, create, duplicate, rename, remove, restore, exportAll, getVersion,
+    load, switchTo, create, duplicate, rename, remove, restore, exportAll, getVersion, listPostings,
   };
 }
 

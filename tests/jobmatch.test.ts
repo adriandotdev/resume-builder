@@ -105,7 +105,7 @@ describe("matchJobDescription", () => {
     const jd = "Kubernetes required. Kubernetes daily.";
     expect(matchJobDescription(d, jd).terms.find((t) => t.term.toLowerCase() === "kubernetes")).toMatchObject({ found: true, hiddenOnly: false });
     skills(d).visible = false;
-    expect(matchJobDescription(d, jd).terms.find((t) => t.term.toLowerCase() === "kubernetes")).toEqual({ term: "Kubernetes", found: false, where: [], hiddenOnly: true });
+    expect(matchJobDescription(d, jd).terms.find((t) => t.term.toLowerCase() === "kubernetes")).toMatchObject({ term: "Kubernetes", found: false, where: [], hiddenOnly: true });
   });
   it("lists every visible section a term appears in, once each", () => {
     const d = createSampleDoc();
