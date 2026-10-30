@@ -448,3 +448,42 @@ export function FeatureStory({ checks }: { checks: AtsCheck[] }) {
     </div>
   );
 }
+
+/** One phone group: the live resume plays as it scrolls through the screen, then the group's features rise in one by one. */
+function MobileGroup({ group, checks }: { group: (typeof GROUPS)[number]; checks: AtsCheck[] }) {
+  const stage = useRef<HTMLDivElement>(null);
+  const [p, setP] = useState(0);
+  // Runs from the stage entering the bottom of the screen to its top reaching the upper third.
+  const { scrollYProgress } = useScroll({ target: stage, offset: ["start 88%", "end 38%"] });
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const next = Math.round(Math.min(Math.max(v, 0), 0.9999) * 50) / 50;
+    setP((s) => (s === next ? s : next));
+  });
+  const rise = (delay = 0) => ({ initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "0px 0px -12% 0px" }, transition: { duration: 0.5, ease: EASE, delay } });
+  return (
+    <div className="fm-group" aria-labelledby={`fm-${group.id}`}>
+      <motion.div ref={stage} className="fm-stage" data-ui aria-hidden="true" initial={{ opacity: 0, y: 40, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: "0px 0px -10% 0px" }} transition={{ duration: 0.6, ease: EASE }}>
+        <Vis id={group.id} p={p} checks={checks} />
+      </motion.div>
+      <motion.h3 id={`fm-${group.id}`} className="display fm-title" {...rise()}>{group.title}</motion.h3>
+      <motion.p className="fm-lead" {...rise(0.08)}>{group.lead}</motion.p>
+      <ul className="fm-list">
+        {group.items.map((it, i) => <motion.li key={it.name} {...rise(Math.min(i, 3) * 0.07)}><strong>{it.name}</strong> {it.text}</motion.li>)}
+      </ul>
+    </div>
+  );
+}
+
+/** Phone story: shown by CSS under 1024px, where the pinned desktop story cannot fit. */
+export function FeatureStoryMobile({ checks }: { checks: AtsCheck[] }) {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const q = window.matchMedia("(max-width: 1023.98px)");
+    const sync = () => setNarrow(q.matches);
+    sync();
+    q.addEventListener("change", sync);
+    return () => q.removeEventListener("change", sync);
+  }, []);
+  if (!narrow) return null;
+  return <div className="fm">{GROUPS.map((g) => <MobileGroup key={g.id} group={g} checks={checks} />)}</div>;
+}
