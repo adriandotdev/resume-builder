@@ -1,6 +1,6 @@
 "use client";
-import { motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useMemo, useRef, useState } from "react";
 import { EASE } from "@/lib/motion";
 import { createSampleDoc } from "@/lib/sample";
 import { toPlainText } from "@/lib/plaintext";
@@ -26,11 +26,15 @@ export function Showcase() {
     };
   }, [role, line]);
   const text = toPlainText(doc).trim();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  const driftA = useTransform(scrollYProgress, [0, 1], ["-12%", "0%"]);
+  const driftB = useTransform(scrollYProgress, [0, 1], ["12%", "0%"]);
 
   return (
-    <section className="show" aria-labelledby="show-h" data-reveal>
+    <section ref={ref} className="show" aria-labelledby="show-h" data-reveal>
       <div className="show-in">
-        <h2 id="show-h" className="show-h show-h-a order-2">Type it once,<span className="sr-only"> read it twice</span></h2>
+        <h2 id="show-h" className="show-h show-h-a order-2"><motion.span className="inline-block" style={{ x: driftA }}>Type it once,</motion.span><span className="sr-only"> read it twice</span></h2>
         <div className="show-fields">
           <label className="show-label" htmlFor="show-role">Job title</label>
           <input id="show-role" className="show-input" value={role} onChange={(e) => setRole(e.target.value)} maxLength={60} autoComplete="off" />
@@ -49,7 +53,7 @@ export function Showcase() {
           <p className="show-cap mt-8">What a parser reads</p>
           <pre className="show-ats"><motion.mark key={text} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: EASE }}>{text}</motion.mark></pre>
         </div>
-        <p className="show-h show-h-b" aria-hidden="true">read it twice</p>
+        <p className="show-h show-h-b" aria-hidden="true"><motion.span className="inline-block" style={{ x: driftB }}>read it twice</motion.span></p>
       </div>
     </section>
   );
