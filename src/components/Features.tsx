@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { FeatureStory } from "./FeatureStory";
+import { FeatureStory, FeatureStoryMobile } from "./FeatureStory";
 import { GROUPS } from "./featureData";
 import type { AtsCheck } from "@/lib/ats";
 
@@ -15,6 +15,7 @@ export function Features({ checks }: { checks: AtsCheck[] }) {
       </div>
 
       <FeatureStory checks={checks} />
+      <FeatureStoryMobile checks={checks} />
 
       <div className="feat-static">
       {GROUPS.map((g) => (
