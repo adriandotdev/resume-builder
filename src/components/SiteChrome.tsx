@@ -69,6 +69,7 @@ export function SiteFooter() {
           <Link href="/templates" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Templates</Link>
           <Link href="/editor" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Editor</Link>
           <Link href="/applications" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Applications</Link>
+          <Link href="/#features" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Features</Link>
           <Link href="/#questions" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Questions</Link>
         </nav>
         <p className="sm:text-right">No tracking, no uploads</p>

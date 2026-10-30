@@ -8,3 +8,6 @@ next-env.d.ts
 # Impeccable hook state (machine-specific)
 .impeccable/hook.cache.json
 .impeccable/critique/
+
+# Taste-skill review screenshots (regenerated each round)
+.taste-skill/r*/
