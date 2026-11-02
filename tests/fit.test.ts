@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { pageSlices } from "@/lib/exportPng";
 import { currentFor, describePatch, fitCandidates, FIT_FONT_FLOOR, FIT_LINE_FLOOR, overflowLines, pagesFor, pickFit, trimCandidates, trimsNeeded, withoutTrims, type FitPatch } from "@/lib/fit";
 import { createSampleDoc } from "@/lib/sample";
 import { createDefaultDoc, DEFAULT_STYLE, type EducationSection, type ExperienceSection, type ResumeDoc } from "@/lib/schema";
@@ -144,5 +145,18 @@ describe("withoutTrims and trimsNeeded", () => {
   it("returns null when even all the cuts are not enough, and when there are none", () => {
     expect(trimsNeeded(doc, trims, () => 2)).toBeNull();
     expect(trimsNeeded(doc, [], () => 1)).toBeNull();
+  });
+});
+
+describe("pageSlices", () => {
+  it("is one slice for a sheet that fits", () => {
+    expect(pageSlices(PAGE_H, PAGE_H, 50)).toEqual([{ y: 50, h: 900 }]);
+    expect(pageSlices(400, PAGE_H, 50)).toEqual([{ y: 50, h: 300 }]);
+  });
+  it("splits at one page of content area and agrees with pagesFor", () => {
+    expect(pageSlices(1900, PAGE_H, 50)).toEqual([{ y: 50, h: 900 }, { y: 950, h: 900 }]);
+    const s = pageSlices(2500, PAGE_H, 50);
+    expect(s).toHaveLength(pagesFor(2500, PAGE_H, 50));
+    expect(s[2]).toEqual({ y: 1850, h: 600 });
   });
 });

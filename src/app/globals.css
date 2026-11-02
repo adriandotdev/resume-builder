@@ -240,6 +240,23 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .dlg[open] { animation: dlg-in 0.18s var(--ease-settle); }
   @keyframes dlg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
+  /* Share for review: on phones it is a bottom sheet. The title stays at the top, the actions stay at the
+     thumb, and only the middle (the text being reviewed) scrolls. */
+  .dlg-share-body { padding: 0.5rem 1.5rem 0; }
+  .dlg-share-foot { display: flex; flex-direction: column; padding: 0 1.5rem 1.5rem; }
+  @media (max-width: 639.98px) {
+    .dlg.dlg-share { width: 100%; max-width: 100%; margin: auto 0 0; max-height: 94dvh; border-radius: var(--r-sheet) var(--r-sheet) 0 0; border-inline: 0; border-bottom: 0; overflow: hidden; }
+    .dlg.dlg-share[open] { display: flex; flex-direction: column; animation: sheet-in 0.22s var(--ease-settle); }
+    .dlg-share-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0.75rem 1rem 1rem; }
+    .dlg-share-body .share-text { max-height: none; min-height: 9rem; }
+    .dlg-share-foot { flex: none; gap: 0.5rem; padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--surface); }
+    .dlg-share-foot .btn { width: 100%; }
+    .dlg-share-foot .share-primary { order: -1; }
+    .dlg-share-grab { display: block; }
+  }
+  .dlg-share-grab { display: none; width: 2.25rem; height: 4px; margin: 0.5rem auto 0; border-radius: 2px; background: var(--line-strong); flex: none; }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
 
   /* ---------- app shell: the header sits on the desk, no rule, no blur ---------- */
   .site-header { position: sticky; top: 0; z-index: 40; min-height: var(--header-h); background: var(--desk); }
@@ -344,7 +361,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   .pv-toolbar { background: var(--surface); border-bottom: 1px solid var(--line); }
   .pv-scroll { flex: 1; overflow: auto; padding: 1.25rem; min-height: 0; background: var(--surface-2); }
 
-  .bottom-bar { position: fixed; z-index: 50; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--desk); }
+  .bottom-bar { position: fixed; z-index: 50; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--desk); }
   .bar-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 52px; border: 0; border-radius: var(--r-inset); background: transparent; color: var(--text); font-family: inherit; font-size: 0.8125rem; font-weight: 500; cursor: pointer; }
   .bar-btn[aria-pressed="true"], .bar-btn[aria-current="true"] { background: var(--primary); color: var(--on-primary); }
 }
@@ -380,7 +397,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-property: color, background-color, border-color, outline-color, opacity !important; transition-duration: 0.15s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .tpl-card:hover .paper-thumb, .tpl-card:focus-within .paper-thumb { transform: none; }
   /* Keep the arrival of toasts, dialogs and tab panels as a short fade instead of removing it. */
-  .dlg[open] { animation: fade-in 0.15s linear !important; }
+  .dlg[open], .dlg.dlg-share[open] { animation: fade-in 0.15s linear !important; }
   .fit-in, .fit-text { animation: fade-in 0.15s linear both !important; animation-delay: 0s !important; }
   /* A colour-only wash confirms a moved section, so it stays. */
   .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }

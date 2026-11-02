@@ -25,6 +25,7 @@ import { CoverLetterBody } from "@/components/CoverPreview";
 import { useCoverLetter } from "@/lib/coverStore";
 import { letterPlainText } from "@/lib/cover";
 import { ExportDialog } from "@/components/ExportDialog";
+import { ShareReviewDialog } from "@/components/ShareReviewDialog";
 import { SaveStatus } from "@/components/SaveStatus";
 import { VersionSwitcher } from "@/components/VersionSwitcher";
 import { IconClose, IconCoach, IconData, IconDoc, IconDownload, IconEdit, IconEye, IconFit, IconPalette, IconParse, IconShield } from "@/components/icons";
@@ -57,6 +58,7 @@ export default function EditorPage() {
   const [toolsOpen, setToolsOpen] = useState(false); // tablet drawer
   const [pvOpen, setPvOpen] = useState(false); // phone full-screen preview
   const [exportOpen, setExportOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [view, setView] = useState<View>("design");
   const [zoom, setZoom] = useState<Zoom>("fit");
   const [pages, setPages] = useState(1);
@@ -135,7 +137,8 @@ export default function EditorPage() {
             <div className="min-w-0"><SaveStatus /></div>
           </div>
           <div className="flex items-center max-sm:basis-full md:ml-0 sm:ml-auto sm:shrink-0"><VersionSwitcher /></div>
-          <button type="button" className="btn btn-primary hidden md:ml-auto md:inline-flex" onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
+          {!isLetter && <button type="button" className="btn hidden md:ml-auto md:inline-flex" onClick={() => setShareOpen(true)} aria-haspopup="dialog" data-testid="share-btn"><IconShield size={18} />Share for review</button>}
+          <button type="button" className={`btn btn-primary hidden md:inline-flex ${isLetter ? "md:ml-auto" : ""}`} onClick={() => setExportOpen(true)} data-testid="print-btn"><IconDownload size={18} />Download PDF</button>
         </div>
       </div>
 
@@ -234,9 +237,11 @@ export default function EditorPage() {
         <button type="button" className="bar-btn" aria-current={tab === "design" && !sheetActive ? "true" : undefined} onClick={() => goTab("design")}><IconPalette size={20} />Design</button>
         <button type="button" className="bar-btn" onClick={() => setPvOpen(true)} aria-haspopup="dialog"><IconEye size={20} />Preview</button>
         <button type="button" className="bar-btn" onClick={() => setExportOpen(true)} aria-haspopup="dialog"><IconDownload size={20} />Export</button>
+        {!isLetter && <button type="button" className="bar-btn" onClick={() => setShareOpen(true)} aria-haspopup="dialog" data-testid="share-btn-mobile"><IconShield size={20} />Share</button>}
       </nav>
 
       <ExportDialog open={exportOpen} onClose={() => setExportOpen(false)} doc={doc} kind={isLetter ? "letter" : "resume"} />
+      <ShareReviewDialog open={shareOpen} onClose={() => setShareOpen(false)} doc={doc} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
  * restores focus on close. We add an explicit Tab loop and Esc handling so focus
  * is trapped even where the browser would let it escape to its own UI.
  */
-export function Modal({ open, onClose, labelledBy, children, wide = false, testId }: { open: boolean; onClose: () => void; labelledBy: string; children: ReactNode; wide?: boolean; testId?: string }) {
+export function Modal({ open, onClose, labelledBy, describedBy, children, wide = false, className = "", testId }: { open: boolean; onClose: () => void; labelledBy: string; describedBy?: string; children: ReactNode; wide?: boolean; className?: string; testId?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   // Content stays mounted while the exit plays, so the dialog doesn't collapse before it fades.
   const [closing, setClosing] = useState(false);
@@ -50,8 +50,9 @@ export function Modal({ open, onClose, labelledBy, children, wide = false, testI
   return (
     <dialog
       ref={ref}
-      className={`dlg no-print ${wide ? "dlg-wide" : ""}`}
+      className={`dlg no-print ${wide ? "dlg-wide" : ""} ${className}`}
       aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
       data-testid={testId}
       onCancel={(e) => { e.preventDefault(); onClose(); }}
       onClose={() => { if (open) onClose(); }}
