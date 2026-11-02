@@ -58,7 +58,7 @@ function Step({ on, icon, title, note }: { on: boolean; icon: ReactNode; title: 
 
 /** What each ATS check looks at on the page, as selectors into the real resume markup. */
 const CHECK_TARGETS: Record<string, string> = {
-  "contact-fields": "h1, .contact-list li",
+  "contact-fields": ".resume-name, .contact-list li",
   headings: "h2",
   "bullet-length": ".bullets li",
   dates: ".dates",
@@ -268,7 +268,7 @@ function KeepDemo({ p }: { p: number }) {
   const status = stage === 0 ? (saved ? "Saved in this browser" : "Saving in this browser") : stage === 1 ? "Downloaded to this device" : cut >= total ? "Encrypted here. There is no recovery." : "Encrypting in the browser";
   return (
     <div className="vis vis-split">
-      <Sheet tpl="classic" edit={edit} locked={stage === 2 && cut > total * 0.6} mark={stage === 1 ? "h1, .headline, .contact-list li" : undefined} />
+      <Sheet tpl="classic" edit={edit} locked={stage === 2 && cut > total * 0.6} mark={stage === 1 ? ".resume-name, .headline, .contact-list li" : undefined} />
       <div className="vis-body">
         <p className="vis-big" aria-hidden="true"><AnimatePresence mode="wait" initial={false}><motion.span key={stage} className="inline-block" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2, ease: EASE }}>{caption}</motion.span></AnimatePresence></p>
         {stage === 0 ? (

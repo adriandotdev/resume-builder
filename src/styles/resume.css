@@ -14,11 +14,11 @@
   line-height: var(--r-lh);
   overflow-wrap: anywhere;
 }
-.resume h1, .resume h2, .resume h3, .resume p, .resume ul { margin: 0; padding: 0; }
+.resume .resume-name, .resume h2, .resume h3, .resume p, .resume ul { margin: 0; padding: 0; }
 .resume ul { list-style: none; }
 .resume-section { margin-top: 1.1em; }
 .resume-head { margin-bottom: .2em; }
-.resume h1 { font-size: 2.1em; line-height: 1.1; font-weight: 700; color: var(--r-accent); }
+.resume .resume-name { font-size: 2.1em; line-height: 1.1; font-weight: 700; color: var(--r-accent); }
 .resume .headline { font-size: 1.1em; margin-top: .15em; }
 .resume .contact-list { display: flex; flex-wrap: wrap; gap: .1em 1.1em; margin-top: .4em; }
 .resume h2 { font-size: 1.05em; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--r-accent); margin-bottom: .45em; }
@@ -39,32 +39,32 @@
 /* Variant: classic (rule under heading, left aligned) */
 .tpl-classic h2 { border-bottom: 1.5px solid var(--r-accent); padding-bottom: .15em; }
 /* Variant: modern (accent bar before heading, name in dark text) */
-.tpl-modern h1 { color: #111; letter-spacing: -.01em; }
+.tpl-modern .resume-name { color: #111; letter-spacing: -.01em; }
 .tpl-modern h2 { border-left: .35em solid var(--r-accent); padding-left: .5em; letter-spacing: .04em; }
 .tpl-modern .resume-head { border-bottom: 3px solid var(--r-accent); padding-bottom: .5em; }
 /* Variant: compact (tight spacing, smaller headings, inline rules) */
 .tpl-compact { line-height: calc(var(--r-lh) - .08); }
 .tpl-compact .resume-section { margin-top: .7em; }
-.tpl-compact h1 { font-size: 1.7em; }
+.tpl-compact .resume-name { font-size: 1.7em; }
 .tpl-compact h2 { font-size: .95em; border-bottom: 1px solid #999; margin-bottom: .3em; color: #111; }
 .tpl-compact .entry { margin-top: .4em; }
 /* Variant: elegant (centered name block, serif feel spacing) */
 .tpl-elegant .resume-head { text-align: center; }
 .tpl-elegant .contact-list { justify-content: center; }
-.tpl-elegant h1 { font-weight: 400; letter-spacing: .03em; text-transform: uppercase; font-size: 1.9em; }
+.tpl-elegant .resume-name { font-weight: 400; letter-spacing: .03em; text-transform: uppercase; font-size: 1.9em; }
 .tpl-elegant h2 { text-align: center; font-weight: 400; letter-spacing: .05em; border-top: 1px solid var(--r-accent); border-bottom: 1px solid var(--r-accent); padding: .2em 0; }
 /* Variant: bold (filled heading bands) */
-.tpl-bold h1 { font-size: 2.4em; font-weight: 800; }
+.tpl-bold .resume-name { font-size: 2.4em; font-weight: 800; }
 .tpl-bold h2 { background: var(--r-accent); color: #fff; padding: .2em .5em; letter-spacing: .08em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 /* Variant: minimal (no rules, light headings) */
-.tpl-minimal h1 { color: #111; font-weight: 600; font-size: 1.9em; }
+.tpl-minimal .resume-name { color: #111; font-weight: 600; font-size: 1.9em; }
 .tpl-minimal h2 { font-weight: 600; text-transform: none; letter-spacing: 0; font-size: 1.15em; margin-bottom: .3em; }
 .tpl-minimal .bullets li::marker { color: #666; }
 
 /* Variant: executive (light serif-feel name over a thin double rule, sentence-case headings) */
 .tpl-executive { line-height: calc(var(--r-lh) + .05); }
 .tpl-executive .resume-head { border-bottom: 4px double var(--r-accent); padding-bottom: .55em; margin-bottom: .3em; }
-.tpl-executive h1 { color: #111; font-weight: 400; font-size: 2.2em; letter-spacing: .01em; }
+.tpl-executive .resume-name { color: #111; font-weight: 400; font-size: 2.2em; letter-spacing: .01em; }
 .tpl-executive .headline { font-style: italic; color: #333; }
 .tpl-executive h2 { text-transform: none; letter-spacing: .01em; font-size: 1.2em; font-weight: 700; color: var(--r-accent); margin-bottom: .3em; }
 .tpl-executive .meta { font-style: italic; }
@@ -72,7 +72,7 @@
 /* Variant: academic (dense CV; year-forward through bold accent dates and a left rule, DOM order unchanged) */
 .tpl-academic { line-height: calc(var(--r-lh) - .04); }
 .tpl-academic .resume-section { margin-top: .8em; }
-.tpl-academic h1 { font-size: 1.7em; color: #111; font-weight: 700; }
+.tpl-academic .resume-name { font-size: 1.7em; color: #111; font-weight: 700; }
 .tpl-academic h2 { font-size: .98em; color: var(--r-text-accent); border-bottom: 1px solid #b8b8b8; padding-bottom: .1em; margin-bottom: .4em; }
 .tpl-academic .entry { margin-top: .45em; border-left: 3px solid var(--r-accent); padding-left: .7em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tpl-academic .dates { font-weight: 800; font-size: 1.04em; color: var(--r-text-accent); font-variant-numeric: tabular-nums; }
@@ -83,7 +83,7 @@
 /* Variant: technical (compact sans, accent skill labels, tight square bullets) */
 .tpl-technical { line-height: calc(var(--r-lh) - .06); }
 .tpl-technical .resume-section { margin-top: .75em; }
-.tpl-technical h1 { font-size: 1.8em; color: #111; letter-spacing: -.01em; }
+.tpl-technical .resume-name { font-size: 1.8em; color: #111; letter-spacing: -.01em; }
 .tpl-technical .headline { color: var(--r-accent); font-weight: 700; margin-top: 0; }
 .tpl-technical h2 { text-transform: none; letter-spacing: 0; font-size: 1.05em; border-top: 2px solid var(--r-accent); padding-top: .2em; margin-bottom: .3em; color: #111; }
 .tpl-technical .entry { margin-top: .4em; }
@@ -93,7 +93,7 @@
 .tpl-technical .meta { color: #444; }
 /* Variant: graduate (roomy, large name, heavy headings) */
 .tpl-graduate .resume-section { margin-top: 1.05em; }
-.tpl-graduate h1 { font-size: 2.7em; font-weight: 800; color: #111; letter-spacing: -.02em; }
+.tpl-graduate .resume-name { font-size: 2.7em; font-weight: 800; color: #111; letter-spacing: -.02em; }
 .tpl-graduate .headline { font-size: 1.15em; color: var(--r-accent); font-weight: 700; }
 .tpl-graduate h2 { font-size: 1.1em; font-weight: 800; letter-spacing: .05em; margin-bottom: .35em; }
 .tpl-graduate h3 { font-weight: 800; }
@@ -101,13 +101,13 @@
 /* Variant: softline (tinted underline, sentence-case headings, generous spacing) */
 .tpl-softline { line-height: calc(var(--r-lh) + .04); }
 .tpl-softline .resume-section { margin-top: 1.2em; }
-.tpl-softline h1 { font-size: 2em; font-weight: 600; }
+.tpl-softline .resume-name { font-size: 2em; font-weight: 600; }
 .tpl-softline h2 { text-transform: none; letter-spacing: .01em; font-size: 1.15em; font-weight: 600; padding-bottom: .2em; margin-bottom: .55em; border-bottom: 3px solid color-mix(in srgb, var(--r-accent) 28%, #fff); border-radius: 2px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tpl-softline .entry { margin-top: .7em; }
 .tpl-softline .bullets li::marker { color: color-mix(in srgb, var(--r-accent) 60%, #fff); }
 /* Variant: ledger (boxed accent marker plus short rule per heading, fine line down entries) */
 .tpl-ledger .resume-head { border-top: 5px solid var(--r-accent); padding-top: .5em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.tpl-ledger h1 { color: #111; font-size: 2em; font-weight: 600; }
+.tpl-ledger .resume-name { color: #111; font-size: 2em; font-weight: 600; }
 .tpl-ledger h2 { width: fit-content; min-width: 7em; font-size: .95em; color: #111; border-left: .75em solid var(--r-accent); border-bottom: 1px solid #999; padding: .05em .5em .1em .5em; margin-bottom: .5em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tpl-ledger .entry { border-left: 1px solid #c4c4c4; padding-left: .8em; }
 .tpl-ledger .plain-list, .tpl-ledger .summary-text { padding-left: .8em; border-left: 1px solid #c4c4c4; }
@@ -118,8 +118,8 @@
 .tpl-executive h2 { color: var(--r-text-accent); }
 .tpl-technical .headline, .tpl-technical .skill-label { color: var(--r-text-accent); }
 .tpl-graduate .headline, .tpl-graduate h2 { color: var(--r-text-accent); }
-.tpl-softline h1, .tpl-softline h2 { color: var(--r-text-accent); }
-.tpl-graduate h1, .tpl-ledger h1 { color: #111; }
+.tpl-softline .resume-name, .tpl-softline h2 { color: var(--r-text-accent); }
+.tpl-graduate .resume-name, .tpl-ledger .resume-name { color: #111; }
 /* Bold: pick white or near-black heading text from the accent's lightness (default navy stays white). */
 @supports (color: oklch(from red l c h)) {
   .tpl-bold h2 { color: oklch(from var(--r-accent) clamp(0, (0.64 - l) * 1000, 1) 0 0); }

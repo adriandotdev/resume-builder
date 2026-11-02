@@ -30,7 +30,7 @@ export function createMeasurer() {
       const { Component } = getTemplate(next.style.template);
       flushSync(() => root.render(
         <div className="preview-sheet paper-edge bg-white rounded-[var(--r-paper)]" style={{ width: pageW, minHeight: pageH, padding: margin, boxSizing: "border-box" }}>
-          <Component doc={next} idPrefix="fit" />
+          <Component doc={next} idPrefix="fit" decorative />
         </div>,
       ));
       const sheetH = (host.firstElementChild as HTMLElement | null)?.offsetHeight ?? 0;

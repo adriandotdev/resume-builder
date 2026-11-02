@@ -8,12 +8,13 @@ import { Reveal } from "@/components/Reveal";
 import { HowChecks, HowPrint, HowSections, HowThumbs } from "@/components/HowFrags";
 import { createSampleDoc } from "@/lib/sample";
 import { runAtsChecks } from "@/lib/ats";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const HERO = "One page, two readers".split(" ");
 const PROMISES = ["Free, with no account", "Stays in this browser", "Real text in the PDF"];
 
 const QUESTIONS: { q: string; a: string; id?: string }[] = [
-  { id: "privacy", q: "Where is my resume stored?", a: "In this browser’s local storage, on this device only. Nothing is sent to a server, and there is no analytics or tracking." },
+  { id: "privacy", q: "Where is my resume stored?", a: "In this browser’s local storage, on this device only. Your resume text is never sent to a server. The site counts page views with Vercel Web Analytics, but it does not read what you type. See the privacy page." },
   { q: "Does it cost anything?", a: "No. There is no account to create, no paid tier and no watermark on the PDF." },
   { q: "How do I back it up or move it?", a: "In the editor’s Data tab, Export JSON downloads resume.json. Import JSON on another browser or device brings it back." },
   { q: "What if an import goes wrong?", a: "The file is checked before anything changes. A file that does not validate is rejected and your current resume stays exactly as it was." },
@@ -27,18 +28,28 @@ const QUESTIONS: { q: string; a: string; id?: string }[] = [
   { q: "How do I know it fits on one page?", a: "The preview shows an estimate, such as “About 1 page”, that updates as you type, change the font size or change margins." },
 ];
 
+// Free web app with no paid tier, so the offer is priced at zero. No ratings or organization data: none exist.
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebApplication", name: SITE_NAME, url: SITE_URL, description: SITE_DESCRIPTION, applicationCategory: "BusinessApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
+    { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  ],
+};
+
 export default function Home() {
   const sample = createSampleDoc();
   const checks = runAtsChecks(sample).slice(0, 4);
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }} />
       <Reveal />
       <SplitStory checks={checks}>
         <section className="hero-card" aria-labelledby="hero-h" data-scene="0">
           <div className="hero-mid">
             <h1 id="hero-h" className="display hero-h">{HERO.map((w, i) => <Fragment key={i}><span className="hw" style={{ "--i": i } as CSSProperties}>{w}</span>{" "}</Fragment>)}</h1>
-            <p className="hero-sub">A free resume builder with single-column templates, a live preview and a PDF with real, selectable text. Nothing leaves your browser.</p>
+            <p className="hero-sub">A free resume builder with single-column templates, a live preview and a PDF with real, selectable text. Your resume text never leaves your browser.</p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
               <Link href="/editor" className="btn btn-accent btn-lg">Start your resume</Link>
               <Link href="/templates" className="text-link">Browse templates</Link>

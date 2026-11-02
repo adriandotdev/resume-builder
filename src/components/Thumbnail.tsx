@@ -14,7 +14,7 @@ export function Thumbnail({ doc, uid, pad = 48 }: { doc: ResumeDoc; uid: string;
   return (
     <div ref={ref} className="relative w-full overflow-hidden rounded-[var(--r-paper)] bg-white" style={{ aspectRatio: `${PAGE_W} / ${PAGE_H}` }} aria-hidden="true" data-ui>
       <div style={{ width: PAGE_W, height: PAGE_H, padding: pad, boxSizing: "border-box", transform: `scale(${scale})`, transformOrigin: "top left", pointerEvents: "none" }} ref={(el) => { if (el) el.setAttribute("inert", ""); }}>
-        <Component doc={doc} idPrefix={`th-${uid}`} />
+        <Component doc={doc} idPrefix={`th-${uid}`} decorative />
       </div>
     </div>
   );
