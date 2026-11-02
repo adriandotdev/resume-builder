@@ -50,7 +50,7 @@ function buildDoc(typed: number, moved: boolean, hidden: boolean): ResumeDoc {
 
 /** What each ATS check looks at on the page. */
 const CHECK_TARGETS: Record<string, string> = {
-  "contact-fields": "h1, .contact-list li",
+  "contact-fields": ".resume-name, .contact-list li",
   headings: "h2",
   "bullet-length": ".bullets li",
   dates: ".dates",
@@ -201,7 +201,7 @@ const Layer = memo(function Layer({ id, doc, scale, ats, shown, beat }: { id: Te
     >
       <div className="ats-lens" data-on={ats} data-testid={id === "classic" ? "hero-lens" : undefined}>
         <div ref={(el) => { if (el) el.setAttribute("inert", ""); }} style={{ width: PAGE_W, height: PAGE_H, padding: MARGIN, boxSizing: "border-box", transform: `scale(${scale})`, transformOrigin: "top left" }}>
-          <div ref={body}><Component doc={{ ...doc, style: { ...doc.style, template: id } }} idPrefix={`stage-${id}`} /></div>
+          <div ref={body}><Component doc={{ ...doc, style: { ...doc.style, template: id } }} idPrefix={`stage-${id}`} decorative /></div>
         </div>
       </div>
     </motion.div>

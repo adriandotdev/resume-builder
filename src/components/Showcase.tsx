@@ -47,7 +47,7 @@ export function Showcase() {
           <p className="show-cap">On the page</p>
           <div className="show-paper paper-edge">
             <div ref={(el) => { if (el) el.setAttribute("inert", ""); }}>
-              <ClassicTemplate doc={doc} idPrefix="show" />
+              <ClassicTemplate doc={doc} idPrefix="show" decorative />
             </div>
           </div>
           <p className="show-cap mt-8">What a parser reads</p>

@@ -21,7 +21,7 @@ export function CoverLetterBody({ doc, letter }: { doc: ResumeDoc; letter: Cover
   return (
     <article className={`resume tpl-${style.template}`} style={vars} data-resume data-letter>
       <header className="resume-head">
-        {c?.fullName && <h1>{c.fullName}</h1>}
+        {c?.fullName && <h1 className="resume-name">{c.fullName}</h1>}
         {c?.headline && <p className="headline">{c.headline}</p>}
         {bits.length > 0 && <ul className="contact-list">{bits.map((b, i) => <li key={i}>{b}</li>)}</ul>}
       </header>

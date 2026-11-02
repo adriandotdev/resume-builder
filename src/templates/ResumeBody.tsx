@@ -3,10 +3,10 @@ import { FONTS, formatDate, formatRange, type ResumeDoc, type Section } from "@/
 
 /**
  * The single semantic DOM shared by every template:
- * h1 name, h2 per section, h3 per entry, ul/li for lists, plain text only.
+ * h1 name (a p when decorative), h2 per section, h3 per entry, ul/li for lists, plain text only.
  * No tables, images, icons or pseudo-element text.
  */
-export function ResumeBody({ doc, className, idPrefix = "r" }: { doc: ResumeDoc; className: string; idPrefix?: string }) {
+export function ResumeBody({ doc, className, idPrefix = "r", decorative = false }: { doc: ResumeDoc; className: string; idPrefix?: string; decorative?: boolean }) {
   const { style } = doc;
   const vars = {
     "--r-accent": style.accent,
@@ -18,7 +18,7 @@ export function ResumeBody({ doc, className, idPrefix = "r" }: { doc: ResumeDoc;
   return (
     <article className={`resume ${className}`} style={vars} data-resume>
       {doc.sections.filter((s) => s.visible).map((s) => (
-        <SectionView key={s.id} s={s} f={f} idPrefix={idPrefix} />
+        <SectionView key={s.id} s={s} f={f} idPrefix={idPrefix} decorative={decorative} />
       ))}
     </article>
   );
@@ -30,13 +30,13 @@ function Bullets({ items }: { items: string[] }) {
   return <ul className="bullets">{list.map((b, i) => <li key={i}>{b}</li>)}</ul>;
 }
 
-function SectionView({ s, f, idPrefix }: { s: Section; f: ResumeDoc["style"]["dateFormat"]; idPrefix: string }) {
+function SectionView({ s, f, idPrefix, decorative }: { s: Section; f: ResumeDoc["style"]["dateFormat"]; idPrefix: string; decorative: boolean }) {
   if (s.type === "contact") {
     const c = s.content;
     const bits = [c.email, c.phone, c.location, ...c.links].filter((x) => x.trim());
     return (
       <header className="resume-head">
-        {c.fullName && <h1>{c.fullName}</h1>}
+        {c.fullName && (decorative ? <p className="resume-name">{c.fullName}</p> : <h1 className="resume-name">{c.fullName}</h1>)}
         {c.headline && <p className="headline">{c.headline}</p>}
         {bits.length > 0 && <ul className="contact-list">{bits.map((b, i) => <li key={i}>{b}</li>)}</ul>}
       </header>
