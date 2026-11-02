@@ -285,6 +285,41 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   @media (min-width: 1024px) { .tpl-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 20px; } }
   @media (min-width: 1280px) { .tpl-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
+  /* information pages (about, contact, privacy): one column on phones; on desktop a lead column
+     (title, summary, contact) sits beside the sections, which are separated by hairline rules */
+  .info-page { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 32px; min-width: 0; }
+  .info-head { display: grid; gap: 16px; align-content: start; min-width: 0; }
+  .info-lede { font-size: 1.0625rem; line-height: 1.6; color: var(--text-muted); }
+  .info-well { padding: 16px; border-radius: var(--r-inset); background: var(--surface-2); overflow-wrap: anywhere; }
+  .info-well .text-link { font-size: 1.125rem; }
+  .info-main { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+  .info-section { display: grid; gap: 12px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .info-heading { font-family: var(--font-display-stack); font-size: 1.25rem; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+  .info-body { line-height: 1.6; }
+  .info-body .text-link { display: inline; min-height: 0; }
+  .info-title { font-size: 2.125rem; line-height: 1.05; }
+  .info-next { padding-top: 8px; }
+  /* Page-load entrance: the heading block rises first, then each section in turn (40ms apart, as in the app's enter helper).
+     CSS, not JS, so it runs off the main thread and needs no hydration. Visited rarely, so it can carry a little delight. */
+  @keyframes info-rise { from { opacity: 0; transform: translateY(8px); } }
+  .info-head > *, .info-main > * { animation: info-rise 260ms var(--ease-out) both; }
+  .info-head > :nth-child(2) { animation-delay: 40ms; }
+  .info-head > :nth-child(3) { animation-delay: 80ms; }
+  .info-main > * { animation-delay: 120ms; }
+  .info-main > :nth-child(2) { animation-delay: 160ms; }
+  .info-main > :nth-child(3) { animation-delay: 200ms; }
+  .info-main > :nth-child(4) { animation-delay: 240ms; }
+  .info-main > :nth-child(n+5) { animation-delay: 280ms; }
+  @media (min-width: 640px) { .info-heading { font-size: 1.5rem; } }
+  @media (min-width: 1024px) {
+    .info-page { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 72px; align-items: start; margin: 0 max(var(--gutter), calc((100% - 1200px) / 2)) var(--gutter); padding: 48px 56px 64px; }
+    .info-head { position: sticky; top: calc(var(--header-h) + 24px); }
+    .info-title { font-size: clamp(2.5rem, 2rem + 1.5vw, 3.25rem); line-height: 1; }
+    .info-lede { font-size: 1.1875rem; }
+    .info-main { gap: 40px; }
+    .info-section { padding-top: 32px; }
+  }
+
   /* templates gallery */
   .tpl-card { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
   .tpl-card .paper-thumb { transition: transform 0.2s var(--ease-out); }
@@ -399,6 +434,7 @@ html { scroll-padding-top: calc(var(--header-h) + 12px); }
   /* Keep the arrival of toasts, dialogs and tab panels as a short fade instead of removing it. */
   .dlg[open], .dlg.dlg-share[open] { animation: fade-in 0.15s linear !important; }
   .fit-in, .fit-text { animation: fade-in 0.15s linear both !important; animation-delay: 0s !important; }
+  .info-head > *, .info-main > * { animation: fade-in 0.15s linear both !important; animation-delay: 0s !important; }
   /* A colour-only wash confirms a moved section, so it stays. */
   .sec-card[data-settled="true"] { animation-duration: 0.9s !important; }
 }

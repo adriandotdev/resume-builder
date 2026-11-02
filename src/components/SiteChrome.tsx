@@ -71,7 +71,9 @@ export function SiteFooter() {
           <Link href="/applications" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Applications</Link>
           <Link href="/#features" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Features</Link>
           <Link href="/#questions" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Questions</Link>
+          <Link href="/about" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">About</Link>
           <Link href="/privacy" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Privacy</Link>
+          <Link href="/contact" className="inline-flex min-h-11 items-center text-[var(--text)] underline-offset-4 hover:underline">Contact</Link>
         </nav>
         <p className="sm:text-right">Your resume stays in your browser</p>
       </div>

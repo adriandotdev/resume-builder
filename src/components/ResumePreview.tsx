@@ -12,8 +12,8 @@ export function PageStyle({ doc }: { doc: ResumeDoc }) {
   return <style>{`@page { size: ${p.w}mm ${p.h}mm; margin: ${m}mm; }`}</style>;
 }
 
-/** The paper sheet at the chosen size, scaled to fit. Shows the resume, or `body` (the cover letter) in its place. */
-export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = "fit", body }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual"; body?: ReactNode }) {
+/** The paper sheet at the chosen size, scaled to fit. Shows the resume, or `body` (the cover letter) in its place. `decorative` sets the name as a paragraph when the page already has its own h1. */
+export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = "fit", body, decorative = false }: { doc: ResumeDoc; onPages?: (n: number) => void; zoom?: "fit" | "actual"; body?: ReactNode; decorative?: boolean }) {
   const [stageRef, stageW] = useElementWidth<HTMLDivElement>();
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetH, setSheetH] = useState(0);
@@ -49,7 +49,7 @@ export const ResumePreview = memo(function ResumePreview({ doc, onPages, zoom = 
             style={{ width: pageW, minHeight: pageH, padding: margin, boxSizing: "border-box" }}
             data-testid="preview-sheet"
           >
-            {body ?? <Component doc={doc} idPrefix="pv" />}
+            {body ?? <Component doc={doc} idPrefix="pv" decorative={decorative} />}
           </div>
         </div>
       </div>

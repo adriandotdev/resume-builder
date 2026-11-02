@@ -11,3 +11,4 @@ next-env.d.ts
 
 # Taste-skill review screenshots (regenerated each round)
 .taste-skill/r*/
+/resume-builder-project.vercel.app-audit/*
