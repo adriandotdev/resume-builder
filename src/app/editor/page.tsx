@@ -220,7 +220,7 @@ export default function EditorPage() {
           </div>
           <div className="pv-scroll" tabIndex={0} role="region" aria-label={isLetter ? "Cover letter preview, scrollable" : "Resume preview, scrollable"}>
             {view === "design" ? (
-              <ResumePreview doc={doc} onPages={setPages} zoom={zoom} body={isLetter ? <CoverLetterBody doc={doc} letter={letter} /> : undefined} />
+              <ResumePreview doc={doc} onPages={setPages} zoom={zoom} decorative body={isLetter ? <CoverLetterBody doc={doc} letter={letter} /> : undefined} />
             ) : (
               <div className="no-print mx-auto max-w-[820px]">
                 <p className="mb-3 text-[var(--text-muted)]">{isLetter ? "This is the letter as plain text, in reading order. Check that nothing is missing or out of order." : "This is the text an ATS would read, in reading order. Check that nothing is missing or out of order."}</p>
