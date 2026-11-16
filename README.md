@@ -1,76 +1,92 @@
 # Resume Builder
 
-A free, private, ATS-friendly resume builder. Next.js (App Router) + TypeScript + Tailwind. No database, no API routes, no analytics and no third-party network calls. The app's own fonts are self-hosted, and resumes use system fonts.
+A free, private, ATS-friendly resume builder. Pick a single-column template, fill in your details, check how an applicant tracking system would read the result, and save it as a PDF. No account, no database, no AI writing.
 
-Everything is original: templates, sample data (a fictional person), copy and styling were written from a behavior spec (`../resume-builder-spec.md`) only.
+**Live site:** <https://resume-builder-project.vercel.app>
 
-## Run
+![Resume Builder homepage: a hero reading "One page, two readers" next to a live preview of a sample resume in the Classic template, with a toggle to see what an ATS reads.](src/app/opengraph-image.png)
 
-Requires Node 20+ (developed on Node 24.12 via nvm).
+## What it is
 
-```bash
-export PATH=~/.nvm/versions/node/v24.12.0/bin:$PATH   # if you use nvm like the rest of this workspace
-npm install
-npm run dev          # http://localhost:3000
-npm run build && npm start
-npm test             # Vitest: schema, migration, store, import validation, ATS rules
-npm run typecheck    # tsc --noEmit
-npm run lint
-```
+Resume Builder is for people who want a resume that reads cleanly in an applicant tracking system (ATS) and who would rather keep their data on their own device. Everything you type stays in your browser. The app focuses on three things: provable privacy, verifiable ATS-safe output, and rule-based tailoring of a resume to each job.
 
-Optional end-to-end checks (need a running server and a local Chrome; uses `playwright-core` and `pdfjs-dist`, no browser download):
+## Features
 
-```bash
-npm run build && npm start -- -p 3100 &
-npm run e2e          # gallery -> editor -> style -> reorder -> reload -> JSON round trip -> PDFs -> mobile
-npm run pdf-check    # prints every template at A4 and Letter and verifies the PDF text layer
-```
+### Templates
 
-Set `CHROME=/path/to/chrome` if Chrome is not at the macOS default path.
+- 12 single-column templates: classic, modern, compact, elegant, bold, minimal, executive, academic, technical, graduate, softline and ledger.
+- A gallery with live thumbnails rendered from sample data (a fictional person).
 
-## Using it
+### Editor
 
-- `/templates`: gallery of 12 single-column templates with live thumbnails from sample data.
-- `/editor`: edit content, style and sections, with a live preview and an ATS text preview.
-- `/print`: clean view of the saved resume (same renderer). The editor's "Print / Save as PDF" calls `window.print()`; `print.css` hides all chrome and an injected `@page` rule sets paper size and margins. Choose "Save as PDF" and turn off headers and footers. Text stays selectable.
-- Job match: in the ATS tab, paste a job posting to see which of its key terms already appear in your resume, which are missing, and which sections hold them. It uses plain rules, not AI, and shows counts and term lists, not a score. Each missing term has an "Add to Skills" button that puts it in an "Additional skills" group (with Undo). "Write in Summary" and "Write in Experience" take you to that text box so you can work the term into a sentence. Add only terms that truly describe your experience.
-- Versions: keep one resume per role (Frontend, Backend, QA, ...). Use the Version picker in the editor bar and "Manage" to add, duplicate, rename or delete (with Undo). Each version has its own content, design and job posting. Your resume from before versions existed appears as "My resume".
-- Compare versions: in "Manage", "Compare versions" shows what changed going from one version to another: per section, the lines added and removed (marked with +, − and words, not color alone), plus which key terms of a job posting each version covers (in both, only one, in neither). Counts and lists, no score. Read-only; nothing is stored.
-- Applications: the Applications page tracks where each version went (company, role, status, dates, link, notes). Each application links a resume version and keeps its own copy of the job posting, so later edits to a version's posting do not change it. Deleting a version keeps the application and shows the version name as deleted.
-- Export/import JSON in "Your data" to back up or move a resume. Export saves the open version, or all versions as one file that also includes your applications (and their posting copies). Importing that file re-links applications to the new versions. Imports are validated and migrated, and always add a new version; a bad file changes nothing.
-- Encrypted backup: tick "Protect exports with a passphrase" in "Your data" and the file is encrypted in the browser (WebCrypto: PBKDF2-SHA-256 key, AES-256-GCM). Importing an encrypted file asks for the passphrase first. There is no recovery: a lost passphrase means the file cannot be opened. Only the exported file is encrypted; resumes stored in the browser are not. The panel shows when you last backed up and, once changes older than 7 days are not in a backup, a quiet reminder and a badge on the Data tab. Which changes count is decided by comparing a fingerprint of your data with the one saved at the last backup, so undoing an edit clears it. Nothing is uploaded.
+- Nine section types: contact, summary, experience, education, skills, projects, certifications, languages and custom.
+- Reorder or hide sections.
+- Design controls for accent colour, font, size, line spacing, margins and date format.
+- A4 or US Letter pages, a live preview, and light and dark themes.
+
+### Checks
+
+- **ATS checklist** with a page-length estimate.
+- **Plain-text preview** of what a parser would extract.
+- **Parse simulator** that reads the text layer into fields and flags where parsing fails. Each finding jumps to its input.
+- **Bullet coach** that flags weak openers, missing numbers, tense, repeated verbs, passive voice and filler.
+- **Fit to one page** finds the smallest line-spacing, margin or font-size change that fits one page, with Apply and Undo. When style changes are not enough, it lists where to cut.
+
+### Job tailoring
+
+- Paste a job posting to see which key terms already appear in your resume, which are missing, and which sections hold them.
+- It uses plain rules, not AI, and shows counts and term lists, not a score.
+- Add a missing term to Skills, or jump to the Summary or Experience to work it into a sentence.
+
+### Versions
+
+- Keep one resume per role. Each version has its own content, design and job posting.
+- Compare two versions to see lines added and removed per section, and which job-posting terms each version covers.
+
+### Cover letters
+
+- A template-driven cover letter for each version. Your name and contact details come from the resume, and talking points come from job match.
+- It uses the same print pipeline as the resume.
+
+### Applications tracker
+
+- Track where each version went: company, role, status, dates, link and notes.
+- Each application keeps its own copy of the job posting, so later edits do not change it.
+
+### Export and sharing
+
+- **Print / Save as PDF** with a real, selectable text layer.
+- **JSON export and import** for one version or all of them. Imports are validated and migrated, and a bad file changes nothing.
+- **Encrypted backup**: optionally protect an export with a passphrase (PBKDF2-SHA-256 and AES-256-GCM, in your browser). There is no recovery for a lost passphrase.
+- **Backup reminders** appear when changes older than 7 days are not in a backup.
+- **Redacted share copy** removes contact and identifying details so you can ask for feedback in public. It can be saved as PNG images.
+
+## ATS-safe by design
+
+Every template uses the same document structure: the name is an `h1`, sections are `h2`, entries are `h3`, and lists are real `ul` and `li` elements. There are no tables, columns, images or icons in the resume body.
+
+Two styling choices are avoided because they scrambled the PDF text layer in testing: `position: relative` on text blocks and large `letter-spacing`.
 
 ## Privacy
 
-Resumes live in `localStorage` in your browser only: a version list under `resume-builder:versions:v1` and each version's resume under `resume-builder:doc:v1:<id>`. Applications are kept under `resume-builder:applications:v1`. Backup reminder state (time of the last backup and a data fingerprint, never resume text) is under `resume-builder:backup:v1`. A pasted job posting is kept per version under `resume-builder:jd:v1:<id>`, is never part of the version export (the copy saved on an application is), and is removed only by its Clear button or by deleting its version. Nothing is uploaded. Clearing site data removes it, so export JSON for a backup. If storage is blocked the app still works and warns that changes will not persist.
+- Resumes, versions, applications, job postings and backup-reminder state are stored in your browser's `localStorage`. Nothing is uploaded, and there is no server-side handling of resume data.
+- If storage is blocked, the app still works and warns you that changes will not persist. Clearing site data removes everything, so export a backup if you want to keep it.
+- The app makes no third-party network calls. Its own fonts are self-hosted.
+- The site uses Vercel Web Analytics to count page views. It does not read what you type or the contents of your resume.
+- Security headers are set (no framing, a strict referrer policy, and camera, microphone and geolocation disabled). A Content Security Policy runs in report-only mode.
 
-## Layout
+## Accessibility
 
-```
-src/lib/schema.ts      ResumeDoc types, defaults, validator, migrations (v0 -> v1), date formatting
-src/lib/store.ts       framework-free store + useSyncExternalStore hooks, debounced localStorage, SSR-safe; holds the open version's doc
-src/lib/versions.ts    version index, storage keys, first-run migration of a pre-versions resume, name helpers
-src/lib/versionsStore.ts  create/duplicate/rename/delete/switch versions on top of the stores
-src/lib/ops.ts         pure reorder/add/remove/patch helpers
-src/lib/ats.ts         ATS checklist rules + page-length estimate
-src/lib/plaintext.ts   plain-text (ATS) rendering, per section and whole resume
-src/lib/crypto.ts      passphrase encryption of backups (PBKDF2 + AES-GCM), envelope check, passphrase rules
-src/lib/backup.ts      last-backup state, change fingerprint, reminder status
-src/lib/backupStore.ts store and hooks for backup state
-src/lib/importFile.ts  validation of an imported file (bundle or single resume)
-src/lib/jobmatch.ts    job-posting key-term extraction and matching against the resume
-src/lib/applications.ts  application records, validation and id remapping for imports
-src/lib/applicationsStore.ts  store and hook for the application list
-src/lib/jobPostingStore.ts  store for the open version's pasted posting (own localStorage key)
-src/lib/sample.ts      fictional sample document
-src/templates/         ResumeBody (shared semantic DOM), 12 template components, registry
-src/styles/            resume.css (template variants), print.css
-src/components/        editor panels, preview, thumbnails
-src/app/               /, /templates, /editor, /print
-tests/                 Vitest suites
-scripts/               e2e.mjs, pdf-check.mjs, pdftext.mjs (dev verification tools)
-```
+The app aims for WCAG 2.2 AA, with a skip link, keyboard-operable dialogs with managed focus, and support for light and dark themes.
 
-## ATS-safety notes
+## Built with
 
-All templates share one DOM: `h1` name, `h2` sections with standard headings, `h3` entries, real `ul/li`, no tables, images or icons. Avoid `position: relative` on text blocks and large `letter-spacing`: both were found to scramble or split text in the PDF text layer during testing.
+Next.js (App Router), React, TypeScript and Tailwind CSS.
+
+## Not planned
+
+These would need a backend or would send resume data off your device, so they are out of scope: AI writing, accounts, cross-device sync and share links. There is also no single ATS or match score, because checks stay explainable.
+
+## Maintainer
+
+Adrian Nads Marcelo
